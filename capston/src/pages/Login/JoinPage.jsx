@@ -7,7 +7,7 @@ import {
   SubmitButton,
   Topsection,
   BottomSection,
-} from "../widget/stylecomponents/JoinStyle";
+} from "../style/stylecomponents/JoinStyle";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 

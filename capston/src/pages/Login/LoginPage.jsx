@@ -8,11 +8,11 @@ import {
   Topsection,
   BottomSection,
   Paragraph,
-} from "../widget/stylecomponents/LoginStyle";
+} from "../style/stylecomponents/LoginStyle";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons"; // 사용할 아이콘 불러오기
-import { LinkContainer, Link } from "../widget/stylecomponents/Link";
+import { LinkContainer, Link } from "../style/stylecomponents/Link";
 
 const LoginBox = () => {
   const navigate = useNavigate();
