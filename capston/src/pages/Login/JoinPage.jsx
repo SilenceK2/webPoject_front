@@ -7,23 +7,33 @@ import {
   SubmitButton,
   Topsection,
   BottomSection,
-} from "../style/stylecomponents/JoinStyle";
+} from "../../style/stylecomponents/JoinStyle";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
-import { usernameState, userpasswordState } from "../utils/recoil/atom";
+import { usernameState, userpasswordState } from "../../utils/recoil/atom";
+import axios from "axios";
 
 const JoinPage = () => {
   const navigate = useNavigate();
-  const setUsername = useSetRecoilState(usernameState);
+  const setEmail = useSetRecoilState(usernameState);
   const setPassword = useSetRecoilState(userpasswordState);
 
-  const handleSignUpClick = () => {
-    navigate("/login");
+  const handleSignUpClick = async () => {
+    try {
+      await axios.post(`http://localhost:8000/member/signup`, {
+        email: setEmail,
+        password: setPassword,
+      });
+      navigate("/join");
+      console.log("success");
+    } catch (error) {
+      console.error("error", error.message);
+    }
   };
 
   useEffect(() => {
-    setUsername("");
+    setEmail("");
     setPassword("");
   }, []);
 
@@ -38,7 +48,7 @@ const JoinPage = () => {
             type="text"
             placeholder="이메일을 입력하세요"
             name="username"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Input

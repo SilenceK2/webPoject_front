@@ -50,9 +50,9 @@ export const Input = styled.input`
   height: 10%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  margin-bottom: 0px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 20px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 `;
 
