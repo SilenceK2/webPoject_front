@@ -9,7 +9,7 @@ export const LoginBoxContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 95%;
+  height: 90%;
   postition: fixed;
   box-sizing: none;
 `;
@@ -44,20 +44,22 @@ export const TextBox = styled.div`
 `;
 
 export const Input = styled.input`
-  width: 93%;
+  width: 80%;
   max-height: 30px;
-  padding: 10px;
+  padding: 30px;
   font-size: 16px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
+  border: none;
+  border-radius: 10px;
   margin-bottom: 10px;
+  background-color: white-gray;
 `;
 
 export const SubmitButton = styled.input`
   width: 100%;
   background: #a8a8a8;
   border: none;
-  padding: 10px;
+  border-radius: 20px;
+  padding: 20px;
 
   font-size: 16px;
   color: #ffffff;

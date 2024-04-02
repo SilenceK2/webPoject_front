@@ -5,9 +5,8 @@ const HeaderContainer = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60px;
-  background-color: #000;
-  color: #ffffff;
+  height: 100px;
+  flex-basis: 100px;
 `;
 
 const Header = () => {
