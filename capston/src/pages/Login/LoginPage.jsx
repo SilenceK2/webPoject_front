@@ -14,6 +14,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons"; // 사용할 아�
 import { LinkContainer, Link } from "../../style/stylecomponents/widget/Link";
 import axios from "axios";
 import { useState } from "react";
+import api from "../../utils/api/Instance";
 const LoginBox = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -25,19 +26,10 @@ const LoginBox = () => {
 
   const handelLoginClick = async () => {
     try {
-      await axios.post(
-        `http://localhost:8080/member/login`,
-        {
-          memberEmail: email,
-          memberPassword: pwd,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      );
+      await api.post(`member/login`, {
+        memberEmail: email,
+        memberPassword: pwd,
+      });
       navigate("/homepage");
       console.log("success");
     } catch (error) {

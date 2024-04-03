@@ -10,6 +10,7 @@ import {
 } from "../../style/stylecomponents/JoinStyle";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import api from "../../utils/api/Instance";
 
 import { usernameState, userpasswordState } from "../../utils/recoil/atom";
 import axios from "axios";
@@ -21,19 +22,10 @@ const JoinPage = () => {
 
   const handleSignUpClick = async () => {
     try {
-      await axios.post(
-        `http://localhost:8080/member/signup`,
-        {
-          memberEmail: setEmail,
-          meberPassword: setPassword,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      );
+      await api.post(`member/signup`, {
+        memberEmail: setEmail,
+        meberPassword: setPassword,
+      });
       navigate("/join");
       console.log("success");
     } catch (error) {
