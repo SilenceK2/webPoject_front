@@ -21,10 +21,19 @@ const JoinPage = () => {
 
   const handleSignUpClick = async () => {
     try {
-      await axios.post(`http://localhost:8000/member/signup`, {
-        email: setEmail,
-        password: setPassword,
-      });
+      await axios.post(
+        `http://localhost:8080/member/signup`,
+        {
+          memberEmail: setEmail,
+          meberPassword: setPassword,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
       navigate("/join");
       console.log("success");
     } catch (error) {

@@ -25,10 +25,19 @@ const LoginBox = () => {
 
   const handelLoginClick = async () => {
     try {
-      await axios.post(`http://localhost:8000/member/login`, {
-        email: email,
-        password: pwd,
-      });
+      await axios.post(
+        `http://localhost:8080/member/login`,
+        {
+          memberEmail: email,
+          memberPassword: pwd,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
       navigate("/homepage");
       console.log("success");
     } catch (error) {
