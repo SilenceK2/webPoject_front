@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   LoginBoxContainer,
   Title,
@@ -9,29 +9,26 @@ import {
   BottomSection,
 } from "../../style/stylecomponents/JoinStyle";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 import api from "../../utils/api/Instance";
-
-import { usernameState, userpasswordState } from "../../utils/recoil/atom";
-import axios from "axios";
 
 const JoinPage = () => {
   const navigate = useNavigate();
-  const setEmail = useSetRecoilState(usernameState);
-  const setPassword = useSetRecoilState(userpasswordState);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignUpClick = async () => {
     try {
       await api.post(`member/signup`, {
-        memberEmail: setEmail,
-        meberPassword: setPassword,
+        memberEmail: email,
+        meberPassword: password,
       });
-      navigate("/join");
+      navigate("/login");
       console.log("success");
     } catch (error) {
       console.error("error", error.message);
     }
   };
+  console.log(email);
 
   useEffect(() => {
     setEmail("");

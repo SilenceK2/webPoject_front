@@ -1,3 +1,3 @@
 const member = () => {};
 
-export default member;
+export { member };

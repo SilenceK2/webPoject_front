@@ -6,8 +6,9 @@ const api = axios.create({
   headers: {
     access_token: localStorage.getItem("access_token"),
     "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json",
   },
 });
 
-api.defaults.timeout = 1000;
+api.defaults.timeout = 3000;
 export default api;

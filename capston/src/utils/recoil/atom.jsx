@@ -9,3 +9,8 @@ export const userpasswordState = atom({
   key: "userpasswordState",
   default: "",
 });
+
+export const location = atom({
+  key: "userLocation",
+  default: "",
+});
