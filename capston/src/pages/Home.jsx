@@ -1,8 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Header from "../style/stylecomponents/Layout/Header";
 import styled from "styled-components";
-
-import { mappingLocation } from "../utils/apimodule/location";
+import useGeolocation from "react-hook-geolocation";
+import {
+  locationResultResponse,
+  mappingLocation,
+} from "../utils/apimodule/location";
 
 const PageContainer = styled.div`
   display: flex;
@@ -20,28 +23,44 @@ const Content = styled.div`
 `;
 
 const Home = () => {
-  // useEffect(() => {
-  //   /**
-  //    * geolocation으로 담아서 recoil에 담기 성공하면 try, catch
-  //    */
-  //   const locationSend = async () => {
-  //     try {
-  //       const result = await mappingLocation(location, endpoint);
-  //       if (result.success) {
-  //         // 맵 지도에 띄움   ?   response
-  //         alert("지도 불러오기 성공!");
-  //       } else {
-  //         throw result;
-  //       }
-  //     } catch (error) {
-  //       alert(`실패: ${error.message}`);
-  //     }
-  //   };
-  // }, []);
+  const [locationState, setLocationState] = useState(false);
+  const geolocation = useGeolocation(
+    {
+      enableHighAccuracy: true,
+      maximumAge: 15000,
+      timeout: 12000,
+    },
+    (geolocation) => {
+      if (geolocation.latitude && geolocation.longitude) {
+        setLocationState(true);
+      }
+    }
+  );
+  const longitude = geolocation.longitude;
+  const latitude = geolocation.latitude;
+
+  useEffect(() => {
+    const locationSend = async () => {
+      try {
+        const result = await mappingLocation(longitude, latitude);
+        console.log(geolocation);
+        if (result.success) {
+          alert("길찾기 불러오기 성공!");
+          const locationResult = await locationResultResponse();
+        } else {
+          throw result;
+        }
+      } catch (error) {
+        alert(`실패: ${error.message}`);
+      }
+    };
+    locationSend();
+  }, [locationState]);
+
   return (
     <>
       <PageContainer>
-        <Header>header</Header>
+        <Header></Header>
         <Content></Content>
       </PageContainer>
     </>

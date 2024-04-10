@@ -14,3 +14,7 @@ export const location = atom({
   key: "userLocation",
   default: "",
 });
+export const locationSuccessState = atom({
+  key: "locationState",
+  default: "",
+});
