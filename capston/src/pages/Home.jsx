@@ -24,44 +24,45 @@ const Content = styled.div`
 `;
 
 const Home = () => {
-  const dfs_xy_conv = require("../utils/wheater/grid");
   const [locationState, setLocationState] = useState(false);
-  const geolocation = useGeolocation(
+  const [longitude, setLongitude] = useState(null); // 위도 상태 추가
+  const [latitude, setLatitude] = useState(null); // 경도 상태 추가
+
+  useGeolocation(
     {
-      enableHighAccuracy: true,
-      timeout: 12000,
+      enableHighAccuracy: false,
+      // timeout: 1200000,
     },
     (geolocation) => {
       if (geolocation.latitude && geolocation.longitude) {
+        setLongitude(geolocation.longitude);
+        setLatitude(geolocation.latitude);
         setLocationState(true);
       }
     }
   );
 
-  const longitude = geolocation.longitude;
-  const latitude = geolocation.latitude;
-
-  // const { x, y } = dfs_xy_conv("xy", v1.longitude, v2.latitude);
-
   useEffect(() => {
-    console.log(longitude, latitude);
-    const locationSend = async () => {
-      try {
-        const result = await mappingLocation(longitude, latitude);
-        console.log(geolocation);
-        if (result.success) {
-          alert("길찾기 불러오기 성공!");
-          const locationResult = await locationResultResponse();
-          // const wheaterResult = await wheaterResultResponse();
-        } else {
-          throw result;
+    if (latitude !== null && longitude !== null) {
+      console.log(latitude, longitude);
+      const locationSend = async () => {
+        try {
+          const result = await mappingLocation(latitude, longitude);
+
+          if (result.success) {
+            alert("길찾기 불러오기 성공!");
+            const locationResult = await locationResultResponse();
+            // const wheaterResult = await wheaterResultResponse();
+          } else {
+            throw result;
+          }
+        } catch (error) {
+          alert(`실패: ${error.message}`);
         }
-      } catch (error) {
-        alert(`실패: ${error.message}`);
-      }
-    };
-    locationSend();
-  }, [locationState]);
+      };
+      locationSend();
+    }
+  }, [locationState, longitude, latitude]);
 
   return (
     <>

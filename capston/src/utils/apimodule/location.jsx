@@ -1,7 +1,11 @@
 import api from "../api/Instance";
+import dfs_xy_conv from "../wheater/grid";
 
-const mappingLocation = async (x, y) => {
+const mappingLocation = async (latitude, longitude) => {
   try {
+    let rs = dfs_xy_conv("toXY", latitude, longitude);
+    const x = rs.x;
+    const y = rs.y;
     const response = await api.post("/location", {
       x,
       y,
