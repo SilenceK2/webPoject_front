@@ -1,10 +1,10 @@
 import api from "../api/Instance";
 
-const mappingLocation = async (longitude, latitude) => {
+const mappingLocation = async (x, y) => {
   try {
     const response = await api.post("/location", {
-      longitude,
-      latitude,
+      x,
+      y,
     });
 
     if (response.data.success) {
@@ -30,4 +30,16 @@ const locationResultResponse = async () => {
   }
 };
 
-export { mappingLocation, locationResultResponse };
+const wheaterResultResponse = async () => {
+  try {
+    const response = await api.get("/wheater/result");
+    const wheater = response.data.wheaterResult;
+    console.log(wheater);
+    return { success: true, wheater };
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "요청 실패" };
+  }
+};
+
+export { mappingLocation, locationResultResponse, wheaterResultResponse };
