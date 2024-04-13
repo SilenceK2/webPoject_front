@@ -21,6 +21,9 @@ const Home = () => {
   const [locationState, setLocationState] = useState(false);
   const [longitude, setLongitude] = useState(null);
   const [latitude, setLatitude] = useState(null);
+  const [temp, setTemp] = useState(null);
+  const [condition, setCondition] = useState(null);
+  const [icon, setIcon] = useState(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -49,7 +52,13 @@ const Home = () => {
           if (result.success) {
             console.log("길찾기 불러오기 성공!");
             await locationResultResponse();
-            await getWeatherByCurrentLocation(latitude, longitude);
+            const weatherData = await getWeatherByCurrentLocation(
+              latitude,
+              longitude
+            );
+            setTemp(weatherData.temp); // 온도 상태 업데이트
+            setCondition(weatherData.condition); // 상태 상태 업데이트
+            setIcon(weatherData.icon);
           } else {
             throw result;
           }
@@ -67,8 +76,14 @@ const Home = () => {
         <Header></Header>
         <Content>
           <WheaterContent>
-            <WheaterImoge></WheaterImoge>
+            <WheaterImoge>
+              <div>오늘의 날씨는?</div>
+              <div>화창한 날씨네요!!</div>
+              <div></div>
+            </WheaterImoge>
             <WheaterTitle>
+              {temp && <div>온도: {temp}</div>}
+              {condition && <div>상태: {condition}</div>}
               <WheaterProgress></WheaterProgress>
             </WheaterTitle>
           </WheaterContent>

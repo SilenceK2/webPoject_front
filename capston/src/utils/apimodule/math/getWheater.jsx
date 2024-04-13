@@ -8,10 +8,11 @@ const getWeatherByCurrentLocation = async (latitude, longitude) => {
 
     const temp = data.main.temp;
     const condition = data.weather[0].main;
+    const icon = data.weather[0].icon;
 
     console.log("Temperature:", temp);
     console.log("Condition:", condition);
-    return { success: true, temp, condition };
+    return { success: true, temp, condition, icon };
   } catch (error) {
     console.error("Error:", error);
   }
