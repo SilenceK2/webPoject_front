@@ -12,7 +12,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-regular-svg-icons"; // 사용할 아이콘 불러오기
 import { LinkContainer, Link } from "../../style/stylecomponents/widget/Link";
-import axios from "axios";
 import { useState } from "react";
 import api from "../../utils/api/Instance";
 const LoginBox = () => {

@@ -10,7 +10,7 @@ const HeaderContainer = styled.header`
 `;
 
 const Header = () => {
-  return <HeaderContainer>header</HeaderContainer>;
+  return <HeaderContainer></HeaderContainer>;
 };
 
 export default Header;

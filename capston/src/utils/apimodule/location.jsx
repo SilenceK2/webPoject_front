@@ -26,7 +26,7 @@ const locationResultResponse = async () => {
   try {
     const response = await api.get("/location/result");
     const direction = response.data.locationDirection;
-    console.log(direction);
+    console.log(direction.locationTransport, direction.locationTime);
     return { success: true, direction };
   } catch (error) {
     console.error("error:", error);
@@ -34,16 +34,4 @@ const locationResultResponse = async () => {
   }
 };
 
-const wheaterResultResponse = async () => {
-  try {
-    const response = await api.get("/wheater/result");
-    const wheater = response.data.wheaterResult;
-    console.log(wheater);
-    return { success: true, wheater };
-  } catch (error) {
-    console.error("error:", error);
-    return { success: false, error: "요청 실패" };
-  }
-};
-
-export { mappingLocation, locationResultResponse, wheaterResultResponse };
+export { mappingLocation, locationResultResponse };

@@ -1,47 +1,43 @@
 import { useEffect, useState } from "react";
 import Header from "../style/stylecomponents/Layout/Header";
-import styled from "styled-components";
-import useGeolocation from "react-hook-geolocation";
 import getWeatherByCurrentLocation from "../utils/apimodule/math/getWheater";
 
 import {
   locationResultResponse,
   mappingLocation,
 } from "../utils/apimodule/location";
-
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`;
-const Content = styled.div`
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
+import {
+  PageContainer,
+  Content,
+  LocationContent,
+  WheaterContent,
+  TodoListContent,
+  WheaterImoge,
+  WheaterProgress,
+  WheaterTitle,
+} from "../style/stylecomponents/Layout/Home";
 
 const Home = () => {
   const [locationState, setLocationState] = useState(false);
-  const [longitude, setLongitude] = useState(null); // 위도 상태 추가
-  const [latitude, setLatitude] = useState(null); // 경도 상태 추가
+  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
 
-  useGeolocation(
-    {
-      enableHighAccuracy: false,
-      timeout: 1200000000,
-    },
-    (geolocation) => {
-      if (geolocation.latitude && geolocation.longitude) {
-        setLongitude(geolocation.longitude);
-        setLatitude(geolocation.latitude);
-        setLocationState(true);
-      }
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLongitude(position.coords.longitude);
+          setLatitude(position.coords.latitude);
+          setLocationState(true);
+        },
+        (error) => {
+          console.error("Error getting geolocation:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported in this browser.");
     }
-  );
+  }, []);
 
   useEffect(() => {
     if (latitude !== null && longitude !== null) {
@@ -51,10 +47,8 @@ const Home = () => {
           const result = await mappingLocation(latitude, longitude);
 
           if (result.success) {
-            alert("길찾기 불러오기 성공!");
-            const locationResult = await locationResultResponse();
-
-            // const wheaterResult = await wheaterResultResponse();
+            console.log("길찾기 불러오기 성공!");
+            await locationResultResponse();
             await getWeatherByCurrentLocation(latitude, longitude);
           } else {
             throw result;
@@ -71,7 +65,16 @@ const Home = () => {
     <>
       <PageContainer>
         <Header></Header>
-        <Content></Content>
+        <Content>
+          <WheaterContent>
+            <WheaterImoge></WheaterImoge>
+            <WheaterTitle>
+              <WheaterProgress></WheaterProgress>
+            </WheaterTitle>
+          </WheaterContent>
+          <LocationContent></LocationContent>
+          <TodoListContent></TodoListContent>
+        </Content>
       </PageContainer>
     </>
   );

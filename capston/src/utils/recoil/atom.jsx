@@ -10,7 +10,7 @@ export const userpasswordState = atom({
   default: "",
 });
 
-export const location = atom({
+export const wheaterCondition = atom({
   key: "userLocation",
   default: "",
 });
