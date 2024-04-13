@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../style/stylecomponents/Layout/Header";
 import styled from "styled-components";
 import useGeolocation from "react-hook-geolocation";
+import getWeatherByCurrentLocation from "../utils/apimodule/math/getWheater";
 
 import {
   locationResultResponse,
@@ -31,7 +32,7 @@ const Home = () => {
   useGeolocation(
     {
       enableHighAccuracy: false,
-      // timeout: 1200000,
+      timeout: 1200000000,
     },
     (geolocation) => {
       if (geolocation.latitude && geolocation.longitude) {
@@ -52,7 +53,9 @@ const Home = () => {
           if (result.success) {
             alert("길찾기 불러오기 성공!");
             const locationResult = await locationResultResponse();
+
             // const wheaterResult = await wheaterResultResponse();
+            await getWeatherByCurrentLocation(latitude, longitude);
           } else {
             throw result;
           }

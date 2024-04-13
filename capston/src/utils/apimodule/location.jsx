@@ -1,5 +1,5 @@
 import api from "../api/Instance";
-import dfs_xy_conv from "../wheater/grid";
+import dfs_xy_conv from "../apimodule/math/grid";
 
 const mappingLocation = async (latitude, longitude) => {
   try {
@@ -10,7 +10,7 @@ const mappingLocation = async (latitude, longitude) => {
       x,
       y,
     });
-
+    console.log(`gridX: ${x}, gridY: ${y}`);
     if (response.data.success) {
       return { success: true };
     } else {
