@@ -3,14 +3,37 @@ import styled from "styled-components";
 
 const HeaderContainer = styled.header`
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100px;
-  flex-basis: 100px;
+  padding: 10px;
+  height: 8%;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  & div:nth-child(1) {
+    margin-left: 20px;
+    flex: 1;
+  }
+  & div:nth-child(2) {
+    margin-right: 40px;
+    flex-grow: 1;
+    text-align: center;
+  }
+  & div:nth-child(3) {
+    margin-right: 40px;
+  }
 `;
 
 const Header = () => {
-  return <HeaderContainer></HeaderContainer>;
+  return (
+    <HeaderContainer>
+      <div>menu</div>
+      <div></div>
+      <div>user</div>
+    </HeaderContainer>
+  );
 };
 
 export default Header;

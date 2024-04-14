@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../style/stylecomponents/Layout/Header";
 import getWeatherByCurrentLocation from "../utils/apimodule/math/getWheater";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   locationResultResponse,
@@ -15,6 +16,14 @@ import {
   WheaterImoge,
   WheaterProgress,
   WheaterTitle,
+  LocationTitle,
+  LocationTranspost,
+  LocationTime,
+  TodoListTitle,
+  TodoListTitleContet,
+  LocationTitleContet,
+  TodoListBoard,
+  LocationLogo,
 } from "../style/stylecomponents/Layout/Home";
 
 const Home = () => {
@@ -23,7 +32,6 @@ const Home = () => {
   const [latitude, setLatitude] = useState(null);
   const [temp, setTemp] = useState(null);
   const [condition, setCondition] = useState(null);
-  const [icon, setIcon] = useState(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -58,7 +66,6 @@ const Home = () => {
             );
             setTemp(weatherData.temp); // 온도 상태 업데이트
             setCondition(weatherData.condition); // 상태 상태 업데이트
-            setIcon(weatherData.icon);
           } else {
             throw result;
           }
@@ -72,23 +79,50 @@ const Home = () => {
 
   return (
     <>
+      <Header></Header>
       <PageContainer>
-        <Header></Header>
         <Content>
           <WheaterContent>
             <WheaterImoge>
               <div>오늘의 날씨는?</div>
               <div>화창한 날씨네요!!</div>
-              <div></div>
+              <div>
+                <FontAwesomeIcon icon="fa-sun" style={{ color: "#FFD43B" }} />
+              </div>
             </WheaterImoge>
             <WheaterTitle>
-              {temp && <div>온도: {temp}</div>}
-              {condition && <div>상태: {condition}</div>}
+              <div>details </div>
+              {temp && <div>{temp}</div>}
+              {condition && <div>{condition}</div>}
               <WheaterProgress></WheaterProgress>
             </WheaterTitle>
           </WheaterContent>
-          <LocationContent></LocationContent>
-          <TodoListContent></TodoListContent>
+          <LocationContent>
+            <LocationTitle>
+              <div></div>
+              <LocationTitleContet>
+                <div>나의 가장 빠른 교통수단은?</div>
+                <div>길찾기 서비스를 이용해보세요</div>
+              </LocationTitleContet>
+            </LocationTitle>
+
+            <LocationTranspost />
+            <LocationTime />
+          </LocationContent>
+          <TodoListContent>
+            <TodoListTitle>
+              <div></div>
+              <TodoListTitleContet>
+                <div>TodoList를 작성하고 관리해보세요</div>
+                <div>나의 오늘 할 일을 정리하고 관리할 수 있습니다</div>
+              </TodoListTitleContet>
+            </TodoListTitle>
+            <TodoListBoard>
+              <tr>
+                <td></td>
+              </tr>
+            </TodoListBoard>
+          </TodoListContent>
         </Content>
       </PageContainer>
     </>
