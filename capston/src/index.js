@@ -5,13 +5,17 @@ import reportWebVitals from "./reportWebVitals";
 import { RouterProvider } from "react-router-dom";
 import router from "./utils/router/router";
 import { RecoilRoot } from "recoil";
+import { Suspense } from "react";
+import Loading from "./pages/Loading";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <RouterProvider router={router} />
+      <Suspense fallback={<Loading />}>
+        <RouterProvider router={router} />
+      </Suspense>
     </RecoilRoot>
   </React.StrictMode>
 );

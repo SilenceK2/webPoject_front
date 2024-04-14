@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../style/stylecomponents/Layout/Header";
 import getWeatherByCurrentLocation from "../utils/apimodule/math/getWheater";
-
+import Loading from "./Loading";
 import {
   locationResultResponse,
   mappingLocation,
@@ -13,7 +13,7 @@ import {
   WheaterContent,
   TodoListContent,
   WheaterImoge,
-  WheaterProgress,
+  WheaterIcon,
   WheaterTitle,
   LocationTitle,
   LocationTranspost,
@@ -22,7 +22,6 @@ import {
   TodoListTitleContet,
   LocationTitleContet,
   TodoListBoard,
-  LocationLogo,
 } from "../style/stylecomponents/Layout/Home";
 
 const Home = () => {
@@ -32,6 +31,7 @@ const Home = () => {
   const [temp, setTemp] = useState(null);
   const [condition, setCondition] = useState(null);
 
+  const [loadingPage, setLoadingPage] = useState(false);
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -41,11 +41,11 @@ const Home = () => {
           setLocationState(true);
         },
         (error) => {
-          console.error("Error getting geolocation:", error);
+          console.error("데이터를 가져오는중 오류발생:", error);
         }
       );
     } else {
-      console.error("Geolocation is not supported in this browser.");
+      console.error("지원하지 않는 브라우저");
     }
   }, []);
 
@@ -73,51 +73,54 @@ const Home = () => {
         }
       };
       locationSend();
+      setLoadingPage(true);
     }
   }, [locationState, longitude, latitude]);
 
   return (
     <>
-      <Header></Header>
-      <PageContainer>
-        <Content>
-          <WheaterContent>
-            <WheaterImoge>
-              <div>오늘의 날씨는?</div>
-              <div>화창한 날씨네요</div>
-              <div></div>
-            </WheaterImoge>
-            <WheaterTitle>
-              <div>details </div>
-              {temp && <div>{temp}</div>}
-              {condition && <div>{condition}</div>}
-              <WheaterProgress></WheaterProgress>
-            </WheaterTitle>
-          </WheaterContent>
-          <LocationContent>
-            <LocationTitle>
-              <div></div>
-              <LocationTitleContet>
-                <div>나의 가장 빠른 교통수단은?</div>
-                <div>길찾기 서비스를 이용해보세요</div>
-              </LocationTitleContet>
-            </LocationTitle>
+      {loadingPage ? (
+        <>
+          <Header></Header>
+          <PageContainer>
+            <Content>
+              <WheaterContent>
+                <WheaterImoge></WheaterImoge>
+                <WheaterTitle>
+                  <div> </div>
+                  {temp && <div>{temp}</div>}
+                  {condition && <div>{condition}</div>}
+                  <WheaterIcon></WheaterIcon>
+                </WheaterTitle>
+              </WheaterContent>
+              <LocationContent>
+                <LocationTitle>
+                  <div></div>
+                  <LocationTitleContet>
+                    <div>나의 가장 빠른 교통수단은?</div>
+                    <div>길찾기 서비스를 이용해보세요</div>
+                  </LocationTitleContet>
+                </LocationTitle>
 
-            <LocationTranspost />
-            <LocationTime />
-          </LocationContent>
-          <TodoListContent>
-            <TodoListTitle>
-              <div></div>
-              <TodoListTitleContet>
-                <div>TodoList를 작성하고 관리해보세요</div>
-                <div>나의 오늘 할 일을 정리하고 관리할 수 있습니다</div>
-              </TodoListTitleContet>
-            </TodoListTitle>
-            <TodoListBoard></TodoListBoard>
-          </TodoListContent>
-        </Content>
-      </PageContainer>
+                <LocationTranspost />
+                <LocationTime />
+              </LocationContent>
+              <TodoListContent>
+                <TodoListTitle>
+                  <div></div>
+                  <TodoListTitleContet>
+                    <div>TodoList를 작성하고 관리해보세요</div>
+                    <div>나의 오늘 할 일을 정리하고 관리할 수 있습니다</div>
+                  </TodoListTitleContet>
+                </TodoListTitle>
+                <TodoListBoard></TodoListBoard>
+              </TodoListContent>
+            </Content>
+          </PageContainer>
+        </>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };

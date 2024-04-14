@@ -52,82 +52,11 @@ export const LocationContent = styled.div`
   max-height: 200px;
 `;
 
-export const WheaterImoge = styled.div`
-  flex: 1;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 20px;
-  width: 50%;
-  max-height: 100%;
-  & > div:nth-child(1) {
-    font-weight: bold;
-    font-size: 18px;
-    text-align: center;
-    width: 100%;
-  }
-  & > div:nth-child(2) {
-    font-weight: 13px;
-    font-size: 14px;
-    text-align: center;
-    margin-left: -9px;
-    width: 100%;
-    color: gray;
-  }
-  & > div:nth-child(3) {
-    margin-top: 20px;
-    margin-bottom: 60px;
-    background-image: url("/images/sun.svg");
-    width: 100%;
-    height: 50%;
-    flex-grow: 1;
-    background-position: center; /* 이미지를 가운데 정렬 */
-    background-repeat: no-repeat; /* 이미지 반복하지 않음 */
-  }
-`;
+export const WheaterImoge = styled.div``;
 
-export const WheaterTitle = styled.div`
-  flex: 0.7;
-  border-radius: 20px;
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  max-height: 50%;
-  flex-direction: column;
-  margin-top: 20px;
-  & > div:nth-child(1) {
-    width: 80%;
-    font-size: 15px;
-    color: gray;
-    display: flex;
-    justify-content: flex-end;
-    padding: 5px;
-    margin-bottom: 20px;
-    margin-top: -10px;
-  }
-  & > div:nth-child(2) {
-    font-weight: bolder;
-    font-size: 17px;
-    text-align: center;
-  }
-  & > div:nth-child(3) {
-    font-weight: bolder;
-    font-size: 17px;
-    text-align: center;
-  }
-`;
+export const WheaterTitle = styled.div``;
 
-export const WheaterProgress = styled.div`
-  flex-grow: 1;
-  align-items: flex-end;
-  border-radius: 20px;
-  justify-content: flex-end;
-  width: 100%;
-  margin-bottom: 10px;
-  max-height: 100px;
-`;
+export const WheaterIcon = styled.div``;
 
 export const LocationTitle = styled.div`
   width: 100%;
