@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../style/stylecomponents/Layout/Header";
 import getWeatherByCurrentLocation from "../utils/apimodule/math/getWheater";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   locationResultResponse,
@@ -85,10 +84,8 @@ const Home = () => {
           <WheaterContent>
             <WheaterImoge>
               <div>오늘의 날씨는?</div>
-              <div>화창한 날씨네요!!</div>
-              <div>
-                <FontAwesomeIcon icon="fa-sun" style={{ color: "#FFD43B" }} />
-              </div>
+              <div>화창한 날씨네요</div>
+              <div></div>
             </WheaterImoge>
             <WheaterTitle>
               <div>details </div>
@@ -117,11 +114,7 @@ const Home = () => {
                 <div>나의 오늘 할 일을 정리하고 관리할 수 있습니다</div>
               </TodoListTitleContet>
             </TodoListTitle>
-            <TodoListBoard>
-              <tr>
-                <td></td>
-              </tr>
-            </TodoListBoard>
+            <TodoListBoard></TodoListBoard>
           </TodoListContent>
         </Content>
       </PageContainer>

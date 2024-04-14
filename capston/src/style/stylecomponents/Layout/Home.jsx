@@ -69,9 +69,11 @@ export const WheaterImoge = styled.div`
   }
   & > div:nth-child(2) {
     font-weight: 13px;
-    font-size: 15px;
+    font-size: 14px;
     text-align: center;
+    margin-left: -9px;
     width: 100%;
+    color: gray;
   }
   & > div:nth-child(3) {
     margin-top: 20px;
