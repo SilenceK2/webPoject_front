@@ -8,7 +8,7 @@ import {
   WeatherBottomSection,
 } from "./styles";
 
-const Weather = ({ id, text, temp, rainPersent }) => {
+const Weather = ({ id, text, temp, rainCondition }) => {
   return (
     <>
       <WeatherTopSection>
@@ -17,7 +17,7 @@ const Weather = ({ id, text, temp, rainPersent }) => {
           <WeatherIconStyled id={id}></WeatherIconStyled>
           <WeatherTemp>
             <div>{temp}°C</div>
-            <div>강수확률 : {rainPersent}</div>
+            <div>강수확률 {rainCondition}%</div>
           </WeatherTemp>
         </WeatherTitleTopSection>
         <WeatherBottomSection>

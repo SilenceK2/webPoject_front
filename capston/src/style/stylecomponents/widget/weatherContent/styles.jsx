@@ -51,7 +51,10 @@ export const WeatherTemp = styled.div`
     font-size: 24px;
     font-weight: boler;
   }
-  // font-size: 15px;
+  & > div:nth-child(2) {
+    font-size: 14px;
+    font-weight: lighter;
+  } // font-size: 15px;
   // font-weight: light;
   // color: gray;
 `;

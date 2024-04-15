@@ -8,12 +8,12 @@ import axios from "axios";
  */
 export const getWeatherByCurrentLocation = async (latitude, longitude) => {
   try {
-    const param = {
+    const params = {
       lang: "kr",
-      units: "metrics",
+      units: "metric",
     };
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=da9897716f54b1cd0575e31e83da8bcb&units=metric`;
-    const response = await axios.get(url, { param });
+    const response = await axios.get(url, { params });
 
     const data = response.data;
 
@@ -23,6 +23,7 @@ export const getWeatherByCurrentLocation = async (latitude, longitude) => {
     const icon = data.weather[0].icon;
     const condition = data.weather[0].main;
     const title = data.name;
+    const rainCondition = data.rain;
     console.log(response.data);
 
     console.log("최고기온값:", tempMin);
@@ -30,7 +31,16 @@ export const getWeatherByCurrentLocation = async (latitude, longitude) => {
     console.log("날씨: ", condition);
     console.log("지역: ", title);
 
-    return { success: true, temp, tempMin, tempMax, condition, icon, title };
+    return {
+      success: true,
+      temp,
+      tempMin,
+      tempMax,
+      condition,
+      icon,
+      title,
+      rainCondition,
+    };
   } catch (error) {
     console.error("Error:", error);
   }

@@ -23,12 +23,14 @@ import {
 import Weather from "../style/stylecomponents/widget/weatherContent/WeatherIcon";
 
 const Home = () => {
+  /**
+   * useState하나로 찍고 객체형태에서 구조분할 하는 방식으로 하는게 나을듯
+   */
   const [locationState, setLocationState] = useState(false);
   const [longitude, setLongitude] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [temp, setTemp] = useState(null);
-  const [condition, setCondition] = useState(null);
-  const [rainCondetion, setRainCondition] = useState(null);
+  const [rainCondition, setRainCondition] = useState(null);
   const [id, setId] = useState(null);
   const [loadingPage, setLoadingPage] = useState(false);
   const [title, setTitle] = useState("");
@@ -62,10 +64,10 @@ const Home = () => {
               latitude,
               longitude
             );
-            setTemp(weatherData.temp); // 온도 상태 업데이트
-            setCondition(weatherData.condition); // 상태 상태 업데이트
+            setTemp(weatherData.temp);
             setId(weatherData.icon);
             setTitle(weatherData.title);
+            setRainCondition(weatherData.rainCondition["1h"]);
           } else {
             throw response;
           }
@@ -86,7 +88,12 @@ const Home = () => {
           <PageContainer>
             <Content>
               <WheaterContent>
-                <Weather id={id} text={title} temp={temp} />
+                <Weather
+                  id={id}
+                  text={title}
+                  temp={temp}
+                  rainCondition={rainCondition}
+                />
                 {/* {temp && <div>{temp}</div>} */}
               </WheaterContent>
               <LocationContent>
