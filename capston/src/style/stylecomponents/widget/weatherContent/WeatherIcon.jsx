@@ -21,6 +21,14 @@ const Weather = ({ id, text, temp, rainCondition }) => {
           </WeatherTemp>
         </WeatherTitleTopSection>
         <WeatherBottomSection>
+          {/* <div>
+            <p>4</p>
+            <p>8</p>
+            <p>12</p>
+            <p>16</p>
+            <p>20</p>
+            <p>24</p>
+          </div> */}
           <div></div>
         </WeatherBottomSection>
       </WeatherTopSection>

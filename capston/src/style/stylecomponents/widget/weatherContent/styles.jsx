@@ -18,11 +18,19 @@ export const WeatherBottomSection = styled.section`
   display: flex;
   width: 100%;
   justify-content: center;
-  & > div {
+  flex-direction: column;
+  // & > div:nth-child(1) {
+  //   display: flex;
+  //   flex-direction: row;
+  //   justify-content: space-between;
+  //   margin-top: -13px;
+  // }
+  & > div:nth-child(1) {
     border-radius: 20px;
     border: 5px solid rgb(165, 159, 255);
     width: 100%;
     margin-top: 20px;
+    margin-left: -5px;
   }
 `;
 

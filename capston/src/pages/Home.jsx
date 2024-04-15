@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../style/stylecomponents/Layout/Header";
 import { getWeatherByCurrentLocation } from "../utils/apimodule/wheater";
 import Loading from "./RouterPages/Loading";
@@ -23,78 +23,65 @@ import {
 import Weather from "../style/stylecomponents/widget/weatherContent/WeatherIcon";
 
 const Home = () => {
-  /**
-   * useState하나로 찍고 객체형태에서 구조분할 하는 방식으로 하는게 나을듯
-   */
-  const [locationState, setLocationState] = useState(false);
-  const [longitude, setLongitude] = useState(null);
-  const [latitude, setLatitude] = useState(null);
-  const [temp, setTemp] = useState(null);
-  const [rainCondition, setRainCondition] = useState(null);
-  const [id, setId] = useState(null);
   const [loadingPage, setLoadingPage] = useState(false);
-  const [title, setTitle] = useState("");
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLongitude(position.coords.longitude);
-          setLatitude(position.coords.latitude);
-          setLocationState(true);
-        },
-        (error) => {
-          console.error("데이터를 가져오는중 오류발생:", error);
-        }
-      );
-    } else {
-      console.error("지원하지 않는 브라우저");
-    }
-  }, []);
+  const [weatherData, setWeatherData] = useState({
+    temp: null,
+    rainCondition: null,
+    icon: null,
+    title: "",
+  });
 
   useEffect(() => {
-    if (latitude !== null && longitude !== null) {
-      console.log(latitude, longitude);
-      const locationSend = async () => {
-        try {
-          const response = await mappingLocation(latitude, longitude);
-          if (response.success) {
-            console.log("길찾기 불러오기 성공!");
-            await locationResultResponse();
-            const weatherData = await getWeatherByCurrentLocation(
-              latitude,
-              longitude
-            );
-            setTemp(weatherData.temp);
-            setId(weatherData.icon);
-            setTitle(weatherData.title);
-            setRainCondition(weatherData.rainCondition["1h"]);
-          } else {
-            throw response;
-          }
-        } catch (error) {
-          alert(`실패: ${error.message}`);
+    const fetchWeatherData = async () => {
+      try {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const { latitude, longitude } = position.coords;
+              const response = await mappingLocation(latitude, longitude);
+              if (response.success) {
+                await locationResultResponse();
+                const weatherData = await getWeatherByCurrentLocation(
+                  latitude,
+                  longitude
+                );
+                setWeatherData(weatherData);
+                setLoadingPage(true);
+              } else {
+                throw new Error("location 정보 불러오기 실패");
+              }
+            },
+            (error) => {
+              console.error("geolocation error:", error);
+              setLoadingPage(true);
+            }
+          );
+        } else {
+          throw new Error("위치 정보를 지원하지 않는 브라우저입니다.");
         }
-      };
-      locationSend();
-      setLoadingPage(true);
-    }
-  }, [locationState, longitude, latitude]);
+      } catch (error) {
+        console.error("Error:", error);
+        alert(`에러 메시지: ${error.message}`);
+      }
+    };
+
+    fetchWeatherData();
+  }, []);
 
   return (
     <>
       {loadingPage ? (
         <>
-          <Header></Header>
+          <Header />
           <PageContainer>
             <Content>
               <WheaterContent>
                 <Weather
-                  id={id}
-                  text={title}
-                  temp={temp}
-                  rainCondition={rainCondition}
+                  id={weatherData.icon}
+                  text={weatherData.title}
+                  temp={weatherData.temp}
+                  rainCondition={weatherData.rainCondition}
                 />
-                {/* {temp && <div>{temp}</div>} */}
               </WheaterContent>
               <LocationContent>
                 <LocationTitle>
@@ -104,7 +91,6 @@ const Home = () => {
                     <div>길찾기 서비스를 이용해보세요</div>
                   </LocationTitleContet>
                 </LocationTitle>
-
                 <LocationTranspost />
                 <LocationTime />
               </LocationContent>
@@ -116,7 +102,7 @@ const Home = () => {
                     <div>나의 오늘 할 일을 정리하고 관리할 수 있습니다</div>
                   </TodoListTitleContet>
                 </TodoListTitle>
-                <TodoListBoard></TodoListBoard>
+                <TodoListBoard />
               </TodoListContent>
             </Content>
           </PageContainer>
