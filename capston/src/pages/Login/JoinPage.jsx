@@ -7,7 +7,7 @@ import {
   SubmitButton,
   Topsection,
   BottomSection,
-} from "../../style/stylecomponents/JoinStyle";
+} from "../../style/stylecomponents/MemberStyle/JoinStyle";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/api/Instance";
 

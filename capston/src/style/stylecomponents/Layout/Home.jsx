@@ -5,11 +5,7 @@ export const PageContainer = styled.div`
   flex-direction: column;
   min-height: 100vh;
   margin: 0 20px;
-
   margin-top: 120px;
-  .scroll {
-    overflow: hidden;
-  }
 `;
 
 export const Content = styled.div`
@@ -51,12 +47,6 @@ export const LocationContent = styled.div`
   width: 100%;
   max-height: 200px;
 `;
-
-export const WheaterImoge = styled.div``;
-
-export const WheaterTitle = styled.div``;
-
-export const WheaterIcon = styled.div``;
 
 export const LocationTitle = styled.div`
   width: 100%;
@@ -112,7 +102,7 @@ export const TodoListTitle = styled.div`
   & > div:nth-child(1) {
     background-image: url("/images/todoLogo.svg");
     width: 30px;
-    height: 40px;
+    height: 32px;
     background-position: center;
     background-repeat: no-repeat;
   }

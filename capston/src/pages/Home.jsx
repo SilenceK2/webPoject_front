@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../style/stylecomponents/Layout/Header";
-import getWeatherByCurrentLocation from "../utils/apimodule/math/getWheater";
-import Loading from "./Loading";
+import { getWeatherByCurrentLocation } from "../utils/apimodule/wheater";
+import Loading from "./RouterPages/Loading";
 import {
   locationResultResponse,
   mappingLocation,
@@ -12,9 +12,6 @@ import {
   LocationContent,
   WheaterContent,
   TodoListContent,
-  WheaterImoge,
-  WheaterIcon,
-  WheaterTitle,
   LocationTitle,
   LocationTranspost,
   LocationTime,
@@ -23,6 +20,7 @@ import {
   LocationTitleContet,
   TodoListBoard,
 } from "../style/stylecomponents/Layout/Home";
+import Weather from "../style/stylecomponents/widget/weatherContent/WeatherIcon";
 
 const Home = () => {
   const [locationState, setLocationState] = useState(false);
@@ -30,8 +28,10 @@ const Home = () => {
   const [latitude, setLatitude] = useState(null);
   const [temp, setTemp] = useState(null);
   const [condition, setCondition] = useState(null);
-
+  const [rainCondetion, setRainCondition] = useState(null);
+  const [id, setId] = useState(null);
   const [loadingPage, setLoadingPage] = useState(false);
+  const [title, setTitle] = useState("");
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -54,9 +54,8 @@ const Home = () => {
       console.log(latitude, longitude);
       const locationSend = async () => {
         try {
-          const result = await mappingLocation(latitude, longitude);
-
-          if (result.success) {
+          const response = await mappingLocation(latitude, longitude);
+          if (response.success) {
             console.log("길찾기 불러오기 성공!");
             await locationResultResponse();
             const weatherData = await getWeatherByCurrentLocation(
@@ -65,8 +64,10 @@ const Home = () => {
             );
             setTemp(weatherData.temp); // 온도 상태 업데이트
             setCondition(weatherData.condition); // 상태 상태 업데이트
+            setId(weatherData.icon);
+            setTitle(weatherData.title);
           } else {
-            throw result;
+            throw response;
           }
         } catch (error) {
           alert(`실패: ${error.message}`);
@@ -85,13 +86,8 @@ const Home = () => {
           <PageContainer>
             <Content>
               <WheaterContent>
-                <WheaterImoge></WheaterImoge>
-                <WheaterTitle>
-                  <div> </div>
-                  {temp && <div>{temp}</div>}
-                  {condition && <div>{condition}</div>}
-                  <WheaterIcon></WheaterIcon>
-                </WheaterTitle>
+                <Weather id={id} text={title} temp={temp} />
+                {/* {temp && <div>{temp}</div>} */}
               </WheaterContent>
               <LocationContent>
                 <LocationTitle>

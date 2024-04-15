@@ -8,12 +8,12 @@ import {
   Topsection,
   BottomSection,
   Paragraph,
-} from "../../style/stylecomponents/LoginStyle";
+} from "../../style/stylecomponents/MemberStyle/LoginStyle";
 import { useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-regular-svg-icons"; // 사용할 아이콘 불러오기
 import { LinkContainer, Link } from "../../style/stylecomponents/widget/Link";
 import { useState } from "react";
-import api from "../../utils/api/Instance";
+import { loginUser } from "../../utils/apimodule/member";
 const LoginBox = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -25,14 +25,15 @@ const LoginBox = () => {
 
   const handelLoginClick = async () => {
     try {
-      await api.post(`member/login`, {
-        memberEmail: email,
-        memberPassword: pwd,
-      });
-      navigate("/homepage");
-      console.log("success");
+      const result = await loginUser(email, pwd);
+      if (result.success) {
+        navigate("/homepage");
+        alert("로그인이 완료되었습니다.");
+      } else {
+        throw result;
+      }
     } catch (error) {
-      console.error("error", error.message);
+      alert(`실패: ${error.message}`);
     }
   };
 

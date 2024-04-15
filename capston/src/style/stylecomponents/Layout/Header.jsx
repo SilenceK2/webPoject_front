@@ -13,9 +13,6 @@ const HeaderContainer = styled.header`
   display: flex;
   justify-content: space-between;
   position: fixed;
-  @media (max-width: 575px) {
-    width: 100vw;
-  }
   & div:nth-child(1) {
     margin-left: -55px;
     justify-content: flex-start;

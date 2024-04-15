@@ -8,12 +8,6 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: #eee;
-  .scroll::-webkit-scrollbar {
-    display: none;
-  }
-  .scroll {
-    overflow: hidden;
-  }
 `;
 
 const MainContainer = styled.div`
@@ -21,7 +15,7 @@ const MainContainer = styled.div`
   height: 100vh;
   background-color: #fff;
   overflow-x: hidden;
-
+  position: fixed;
   @media (max-width: 575px) {
     width: 100vw;
   }
