@@ -8,7 +8,7 @@ import {
   WeatherBottomSection,
 } from "./styles";
 
-const Weather = ({ id, text, temp, rainCondition }) => {
+const WeatherContentBox = ({ id, text, temp, rainCondition }) => {
   return (
     <>
       <WeatherTopSection>
@@ -27,4 +27,4 @@ const Weather = ({ id, text, temp, rainCondition }) => {
     </>
   );
 };
-export default Weather;
+export default WeatherContentBox;
