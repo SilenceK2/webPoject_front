@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   LoginBoxContainer,
   Title,
@@ -7,38 +7,38 @@ import {
   SubmitButton,
   Topsection,
   BottomSection,
-} from "../../style/stylecomponents/MemberStyle/JoinStyle";
+} from "../../style/stylecomponents/MemberStyle/style";
 import { useNavigate } from "react-router-dom";
-import api from "../../utils/api/Instance";
-
-const JoinPage = () => {
+import { useState } from "react";
+import { loginUser, signupUser } from "../../utils/apimodule/member";
+const SignupPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSignUpClick = async () => {
-    try {
-      await api.post(`member/signup`, {
-        memberEmail: email,
-        meberPassword: password,
-      });
-      navigate("/login");
-      console.log("success");
-    } catch (error) {
-      console.error("error", error.message);
-    }
-  };
-  console.log(email);
+  const [pwd, setPwd] = useState("");
 
   useEffect(() => {
     setEmail("");
-    setPassword("");
+    setPwd("");
   }, []);
+
+  const handelLoginClick = async () => {
+    try {
+      const result = await signupUser(email, pwd);
+      if (result.success) {
+        navigate("/login");
+        alert("회원가입이 완료되었습니다.");
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      alert(`실패: ${error.message}`);
+    }
+  };
 
   return (
     <LoginBoxContainer>
       <Topsection>
-        <Title>아이디와 비밀번호를 입력해주세요</Title>
+        <Title></Title>
       </Topsection>
       <BottomSection>
         <TextBox>
@@ -46,20 +46,20 @@ const JoinPage = () => {
             type="text"
             placeholder="이메일을 입력하세요"
             name="username"
-            onChange={(e) => setEmail(e.target.value)}
             required
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             type="password"
             placeholder="패스워드를 입력하세요"
             name="password"
-            onChange={(e) => setPassword(e.target.value)}
             required
+            onChange={(e) => setPwd(e.target.value)}
           />
           <SubmitButton
-            onClick={handleSignUpClick}
             type="submit"
-            value="회원가입하기"
+            value="회원가입"
+            onClick={handelLoginClick}
           />
         </TextBox>
       </BottomSection>
@@ -67,4 +67,4 @@ const JoinPage = () => {
   );
 };
 
-export default JoinPage;
+export default SignupPage;

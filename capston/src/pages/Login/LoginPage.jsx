@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   LoginBoxContainer,
   Title,
@@ -8,7 +8,7 @@ import {
   Topsection,
   BottomSection,
   Paragraph,
-} from "../../style/stylecomponents/MemberStyle/LoginStyle";
+} from "../../style/stylecomponents/MemberStyle/style";
 import { useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-regular-svg-icons"; // 사용할 아이콘 불러오기
 import { LinkContainer, Link } from "../../style/stylecomponents/widget/Link";
@@ -19,8 +19,13 @@ const LoginBox = () => {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
 
+  useEffect(() => {
+    setEmail("");
+    setPwd("");
+  }, []);
+
   const handleSignUpClick = async () => {
-    navigate("/join");
+    navigate("/signup");
   };
 
   const handelLoginClick = async () => {

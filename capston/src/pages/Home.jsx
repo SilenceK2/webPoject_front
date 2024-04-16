@@ -74,8 +74,8 @@ const Home = () => {
             </MainContent>
 
             {/* <LocationContent>
-                <LocationContentBox />
-              </LocationContent> */}
+              <LocationContentBox />
+            </LocationContent> */}
             <TodoListContent>
               <TodoContentBox />
             </TodoListContent>
