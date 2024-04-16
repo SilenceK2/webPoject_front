@@ -37,8 +37,8 @@ export const TodoListContent = styled.div`
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   width: 100%;
-  min-height: 100px;
-  max-height: 400px;
+  min-height: 500px;
+  max-height: 7000px;
 `;
 
 export const LocationContent = styled.div`
@@ -221,9 +221,10 @@ min-height: 1px;
   `
 
   export const ToDoListChecked = styled.input`
-  display: flex;
-    flex-grow: 1;
-    width: 10%;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+   flex-grow: 1;
     flex-direction; center;
     border-bottom: 1px solid black;
   `

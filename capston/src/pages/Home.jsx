@@ -96,11 +96,11 @@ import {
     const [todoList, setTodoList] = useState(null);
     const [lastId, setLastId] = useState(0); // 마지막 할 일의 id를 저장할 상태
 
-    const SERVER_URL = 'http://localhost:8080/api/todo';
+    const SERVER_URL = 'http://localhost:8081/api/todo';
 
     useEffect(() => {
       fetchData();
-      fetchLastId();
+      // fetchLastId();
     }, []);
 
     const fetchData = async () => {
@@ -108,19 +108,19 @@ import {
       setTodoList(response.data);
     };
 
-    const fetchLastId = async () => {
-      const response = await axios.get(`${SERVER_URL}/lastId`);
-      setLastId(response.data.lastId);
-    };
+    // const fetchLastId = async () => {
+    //   const response = await axios.get(`${SERVER_URL}/lastId`);
+    //   setLastId(response.data.lastId);
+    // };
     
 
     const onSubmitHandler = async (e) => {
-      e.preventDefault();
+      
       const text = e.target.text.value;
       const done = e.target.done.checked;
       await axios.post(SERVER_URL, { id: lastId + 1, text, done }); // 마지막 할 일의 id + 1 사용
+      e.preventDefault();
       fetchData(); // 데이터 다시 불러오기
-      fetchLastId(); // 마지막 할 일의 id 다시 가져오기
     };
   
   

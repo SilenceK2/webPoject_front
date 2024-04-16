@@ -8,9 +8,6 @@ app.use(express.urlencoded({extended: true}));
 
 let id = 1;
 const todoList = [{
-  id: 1,
-  text: '뭘 어떻게 해야하지',
-  done: false,
 }];
 app.get('/',function (req,res){
   res.send('Hello World');
@@ -36,6 +33,6 @@ app.post('/api/todo', (req,res) => {
   return res.send('success');
 });
 
-app.listen(8080,() =>{
+app.listen(8081,() =>{
   console.log('server start!!')
 });
