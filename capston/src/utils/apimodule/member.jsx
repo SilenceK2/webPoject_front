@@ -9,8 +9,8 @@ import api from "../api/Instance";
 export const loginUser = async (email, pwd) => {
   try {
     const response = await api.post("/member/login", {
-      email,
-      pwd,
+      memberEmail: email,
+      memberPassword: pwd,
     });
     if (response.data.success) {
       return { success: true };
@@ -32,7 +32,7 @@ export const signupUser = async (signupEmail, signupPwd) => {
   try {
     const response = await api.post("/member/signup", {
       signupEmail,
-      signupPwd,
+      signupPassword: signupPwd,
     });
     if (response.data.success) {
       return { success: true };

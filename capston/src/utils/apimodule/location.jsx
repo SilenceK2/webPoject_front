@@ -46,6 +46,9 @@ const locationResultResponse = async () => {
   }
 };
 
+/**
+ *
+ */
 // function searchPubTransPathAJAX() {
 //   var xhr = new XMLHttpRequest();
 //   var url =

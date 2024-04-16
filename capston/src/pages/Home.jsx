@@ -12,11 +12,11 @@ import {
   LocationContent,
   WheaterContent,
   TodoListContent,
+  MainContent,
 } from "../style/stylecomponents/Layout/Home";
 import Weather from "../components/weatherContent";
-import LocationContentBox from "../components/locationContent";
 import TodoContentBox from "../components/todoContent";
-
+import MainContentBox from "../components/MainContent";
 const Home = () => {
   const [loadingPage, setLoadingPage] = useState(false);
   const [weatherData, setWeatherData] = useState({
@@ -65,31 +65,35 @@ const Home = () => {
 
   return (
     <>
-      {loadingPage ? (
-        <>
-          <Header />
-          <PageContainer>
-            <Content>
-              <WheaterContent>
+      <>
+        <Header />
+        <PageContainer>
+          <Content>
+            <MainContent>
+              <MainContentBox />
+            </MainContent>
+
+            {/* <LocationContent>
+                <LocationContentBox />
+              </LocationContent> */}
+            <TodoListContent>
+              <TodoContentBox />
+            </TodoListContent>
+            <WheaterContent>
+              {loadingPage ? (
                 <Weather
                   id={weatherData.icon}
                   text={weatherData.title}
                   temp={weatherData.temp}
                   rainCondition={weatherData.rainCondition}
                 />
-              </WheaterContent>
-              <LocationContent>
-                <LocationContentBox />
-              </LocationContent>
-              <TodoListContent>
-                <TodoContentBox />
-              </TodoListContent>
-            </Content>
-          </PageContainer>
-        </>
-      ) : (
-        <Loading />
-      )}
+              ) : (
+                <Loading />
+              )}
+            </WheaterContent>
+          </Content>
+        </PageContainer>
+      </>
     </>
   );
 };

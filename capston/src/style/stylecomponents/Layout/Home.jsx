@@ -131,3 +131,11 @@ export const TodoListBoard = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+export const MainContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+  max-height: 120px;
+`;
