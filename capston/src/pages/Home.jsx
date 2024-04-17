@@ -17,6 +17,8 @@ import {
 import Weather from "../components/weatherContent";
 import TodoContentBox from "../components/todoContent";
 import MainContentBox from "../components/MainContent";
+import LocationContentBox from "../components/locationContent";
+
 const Home = () => {
   const [loadingPage, setLoadingPage] = useState(false);
   const [weatherData, setWeatherData] = useState({
@@ -73,9 +75,6 @@ const Home = () => {
               <MainContentBox />
             </MainContent>
 
-            {/* <LocationContent>
-              <LocationContentBox />
-            </LocationContent> */}
             <TodoListContent>
               <TodoContentBox />
             </TodoListContent>
@@ -91,6 +90,9 @@ const Home = () => {
                 <Loading />
               )}
             </WheaterContent>
+            <LocationContent>
+              <LocationContentBox />
+            </LocationContent>
           </Content>
         </PageContainer>
       </>

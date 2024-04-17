@@ -30,17 +30,16 @@ export const loginUser = async (email, pwd) => {
  */
 export const signupUser = async (signupEmail, signupPwd) => {
   try {
-    const response = await api.post("/member/signup", {
+    const response = await api.post("/member/save", {
       memberEmail: signupEmail,
-      member_email: "sef",
-      memberPassword: "sef",
-      memberName: "태겸",
+      memberPassword: signupPwd,
     });
-    // if (response.data.success) {
-    return { success: true, message: "회원가입 성공" };
-    // } else {
-    //   return { success: false };
-    // }
+
+    if (response.data.success) {
+      return { success: true, message: "회원가입 성공" };
+    } else {
+      return { success: false };
+    }
   } catch (error) {
     console.error("error:", error);
     return { success: false, error: "요청 실패" };

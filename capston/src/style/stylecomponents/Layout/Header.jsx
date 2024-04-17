@@ -7,16 +7,19 @@ const HeaderContainer = styled.header`
   padding: 10px;
   height: 8%;
   width: 100%;
-  margin: 0 auto;
   background-color: white;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   display: flex;
   justify-content: space-between;
   position: fixed;
+  box-sizing: border-box;
+  // @media (min-width: 1200px) {
+  //   width: 30vw;
+  // }
+
   & div:nth-child(1) {
-    margin-left: -55px;
     justify-content: flex-start;
-    flex: 1;
+    flex: 0.3;
     background-image: url("/images/menu.svg");
     background-position: center;
     background-repeat: no-repeat;
@@ -29,7 +32,8 @@ const HeaderContainer = styled.header`
     text-align: center;
   }
   & div:nth-child(3) {
-    margin-right: 40px;
+    justify-content: flex-end;
+    flex: 0.3;
   }
 `;
 
