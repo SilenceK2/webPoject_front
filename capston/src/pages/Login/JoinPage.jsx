@@ -17,7 +17,7 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [successVerify, setSuccessVerify] = useState(false);
+  const [successVerify, setSuccessVerify] = useState(true);
   useEffect(() => {
     setEmail("");
     setPwd("");
@@ -51,7 +51,7 @@ const SignupPage = () => {
     try {
       const result = await signupVerify(email);
       if (result.success) {
-        setSuccessVerify(true);
+        setSuccessVerify(false);
       } else {
         throw result;
       }
@@ -67,25 +67,37 @@ const SignupPage = () => {
       </Topsection>
       <BottomSection>
         <TextBox>
-          <Input
-            type="text"
-            placeholder="이메일을 입력하세요"
-            required
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {!successVerify ? (
-            <SignupButton
-              type="submit"
-              placeholder="이메일 중복확인"
-              value="이메일 중복확인"
-              onClick={handleSignupVerify}
-            >
-              <p>이메일 중복확인</p>
-            </SignupButton>
+          {successVerify ? (
+            <>
+              <Input
+                type="text"
+                placeholder="이메일을 입력하세요"
+                required
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <SignupButton
+                type="email"
+                placeholder="이메일 중복확인"
+                value="이메일 중복확인"
+                onClick={handleSignupVerify}
+              >
+                <p>이메일 중복확인</p>
+              </SignupButton>
+            </>
           ) : (
             <>
-              <p>✅이메일 인증이 완료되었습니다.</p>
+              <Input
+                type="text"
+                placeholder={email}
+                required
+                name="email"
+                disabled
+              />
+              <div>
+                <p>✅이메일 인증이 완료되었습니다.</p>
+              </div>
             </>
           )}
 
@@ -103,12 +115,8 @@ const SignupPage = () => {
             required
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          {!successVerify ? (
-            <SubmitButton
-              type="submit"
-              value="회원가입"
-              onClick={handelSignupClick}
-            />
+          {successVerify ? (
+            <SubmitButton type="submit" value="회원가입" />
           ) : (
             <>
               <SubmitButton

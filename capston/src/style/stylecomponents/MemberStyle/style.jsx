@@ -42,6 +42,17 @@ export const TextBox = styled.div`
   width: 100%;
   height: 100%;
   margin: 0;
+
+  & > div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    justify-content: left;
+    margin-top: -23px;
+    font-size: 15px;
+    color: gray;
+  }
 `;
 
 export const Input = styled.input`

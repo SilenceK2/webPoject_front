@@ -12,6 +12,9 @@ export const loginUser = async (email, pwd) => {
       memberEmail: email,
       memberPassword: pwd,
     });
+
+    const memberId = response.data.memberid;
+    localStorage.setItem("memberIdNumber", memberId);
     if (response.data.success) {
       return { success: true };
     } else {
@@ -32,9 +35,6 @@ export const signupVerify = async (email) => {
     const response = await api.post("/member/verify", {
       memberEmail: email,
     });
-
-    const memberId = response.data.memberid;
-    localStorage.setItem("memberIdNumber", memberId);
 
     if (response.data.success) {
       return { success: true, message: "사용하실 수 있는 이메일입니다." };
@@ -59,6 +59,8 @@ export const signupUser = async (email, pwd) => {
       memberEmail: email,
       memberPassword: pwd,
     });
+
+    console.log(email, pwd);
 
     if (response.data.success) {
       return { success: true, message: "회원가입 성공" };
