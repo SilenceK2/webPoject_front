@@ -17,8 +17,6 @@ import {
 import Weather from "../components/weatherContent";
 import TodoContentBox from "../components/todoContent";
 import MainContentBox from "../components/MainContent";
-import LocationContentBox from "../components/locationContent";
-
 const Home = () => {
   const [loadingPage, setLoadingPage] = useState(false);
   const [weatherData, setWeatherData] = useState({
@@ -28,42 +26,42 @@ const Home = () => {
     title: "",
   });
 
-  useEffect(() => {
-    const fetchWeatherData = async () => {
-      try {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              const response = await mappingLocation(latitude, longitude);
-              if (response.success) {
-                await locationResultResponse();
-                const weatherData = await getWeatherByCurrentLocation(
-                  latitude,
-                  longitude
-                );
-                setWeatherData(weatherData);
-                setLoadingPage(true);
-              } else {
-                throw new Error("location 정보 불러오기 실패");
-              }
-            },
-            (error) => {
-              console.error("geolocation error:", error);
-              setLoadingPage(true);
-            }
-          );
-        } else {
-          throw new Error("위치 정보를 지원하지 않는 브라우저입니다.");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        alert(`에러 메시지: ${error.message}`);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchWeatherData = async () => {
+  //     try {
+  //       if (navigator.geolocation) {
+  //         navigator.geolocation.getCurrentPosition(
+  //           async (position) => {
+  //             const { latitude, longitude } = position.coords;
+  //             const response = await mappingLocation(latitude, longitude);
+  //             if (response.success) {
+  //               await locationResultResponse();
+  //               const weatherData = await getWeatherByCurrentLocation(
+  //                 latitude,
+  //                 longitude
+  //               );
+  //               setWeatherData(weatherData);
+  //               setLoadingPage(true);
+  //             } else {
+  //               throw new Error("location 정보 불러오기 실패");
+  //             }
+  //           },
+  //           (error) => {
+  //             console.error("geolocation error:", error);
+  //             setLoadingPage(true);
+  //           }
+  //         );
+  //       } else {
+  //         throw new Error("위치 정보를 지원하지 않는 브라우저입니다.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //       alert(`에러 메시지: ${error.message}`);
+  //     }
+  //   };
 
-    fetchWeatherData();
-  }, []);
+  //   fetchWeatherData();
+  // }, []);
 
   return (
     <>
@@ -75,6 +73,9 @@ const Home = () => {
               <MainContentBox />
             </MainContent>
 
+            {/* <LocationContent>
+                <LocationContentBox />
+              </LocationContent> */}
             <TodoListContent>
               <TodoContentBox />
             </TodoListContent>
@@ -90,9 +91,6 @@ const Home = () => {
                 <Loading />
               )}
             </WheaterContent>
-            <LocationContent>
-              <LocationContentBox />
-            </LocationContent>
           </Content>
         </PageContainer>
       </>

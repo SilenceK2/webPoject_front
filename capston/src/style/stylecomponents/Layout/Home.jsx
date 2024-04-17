@@ -4,8 +4,8 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  margin: 0 24px;
-  margin-top: 100px;
+  margin: 0 20px;
+  margin-top: 120px;
 `;
 
 export const Content = styled.div`
@@ -24,30 +24,28 @@ export const WheaterContent = styled.div`
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   width: 100%;
-  min-height: 200px;
-  max-height: 80px;
+  max-height: 200px;
 `;
 export const TodoListContent = styled.div`
-  margin-top: 50px;
-  flex: 0.3;
+  flex: 1;
   display: flex;
   border-radius: 20px;
   flex-direction: column;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   width: 100%;
-  min-height: 200px;
+ min-height: 200px;
 `;
 
 export const LocationContent = styled.div`
-  flex: 0.3;
+  flex: 1;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   width: 100%;
-  min-height: 200px;
+  max-height: 200px;
 `;
 
 export const LocationTitle = styled.div`
@@ -55,7 +53,7 @@ export const LocationTitle = styled.div`
   height: 10%;
   margin: 20px 20px;
   display: flex;
-  flex: 0.3;
+  flex: 1;
   flex-direction: row;
   & > div:nth-child(1) {
     background-image: url("/images/loadLogo.svg");
@@ -133,11 +131,13 @@ export const TodoListBoard = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+
 export const MainContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
   width: 100%;
-  max-height: 100px;
+  max-height: 120px;
 `;
