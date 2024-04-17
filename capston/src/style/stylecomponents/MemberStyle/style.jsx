@@ -85,3 +85,14 @@ export const Paragraph = styled.p`
   font-size: 15px;
   position: relative;
 `;
+
+export const SignupButton = styled.button`
+  width: 100%;
+  height: 50px;
+  flex: 1;
+  margin-bottom: 20px;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  background-color: skyblue;
+`;
