@@ -6,6 +6,18 @@ import api from "../api/Instance";
  * @param {*} pwd
  * @returns
  */
+
+export const loginGetMeberId = async () => {
+  try {
+    const response = await api.get("/member/login");
+    const result = response.data.loginId;
+    console.log(result);
+    return { success: true, result };
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "실패" };
+  }
+};
 export const loginUser = async (email, pwd) => {
   try {
     const response = await api.post("/member/login", {
@@ -15,6 +27,7 @@ export const loginUser = async (email, pwd) => {
 
     const memberId = response.data.memberid;
     localStorage.setItem("memberIdNumber", memberId);
+    console.log(response.data);
     if (response.data.success) {
       return { success: true };
     } else {

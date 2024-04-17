@@ -13,11 +13,13 @@ import { useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-regular-svg-icons"; // 사용할 아이콘 불러오기
 import { LinkContainer, Link } from "../../style/stylecomponents/widget/Link";
 import { useState } from "react";
-import { loginUser } from "../../utils/apimodule/member";
+import { loginUser, loginGetMeberId } from "../../utils/apimodule/member";
+
 const LoginBox = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const [memberId, setMemberId] = useState("");
 
   useEffect(() => {
     setEmail("");
@@ -31,14 +33,19 @@ const LoginBox = () => {
   const handelLoginClick = async () => {
     try {
       const result = await loginUser(email, pwd);
+      const id = await loginGetMeberId();
+      setMemberId(id.loginId);
+
       if (result.success) {
+        console.log(memberId);
         navigate("/homepage");
         alert("로그인이 완료되었습니다.");
       } else {
         throw result;
       }
     } catch (error) {
-      alert(`실패: ${error.message}`);
+      alert(`실패: ${error}`);
+      console.log(error);
     }
   };
 
@@ -53,7 +60,7 @@ const LoginBox = () => {
             icon={faUser}
             type="text"
             placeholder="이메일"
-            name="username"
+            name="email"
             required
             onChange={(e) => setEmail(e.target.value)}
           />
