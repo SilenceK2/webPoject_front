@@ -3,14 +3,13 @@ import styled from "styled-components";
 export const LoginBoxContainer = styled.div`
   max-width: 500px;
   padding: 28px;
-  margin: auto;
+  margin-top: -80px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 90%;
-  position: fixed;
   box-sizing: none;
 `;
 
@@ -59,7 +58,7 @@ export const Input = styled.input`
 export const SubmitButton = styled.input`
   width: 100%;
   height: 13%;
-  background: #5c8be9;
+  background-color: ${(props) => props.bgColor || "gray"};
   border: none;
   padding: 10px;
   font-size: 16px;
@@ -70,9 +69,9 @@ export const SubmitButton = styled.input`
   font-weight: bolder;
   outline: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  &:hover {
-    background: #0056b3;
-  }
+  // &:hover {
+  //   background: #0056b3;
+  // }
   &:focus {
     outline: none;
   }
@@ -92,7 +91,13 @@ export const SignupButton = styled.button`
   flex: 1;
   margin-bottom: 20px;
   border: none;
-  color: white;
-  border-radius: 10px;
-  background-color: skyblue;
+  padding: 0 20px;
+  border-radius: 5px;
+  background-color: gray;
+  & > p {
+    color: white;
+    font-size: 17px;
+    text-align: center;
+    font-weight: bold;
+  }
 `;

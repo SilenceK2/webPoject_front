@@ -33,6 +33,9 @@ export const signupVerify = async (email) => {
       memberEmail: email,
     });
 
+    const memberId = response.data.memberid;
+    localStorage.setItem("memberIdNumber", memberId);
+
     if (response.data.success) {
       return { success: true, message: "사용하실 수 있는 이메일입니다." };
     } else {

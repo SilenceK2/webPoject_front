@@ -16,6 +16,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [successVerify, setSuccessVerify] = useState(false);
   useEffect(() => {
     setEmail("");
@@ -23,16 +24,26 @@ const SignupPage = () => {
   }, []);
 
   const handelSignupClick = async () => {
+    if (!email || !pwd || !confirmPassword) {
+      alert("아이디와 비밀번호를 입력해주세요.");
+      return;
+    }
+
+    if (pwd !== confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
     try {
       const result = await signupUser(email, pwd);
       if (result.success) {
         navigate("/login");
         alert("회원가입이 완료되었습니다.");
       } else {
-        throw result;
+        throw new Error("회원가입에 실패했습니다.");
       }
     } catch (error) {
-      alert(`실패: ${error.message}`);
+      alert(`회원가입 실패: ${error.message}`);
     }
   };
 
@@ -59,22 +70,24 @@ const SignupPage = () => {
           <Input
             type="text"
             placeholder="이메일을 입력하세요"
-            name="username"
             required
+            name="email"
             onChange={(e) => setEmail(e.target.value)}
-          >
-            {/* {successVerify ? (
-              <SignupButton
-                type="submit"
-                placeholder="이메일 중복확인"
-                onClick={handleSignupVerify}
-              />
-            ) : (
-              <>
-                <p>✅이메일 인증이 완료되었습니다.</p>
-              </>
-            )} */}
-          </Input>
+          />
+          {!successVerify ? (
+            <SignupButton
+              type="submit"
+              placeholder="이메일 중복확인"
+              value="이메일 중복확인"
+              onClick={handleSignupVerify}
+            >
+              <p>이메일 중복확인</p>
+            </SignupButton>
+          ) : (
+            <>
+              <p>✅이메일 인증이 완료되었습니다.</p>
+            </>
+          )}
 
           <Input
             type="password"
@@ -83,11 +96,29 @@ const SignupPage = () => {
             required
             onChange={(e) => setPwd(e.target.value)}
           />
-          <SubmitButton
-            type="submit"
-            value="회원가입"
-            onClick={handelSignupClick}
+          <Input
+            type="password"
+            placeholder="패스워드 재확인"
+            name="confirmpassword"
+            required
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
+          {!successVerify ? (
+            <SubmitButton
+              type="submit"
+              value="회원가입"
+              onClick={handelSignupClick}
+            />
+          ) : (
+            <>
+              <SubmitButton
+                type="submit"
+                value="회원가입"
+                bgColor="#5c8be9"
+                onClick={handelSignupClick}
+              />
+            </>
+          )}
         </TextBox>
       </BottomSection>
     </LoginBoxContainer>
