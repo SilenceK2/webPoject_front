@@ -101,7 +101,7 @@ const SignupPage = () => {
             placeholder="이름을 입력하세요"
             name="name"
             required
-            onChange={(e) => setPwd(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
 
           <Input
