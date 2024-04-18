@@ -6,6 +6,7 @@ export const TodoContainer = styled.section`
   margin: 0 24px;
   margin-top: 100px;
   height: 100%;
+  letter-spacing: -1px;
 `;
 
 export const TopSection = styled.section`
@@ -167,21 +168,24 @@ export const TodoUpdateList = styled.section`
 export const UpdateListTitle = styled.div`
   width: 100%;
   display: flex;
-  margin-bottom: 40px;
-  font-weight: bold;
-  font-size: 18px;
-  flex-direction: column;
+  margin-bottom: 30px;
+  flex-direction: row;
   & > div:nth-child(1) {
-    font-size: 20px;
-    font-weight: bold;
-
+    flex: 0.1;
   }
-  
-  & > div:nth-child(2) {
-    font-size: 15px;
-    font-weight: lighter;
-    color: gray;
+`;
 
+export const UpdateListTitleContent = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  flex: 1.5;
+  font-size: 19px;
+  display: flex;
+  flex-direction: column;
+  & > div {
+    font-size: 14px;
+    font-weight: lighter;
+  }
 `;
 
 export const UpdateListContent = styled.div`
@@ -255,7 +259,7 @@ export const UpdateContent = styled.div`
   flex-direction: column;
   border-radius: 20px;
   margin-top: 10px;
-  margin-left: 10px;
+  margin-left: 3px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   min-height: 180px;
@@ -263,4 +267,49 @@ export const UpdateContent = styled.div`
   min-width: 230px;
   margin-right: 30px;
   white-space: nowrap;
+  text-align: center;
+  justify-content: center;
+`;
+
+export const UpdateContentContent = styled.div`
+  width: 95%;
+  margin-top: -2px;
+  flex-grow: 1;
+  text-align: left;
+  white-space: pre-wrap;
+  margin-left: 2px;
+  overflow: hidden;
+  padding-left: 5px;
+  font-size: 13px;
+  & > div:nth-child(1) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 20px;
+  }
+  & > div:nth-child(1) p {
+    color: white;
+    margin-right: 2px;
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 1px 4px;
+    max-width: 55px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #b9a7fc;
+  }
+`;
+
+export const UpdateContentTitle = styled.div`
+  width: 100%;
+  justify-content: center;
+  color: black;
+  flex: 1;
+  max-height: 30px;
+  box-shadow: 0 3px rgba(0, 0, 0, 0.1);
+  font-weight: bolder;
+  display: flex;
+  padding-top: 10px;
+  border-bottom: 0.1px solid gray;
+  // background-color: #0d9afc;
 `;

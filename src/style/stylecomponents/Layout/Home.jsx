@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
-export const PageContainer = styled.div`
+export const PageContainer = styled.section`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   margin: 0 24px;
   margin-top: 100px;
+  letter-spacing: -1px;
 `;
 
-export const Content = styled.div`
+export const Content = styled.section`
   flex: 1;
   width: 100%;
   height: 100%;
@@ -139,7 +140,7 @@ export const MainContent = styled.div`
   flex-direction: column;
   margin-bottom: 20px;
   width: 100%;
-  max-height: 100px;
+  max-height: 140px;
   opacity: ${({ show }) => (show ? 1 : 0)};
   transition: opacity 1s ease;
 `;

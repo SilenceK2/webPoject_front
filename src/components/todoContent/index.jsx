@@ -32,7 +32,7 @@ const TodoContentBox = () => {
         </TodoListTitle>
       </Topsection>
       <BottomSection>
-        <TodoListBoard />
+        {/* <TodoListBoard />
         <TodoListBoard>
           <TodoListMonth>4월</TodoListMonth>
           <TodoListWeek>
@@ -91,7 +91,7 @@ const TodoContentBox = () => {
             <TodoListDate>3</TodoListDate>
             <TodoListDate>4</TodoListDate>
           </TodoListDateBox>
-        </TodoListBoard>
+        </TodoListBoard> */}
       </BottomSection>
     </>
   );

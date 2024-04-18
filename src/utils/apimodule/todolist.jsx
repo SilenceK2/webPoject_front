@@ -1,6 +1,26 @@
 import api from "../api/Instance";
 
 /**
+ * todoPage에서 전체 테이블 가져오기
+
+ */
+const getTodoListAllTable = async () => {
+  try {
+    const response = await api.get("/todolist/alllist");
+    const result = response.data;
+    console.log(result);
+    if (response.data.success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "글 불러오기 실패" };
+  }
+};
+
+/**
 
  */
 const createTodoList = async (title, content, member, selectedTodoId) => {
@@ -56,4 +76,4 @@ const updateTodoList = async (title, content, member, selectedTodoId) => {
   }
 };
 
-export { createTodoList, deleteTodoList, updateTodoList };
+export { createTodoList, deleteTodoList, updateTodoList, getTodoListAllTable };

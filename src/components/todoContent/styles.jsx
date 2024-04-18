@@ -18,7 +18,6 @@ export const TodoListTitle = styled.div`
 export const TodoListTitleContet = styled.div`
   display: flex;
   flex-direction: column;
-
   margin-left: 10px;
   margin-top: -3px;
   & > div:nth-child(1) {

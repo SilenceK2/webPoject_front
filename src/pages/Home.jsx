@@ -25,7 +25,6 @@ const Home = () => {
     title: "",
   });
   const [mainContentVisible, setMainContentVisible] = useState(false); // mainContent 보여지는 여부 추가
-
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {

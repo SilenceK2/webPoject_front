@@ -26,6 +26,7 @@
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
     "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "router-dom": "^2.2.11",
     "styled-components": "^6.1.8",
     "web-vitals": "^2.1.4"
