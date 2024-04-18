@@ -29,25 +29,23 @@ const getTodoListAllTable = async () => {
  * @param member
  * @param selectedTodoId
  * @success
- * @todo 변수명 백엔드와 맞춰봐야함
+ * @todo memberemail값 보내기 테스트중
  */
-const createTodoList = async (title, content, member, selectedTodoId) => {
+const createTodoList = async (useremail) => {
   try {
     const response = await api.post("/todolist/create", {
-      title,
-      content,
-      member, // url사용
-      selectedTodoId,
+      todoEmail: useremail,
     });
     if (response.data.success) {
-      console.log(title, content, member);
+      console.log(response.data);
+
       return { success: true };
     } else {
       return { success: false };
     }
   } catch (error) {
     console.error("error:", error);
-    return { success: false, error: "글작성 실패" };
+    return { success: false, error: "전송 실패" };
   }
 };
 

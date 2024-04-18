@@ -28,18 +28,22 @@ const TodoPage = () => {
     memberName: "",
     like: "",
   });
-  useEffect(() => {
-    const fetchGetTodoListData = async () => {
-      try {
-        const result = await getTodoListAllTable();
-        setListTableData(result);
-        console.log(result);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchGetTodoListData();
-  }, []);
+  useEffect(
+    () => {
+      const fetchGetTodoListData = async () => {
+        try {
+          const result = await getTodoListAllTable();
+          setListTableData(result);
+          console.log(result);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchGetTodoListData();
+    },
+    [],
+    []
+  );
 
   return (
     <>

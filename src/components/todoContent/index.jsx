@@ -19,7 +19,19 @@ import {
   Redcolor,
 } from "./styles";
 
+import { useremailState } from "../../utils/recoil/atom";
+import { useRecoilValue } from "recoil";
+import { createTodoList } from "../../utils/apimodule/todolist";
 const TodoContentBox = () => {
+  const useremail = useRecoilValue(useremailState);
+
+  const sendMemberEmail = async () => {
+    try {
+      const result = await createTodoList(useremail);
+    } catch (error) {
+      alert(`${error.message}`);
+    }
+  };
   return (
     <>
       <Topsection>
@@ -32,6 +44,7 @@ const TodoContentBox = () => {
         </TodoListTitle>
       </Topsection>
       <BottomSection>
+        <button onClick={sendMemberEmail}>memberEmail보내기</button>
         {/* <TodoListBoard />
         <TodoListBoard>
           <TodoListMonth>4월</TodoListMonth>

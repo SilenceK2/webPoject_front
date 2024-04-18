@@ -27,7 +27,8 @@ export const TopSection = styled.div`
   & > div:nth-child(3) {
     font-weight: light;
     color: black;
-    margin-bottom: 250%;
+    margin-top: 25%;
+
     font-weight: bold;
     height: 30%;
     width: 90%;
