@@ -2,7 +2,8 @@ import api from "../api/Instance";
 
 /**
  * todoPage에서 전체 테이블 가져오기
-
+ * @get
+ * @success
  */
 const getTodoListAllTable = async () => {
   try {
@@ -21,7 +22,14 @@ const getTodoListAllTable = async () => {
 };
 
 /**
-
+ * 홈에서 날짜 선택후 투두리스트 생성
+ * @post
+ * @param title
+ * @param content
+ * @param member
+ * @param selectedTodoId
+ * @success
+ * @todo 변수명 백엔드와 맞춰봐야함
  */
 const createTodoList = async (title, content, member, selectedTodoId) => {
   try {
@@ -44,7 +52,10 @@ const createTodoList = async (title, content, member, selectedTodoId) => {
 };
 
 /**
-
+ * 홈에서 날짜 선택후 투두리스트 삭제
+ * @post
+ * @param selectedTodoId
+ * @success
  */
 const deleteTodoList = async (selectedTodoId) => {
   try {
@@ -58,8 +69,13 @@ const deleteTodoList = async (selectedTodoId) => {
   }
 };
 /**
- *
- * @returns
+ * 홈에서 날짜 선택후 투두리스트 수정(update)
+ * @post
+ * @param title
+ * @param Content
+ * @param member
+ * @param selectedTodoId
+ * @success
  */
 const updateTodoList = async (title, content, member, selectedTodoId) => {
   try {
