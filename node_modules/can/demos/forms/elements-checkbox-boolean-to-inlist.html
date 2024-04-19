@@ -1,0 +1,44 @@
+<style>
+label {
+	display: block;
+}
+</style>
+
+<checkbox-inlist></checkbox-inlist>
+
+<script src="../../node_modules/steal/steal.js" dev-bundle main="@empty" id="demo-source">
+import { ObservableArray, stacheConverters, StacheElement, type } from "can";
+
+class CheckboxInlist extends StacheElement {
+    static view = `
+        {{# for(number of this.availableNumbers }}
+        <label>
+            <input type="checkbox"
+                checked:bind="boolean-to-inList(number, this.selectedNumbers)">
+                checked:bind="boolean-to-inList({{ number }}, numbers)"
+        </label>
+        {{/ for }}
+        <p>
+            selected numbers: {{# for(number of this.selectedNumbers) }}{{ number }} {{/ for }}
+        </p>
+    `;
+
+    static props = {
+        availableNumbers: {
+            type: type.maybeConvert(ObservableArray),
+
+            get default() {
+                return [ "one", "two", "three" ];
+            }
+        },
+        selectedNumbers: {
+            type: type.maybeConvert(ObservableArray),
+
+            get default() {
+                return [];
+            }
+        }
+    };
+};
+customElements.define("checkbox-inlist", CheckboxInlist);
+</script>

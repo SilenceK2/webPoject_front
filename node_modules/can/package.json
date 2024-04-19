@@ -1,0 +1,323 @@
+{
+  "name": "can",
+  "version": "6.6.3",
+  "main": "can.js",
+  "scripts": {
+    "preversion": "npm test",
+    "version": "git commit -am \"Update dist for release\" && git checkout -b release && git add -f dist/",
+    "postversion": "git push --tags && git checkout - && git branch -D release && git push",
+    "testee": "testee test/index.html --browsers firefox",
+    "testee-builders": "testee test/builders/test.html --browsers firefox",
+    "testee-production": "testee test/production.html --browsers firefox",
+    "testee-global-build": "testee test/global-build.html --browsers firefox",
+    "http-server": "http-server -p 3000 --silent",
+    "test": "npm run test-development && npm run test-production && npm run test-builders && npm run test-global-build",
+    "test-builders": "npm run build-webpack-test && npm run testee-builders",
+    "test-development": "npm run testee",
+    "test-global-build": "npm run build && bundlesize && npm run testee-global-build",
+    "test-local": "npm run build && npm run testee",
+    "test-production": "npm run build-tests && npm run testee-production",
+    "test-sauce-labs": "node test/test-sauce-labs.js",
+    "release:pre": "npm version prerelease && npm run build && npm publish --tag=pre",
+    "release:patch": "npm version patch && npm run build && npm publish",
+    "release:minor": "npm version minor && npm run build && npm publish",
+    "release:major": "npm version major && npm run build && npm publish",
+    "build": "node build.js",
+    "build-tests": "node test/build.js",
+    "build-webpack-test": "webpack --mode=production -o test/builders/webpack/bundle.js test/builders/webpack/index.js",
+    "document": "./pre-document.sh && npm run deps-bundle && bit-docs",
+    "document:force": "./pre-document.sh && npm run deps-bundle && bit-docs -fd",
+    "deps-bundle": "node build-dev-bundle"
+  },
+  "title": "CanJS",
+  "description": "MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.",
+  "keywords": [
+    "CanJS",
+    "DoneJS"
+  ],
+  "author": {
+    "name": "Bitovi",
+    "email": "contact@bitovi.com",
+    "web": "http://bitovi.com/"
+  },
+  "homepage": "http://canjs.com/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:canjs/canjs.git",
+    "github": "https://github.com/canjs/canjs"
+  },
+  "dependencies": {
+    "can-ajax": "2.4.8",
+    "can-assign": "1.3.3",
+    "can-attribute-encoder": "1.1.4",
+    "can-attribute-observable": "2.0.2",
+    "can-bind": "1.5.1",
+    "can-child-nodes": "1.2.1",
+    "can-cid": "1.3.1",
+    "can-component": "5.0.1",
+    "can-compute": "4.1.1",
+    "can-connect": "4.0.6",
+    "can-connect-ndjson": "2.0.0",
+    "can-connect-tag": "2.0.0",
+    "can-construct": "3.5.7",
+    "can-construct-super": "3.2.1",
+    "can-control": "5.0.1",
+    "can-data-types": "1.2.1",
+    "can-debug": "2.0.7",
+    "can-deep-observable": "1.0.2",
+    "can-define": "2.8.1",
+    "can-define-backup": "2.1.2",
+    "can-define-lazy-value": "1.1.1",
+    "can-define-realtime-rest-model": "2.0.0",
+    "can-define-rest-model": "2.0.0",
+    "can-define-stream": "1.1.1",
+    "can-define-stream-kefir": "1.1.1",
+    "can-deparam": "1.2.3",
+    "can-diff": "1.5.1",
+    "can-dom-data": "1.0.3",
+    "can-dom-data-state": "1.1.2",
+    "can-dom-events": "1.3.13",
+    "can-dom-mutate": "2.0.9",
+    "can-event-dom-enter": "2.2.1",
+    "can-event-dom-radiochange": "2.2.1",
+    "can-event-queue": "1.1.8",
+    "can-fixture": "3.1.7",
+    "can-fixture-socket": "2.0.3",
+    "can-fragment": "1.3.1",
+    "can-globals": "1.2.2",
+    "can-import-module": "1.3.2",
+    "can-kefir": "1.1.4",
+    "can-key": "1.2.1",
+    "can-key-tree": "1.2.2",
+    "can-list": "4.2.3",
+    "can-local-store": "1.0.1",
+    "can-log": "1.0.2",
+    "can-make-map": "1.2.2",
+    "can-map": "4.3.16",
+    "can-map-compat": "1.1.1",
+    "can-map-define": "4.4.0",
+    "can-memory-store": "1.0.3",
+    "can-namespace": "1.0.0",
+    "can-ndjson-stream": "1.0.2",
+    "can-observable-array": "1.3.0",
+    "can-observable-bindings": "1.3.3",
+    "can-observable-mixin": "1.2.0",
+    "can-observable-object": "1.1.4",
+    "can-observation": "4.2.0",
+    "can-observation-recorder": "1.3.1",
+    "can-observe": "2.3.2",
+    "can-param": "1.2.0",
+    "can-parse-uri": "1.2.2",
+    "can-query-logic": "1.2.4",
+    "can-queues": "1.3.2",
+    "can-realtime-rest-model": "2.0.0",
+    "can-reflect": "1.19.2",
+    "can-reflect-dependencies": "1.1.2",
+    "can-reflect-promise": "2.2.1",
+    "can-rest-model": "2.0.0",
+    "can-route": "5.0.2",
+    "can-route-hash": "1.0.2",
+    "can-route-mock": "1.0.2",
+    "can-route-pushstate": "6.0.0",
+    "can-set-legacy": "1.0.1",
+    "can-simple-dom": "1.7.1",
+    "can-simple-map": "4.3.3",
+    "can-simple-observable": "2.5.0",
+    "can-stache": "5.1.1",
+    "can-stache-bindings": "5.0.5",
+    "can-stache-converters": "5.0.0",
+    "can-stache-element": "1.2.0",
+    "can-stache-key": "1.4.3",
+    "can-stache-route-helpers": "2.0.0",
+    "can-stream": "1.1.1",
+    "can-stream-kefir": "1.2.1",
+    "can-string": "1.1.0",
+    "can-string-to-any": "1.2.1",
+    "can-super-model": "2.0.0",
+    "can-symbol": "1.7.0",
+    "can-type": "1.1.6",
+    "can-validate": "1.2.1",
+    "can-validate-interface": "1.0.3",
+    "can-validate-legacy": "2.0.1",
+    "can-validate-validatejs": "1.0.1",
+    "can-value": "1.1.2",
+    "can-vdom": "4.4.2",
+    "can-view-autorender": "6.0.0",
+    "can-view-callbacks": "5.0.0",
+    "can-view-live": "5.0.5",
+    "can-view-model": "4.0.3",
+    "can-view-parser": "4.1.3",
+    "can-view-scope": "4.13.7",
+    "can-view-target": "5.0.0",
+    "steal-stache": "5.0.0"
+  },
+  "devDependencies": {
+    "@feathersjs/feathers": "^3.3.1",
+    "@feathersjs/socketio-client": "^1.2.1",
+    "@octokit/rest": "^16.27.3",
+    "@webcomponents/custom-elements": "^1.2.4",
+    "bit-docs": "^0.2.0",
+    "bundlesize": "^0.18.0",
+    "can-reflect-tests": "^1.0.0",
+    "can-test-helpers": "^1.1.1",
+    "core-js": "^2.5.7",
+    "es6-promise-polyfill": "^1.2.0",
+    "funcunit": "^3.4.2",
+    "gzip-size": "^4.1.0",
+    "http-server": "^0.11.1",
+    "jquery": "2.x - 3.x",
+    "jquery-ui": "^1.12.0",
+    "kefir": "^3.8.0",
+    "minimist": "^1.2.5",
+    "prop-types": "^15.5.10",
+    "qunit": "^2.9.2",
+    "semver": "^6.1.1",
+    "socket.io-client": "^2.2.0",
+    "steal": "^2.2.4",
+    "steal-conditional": "^1.1.3",
+    "steal-css": "^1.2.4",
+    "steal-qunit": "^2.0.0",
+    "steal-socket.io": "^4.0.9",
+    "steal-tools": "^2.2.5",
+    "test-saucelabs": "0.0.6",
+    "testee": "^0.9.0",
+    "version-and-release": "^0.1.1",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.7"
+  },
+  "demos": [
+    "http://canjs.us/#examples",
+    "http://canjs.us/recipes"
+  ],
+  "googleAnalyticsTrackingCode": "UA-2302003-11",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "sideEffects": false,
+  "steal": {
+    "npmAlgorithm": "flat",
+    "main": "can",
+    "npmIgnore": [
+      "bit-docs",
+      "testee",
+      "async",
+      "saucelabs",
+      "test-saucelabs",
+      "wd",
+      "http-server"
+    ],
+    "meta": {
+      "socket.io-client/dist/socket.io": {
+        "format": "cjs"
+      }
+    },
+    "configDependencies": [
+      "./node_modules/steal-conditional/conditional.js"
+    ],
+    "plugins": [
+      "steal-stache"
+    ]
+  },
+  "bit-docs": {
+    "html": {
+      "dependencies": {
+        "normalize.css": "^5.0.0",
+        "steal-conditional": "^0.3.6",
+        "steal-stache": "^4.0.1"
+      },
+      "package": {
+        "steal": {
+          "configDependencies": [
+            "./node_modules/steal-conditional/conditional"
+          ]
+        }
+      },
+      "static": [],
+      "templates": []
+    },
+    "dependencies": {
+      "bit-docs-glob-finder": "^0.0.5",
+      "bit-docs-dev": "^0.0.3",
+      "bit-docs-js": "^0.0.6",
+      "bit-docs-tag-sourceref": "^0.0.3",
+      "bit-docs-generate-html": "^0.11.0",
+      "bit-docs-generate-searchmap": "^0.2.0",
+      "bit-docs-html-canjs": "3.0.0",
+      "bit-docs-prettify": "^0.3.0",
+      "bit-docs-html-highlight-line": "^0.5.3",
+      "bit-docs-tag-demo": "^0.5.3",
+      "bit-docs-tag-package": "^1.0.0",
+      "bit-docs-html-codepen-link": "^2.0.3",
+      "bit-docs-html-toc": "^1.1.1"
+    },
+    "glob": {
+      "pattern": "{node_modules,docs}/{can-*,steal-stache}/**/*.{js,md}",
+      "ignore": [
+        "node_modules/can-namespace/**/*",
+        "node_modules/can-wait/examples/**/*",
+        "node_modules/can-*/dist/**/*",
+        "node_modules/*/node_modules/**/*",
+        "node_modules/can-debug/src/draw-graph/vis.js"
+      ]
+    },
+    "altVersions": {
+      "5.33.3": "https://v5.canjs.com",
+      "4.3.0": "https://v4.canjs.com",
+      "3.14.1": "https://v3.canjs.com",
+      "2.3.35": "https://v2.canjs.com"
+    },
+    "parent": "canjs",
+    "minifyBuild": true,
+    "codepen": [
+      [
+        "\"can\"",
+        "\"//unpkg.com/can@6/core.mjs\""
+      ],
+      [
+        "\"can/ecosystem\"",
+        "\"//unpkg.com/can@6/ecosystem.mjs\""
+      ],
+      [
+        "\"can/everything\"",
+        "\"//unpkg.com/can@6/everything.mjs\""
+      ],
+      [
+        "\"can/demos/technology-overview/mock-url\"",
+        "\"//unpkg.com/mock-url@^6.0.0/mock-url.mjs\""
+      ],
+      [
+        "\"can/demos/technology-overview/route-mini-app-components\"",
+        "\"//unpkg.com/route-mini-app@^5.0.0/components.mjs\""
+      ],
+      [
+        "return steal.import(",
+        "return import("
+      ],
+      [
+        "\"can/demos/technology-overview/page-login\"",
+        "\"//unpkg.com/route-mini-app@^5.0.0/page-login.mjs\""
+      ],
+      [
+        "`can/demos/technology-overview/page-${this.page}`",
+        "`//unpkg.com/route-mini-app@^5.0.0/page-${this.page}.mjs`"
+      ]
+    ]
+  },
+  "bundlesize": [
+    {
+      "path": "./core.min.mjs",
+      "maxSize": "108 kB"
+    },
+    {
+      "path": "./core.mjs",
+      "maxSize": "316 kB"
+    },
+    {
+      "path": "./dist/global/core.js",
+      "maxSize": "201 kB"
+    }
+  ]
+}

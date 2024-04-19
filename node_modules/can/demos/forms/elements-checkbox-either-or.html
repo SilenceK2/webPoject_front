@@ -1,0 +1,23 @@
+<checkbox-either-or></checkbox-either-or>
+
+<script src="../../node_modules/steal/steal.js" dev-bundle main="@empty" id="demo-source">
+import { stacheConverters, StacheElement } from "can";
+
+class CheckboxEitherOr extends StacheElement {
+    static view = `
+        <label>
+            <input type="checkbox" checked:bind="either-or(this.bestTypeOfPet, 'Dogs', 'Cats')">
+            Dogs or Cats?
+        </label>
+        <p>
+            The superior pet is: {{ this.bestTypeOfPet }}
+        </p>
+    `;
+
+    static props = {
+        bestTypeOfPet: ""
+    };
+};
+
+customElements.define("checkbox-either-or", CheckboxEitherOr);
+</script>

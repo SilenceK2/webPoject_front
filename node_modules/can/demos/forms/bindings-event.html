@@ -1,0 +1,21 @@
+<my-counter></my-counter>
+
+<script src="../../node_modules/steal/steal.js" dev-bundle main="@empty" id="demo-source">
+import { StacheElement } from "can";
+
+class MyCounter extends StacheElement {
+    static view = `
+        <p>{{ this.count }}</p>
+        <button on:click="this.plusOne()">Click Here</button>
+    `;
+
+    static props = {
+        count: 0
+    };
+
+    plusOne() {
+        this.count += 1;
+    }
+};
+customElements.define("my-counter", MyCounter);
+</script>

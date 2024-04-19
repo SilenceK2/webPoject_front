@@ -1,0 +1,19 @@
+<file-value></file-value>
+
+<script src="../../node_modules/steal/steal.js" dev-bundle main="@empty" id="demo-source">
+import { StacheElement } from "can";
+
+class FileValue extends StacheElement {
+    static view = `
+        <input type="file" value:to="this.filePath">
+        <p>
+            Selected file: {{ this.filePath }}
+        </p>
+    `;
+
+    static props = {
+        filePath: ""
+    };
+};
+customElements.define("file-value", FileValue);
+</script>

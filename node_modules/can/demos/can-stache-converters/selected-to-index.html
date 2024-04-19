@@ -1,0 +1,36 @@
+<html>
+<head>
+	<title>selected-to-index demo</title>
+</head>
+<body>
+<my-demo></my-demo>
+<script src="../../node_modules/steal/steal.js" dev-bundle main="@empty">
+import { StacheElement, stacheConverters } from "can/everything";
+
+class MyDemo extends StacheElement {
+	static view = `
+		<select value:bind="this.index">
+		  {{# for(person of this.people) }}
+		    <option value="{{ scope.index }}">{{ scope.index }}</option>
+		  {{/ for }}
+		</select>
+
+		<input value:bind="selected-to-index(this.index, this.people)">
+	`;
+	static props = {
+		index: {
+			get default() {
+				return 0;
+			}
+		},
+		people: {
+			get default() {
+				return ["Matthew", "Anne", "Wilbur"];
+			}
+		}
+	};
+}
+customElements.define('my-demo', MyDemo);
+</script>
+</body>
+</html>

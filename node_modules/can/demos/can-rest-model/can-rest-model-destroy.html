@@ -1,0 +1,107 @@
+<html>
+<head>
+    <style>
+        [type=date] {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<todo-list></todo-list>
+
+<script src="../../node_modules/steal/steal.js"  dev-bundle></script>
+
+<script type="steal-module" id="demo-source">
+import {
+    fixture,
+    ObservableArray,
+    ObservableObject,
+    Reflect,
+    restModel,
+    stache,
+    StacheElement,
+    type,
+} from "can";
+
+class Todo extends ObservableObject {
+    static props = {
+        // `id` uniquely identifies instances of this type.
+        id: { type: type.maybeConvert(Number), identity: true },
+
+        complete: { type: type.maybeConvert(Boolean), default: false },
+        dueDate: type.maybeConvert(Date),
+        name: type.maybeConvert(String)
+    };
+}
+
+class TodoListModel extends ObservableArray {
+    static items = type.maybeConvert(Todo);
+}
+
+const todoConnection = restModel({
+    Map: Todo,
+    List: TodoListModel,
+    url: "/api/todos/{id}"
+});
+
+let terms = ["can you","please","","","",""],
+    verbs = ["clean","walk","do","vaccum","organize","fold","wash","dust","pay","cook","get","take out"],
+    subjects = ["dog","laundry","diapers","clothes","car","windows","carpet","taxes","food","gas","trash"];
+
+let dayInMS = 24*60*60*1000;
+let lastWeek = new Date() - (7*dayInMS);
+let fourWeeks = new Date().getTime() + (4*7*dayInMS);
+
+let todoStore = fixture.store(20, function(){
+    return {
+        complete: fixture.rand([true, false],1)[0],
+        dueDate: new Date( fixture.rand(lastWeek, fourWeeks) ).toString(),
+        name: (fixture.rand(terms,1)[0]+" "+fixture.rand(verbs,1)[0]+" "+fixture.rand(subjects,1)[0]).trim()
+    }
+}, Todo);
+
+fixture("/api/todos/{id}", todoStore);
+
+class TodoList extends StacheElement {
+    static view = `
+        <ul>
+            {{# if(this.todosPromise.isResolved) }}
+                {{# for(todo of this.todosPromise.value) }}
+                    <li>
+                        <input type='checkbox' checked:bind='todo.complete' disabled/>
+                        <label>{{ todo.name }}</label>
+                        <input type='date' valueAsDate:bind='todo.dueDate' disabled/>
+                        <button on:click="todo.destroy()">delete</button>
+                    </li>
+                {{/ for }}
+            {{/ if }}
+            {{# if(this.todosPromise.isPending) }}
+                <li>Loading</li>
+            {{/ if }}
+        </ul>
+    `;
+
+    static props = {
+        todosPromise: {
+            get default() {
+                return Todo.getList({});
+            }
+        }
+    };
+
+    connected() {
+        this.todosPromise.then((todos)=>{
+            this.listenTo(Todo, "destroyed", function(ev, destroyed){
+                let index = todos.indexOf(destroyed);
+                todos.splice(index, 1);
+            });
+        });
+    }
+}
+
+customElements.define("todo-list", TodoList);
+</script>
+
+
+</body>
+</html>

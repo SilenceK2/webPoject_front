@@ -1,0 +1,145 @@
+<html>
+<head>
+<style>
+label {
+    width: 100px;
+    display: inline-block;
+}
+</style>
+</head>
+<body>
+<todo-create></todo-create>
+<created-todos></created-todos>
+
+<script src="../../node_modules/steal/steal.js" dev-bundle></script>
+
+<script type="steal-module" id="demo-source">
+import { fixture, ObservableArray, ObservableObject, restModel, StacheElement, type } from "can";
+
+class Todo extends ObservableObject {
+    static props = {
+        id: { type: type.maybe(Number), identity: true },
+        complete: { type: Boolean, default: false },
+
+        dueDate: {
+            type: type.maybeConvert(Date),
+            get default() {
+                return new Date();
+            }
+        },
+
+        name: type.maybe(String)
+    };
+
+    preventSave() {
+        return !this.name || this.isSaving();
+    }
+}
+
+class TodoList extends ObservableArray {
+    static items = Todo;
+}
+
+const todoConnection = restModel({
+    Map: Todo,
+    List: TodoList,
+    url: "/api/todos/{id}"
+});
+
+let terms = ["can you","please","","","",""],
+    verbs = ["clean","walk","do","vaccum","organize","fold","wash","dust","pay","cook","get","take out"],
+    subjects = ["dog","laundry","diapers","clothes","car","windows","carpet","taxes","food","gas","trash"];
+
+let dayInMS = 24*60*60*1000;
+let lastWeek = new Date() - (7*dayInMS);
+let fourWeeks = new Date().getTime() + (4*7*dayInMS);
+
+let todoStore = fixture.store(20, function(){
+    return {
+        complete: fixture.rand([true, false],1)[0],
+        dueDate: new Date( fixture.rand(lastWeek, fourWeeks) ).toString(),
+        name: (fixture.rand(terms,1)[0]+" "+fixture.rand(verbs,1)[0]+" "+fixture.rand(subjects,1)[0]).trim()
+    }
+}, Todo);
+
+fixture("/api/todos/{id}", todoStore);
+
+class TodoCreate extends StacheElement {
+    static view = `
+        <form on:submit="this.createTodo(scope.event)">
+            <p>
+                <label>Name</label>
+                <input on:input:value:bind='this.todo.name'/>
+            </p>
+            <p>
+                <label>Complete</label>
+                <input type='checkbox' checked:bind='this.todo.complete'/>
+            </p>
+            <p>
+                <label>Date</label>
+                <input type='date' valueAsDate:bind='this.todo.dueDate'/>
+            </p>
+            <button disabled:from="this.todo.preventSave()">Create Todo</button>
+            {{# if(this.todo.isSaving()) }}Creating ....{{/ if }}
+        </form>
+    `;
+
+    static props = {
+        todo: {
+            get default() {
+                return new Todo();
+            }
+        }
+    };
+
+    createTodo(event) {
+        event.preventDefault();
+        this.todo.save().then((createdTodo) => {
+            this.todo = new Todo();
+        })
+    }
+}
+
+customElements.define("todo-create", TodoCreate);
+
+class CreatedTodos extends StacheElement {
+    static view = `
+        <h3>Created Todos</h3>
+        <table>
+            <tr>
+                <th>id</th><th>complete</th>
+                <th>name</th><th>due date</th>
+            </tr>
+            {{# for(todo of this.todos) }}
+                <tr>
+                    <td>{{ todo.id }}</td>
+                    <td><input type='checkbox' checked:bind='todo.complete' disabled/></td>
+                    <td>{{ todo.name }}</td>
+                    <td><input type='date' valueAsDate:bind='todo.dueDate' disabled/></td>
+                </tr>
+            {{ else }}
+                <tr><td colspan='4'><i>The todos you create will be listed here</i></td></tr>
+            {{/ for }}
+        </table>
+    `;
+
+    static props = {
+        todos: {
+            get default() {
+                return new TodoList();
+            }
+        }
+    };
+
+    connected() {
+        this.listenTo(Todo,"created", (ev, created) => {
+            this.todos.unshift(created);
+        })
+    }
+}
+customElements.define("created-todos", CreatedTodos);
+</script>
+
+
+</body>
+</html>

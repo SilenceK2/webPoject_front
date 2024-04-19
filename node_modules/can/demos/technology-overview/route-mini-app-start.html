@@ -1,0 +1,56 @@
+<body>
+<mock-url></mock-url>
+<my-app></my-app>
+<script>
+	steal = { forceES5: false };
+</script>
+<script id="demo-source" main="@empty" src="../../node_modules/steal/steal.js" dev-bundle>
+import { ObservableObject, route, StacheElement, stacheRouteHelpers } from "can";
+import "can/demos/technology-overview/mock-url";
+
+route.register("{page}", { page: "home" });
+
+class MyApp extends StacheElement {
+    static get view() {
+        return `
+            The current page is {{ this.routeData.page }}.
+            <a href="{{ routeUrl(page='home') }}">Home</a>
+            <a href="{{ routeUrl(page='tasks') }}">Tasks</a>
+        `;
+    }
+
+    static get props() {
+        return {
+            routeData: {
+                get default() {
+                    route.start();
+                    return route.data;
+                }
+            }
+        };
+    }
+};
+customElements.define("my-app", MyApp);
+</script>
+<style>
+.slider {
+    border: solid 1px blue;
+    background-color: red;
+    height: 20px;
+    width: 20px;
+    cursor: ew-resize;
+    position: relative;
+}
+percent-slider {
+    border: solid 1px black;
+    padding: 2px;
+    display: block;
+}
+p {
+    margin: 0px 0px 20px 0px;
+}
+</style>
+<style>
+body { margin: 0px; padding: 0px; }
+</style>
+</body>

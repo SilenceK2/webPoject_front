@@ -1,0 +1,222 @@
+<body>
+<div id='lists'></div>
+
+<button id='next'>Run Code:</button>
+<pre id='next-source'></pre>
+
+<script>
+	steal = { forceES5: false };
+</script>
+<script src="../../node_modules/steal/steal.js"  id="demo-source">
+import {
+	connect, fixture, ObservableObject, ObservableArray, Observation,
+	QueryLogic, domEvents, type, localStore
+} from "can";
+import $ from "jquery";
+
+import realTime from "can-connect/real-time/real-time";
+import callbacksOnce from "can-connect/constructor/callbacks-once/callbacks-once";
+import dataUrl from "can-connect/data/url/url";
+import connectConstructor from "can-connect/constructor/constructor";
+import constructorStore from "can-connect/constructor/store/store";
+import connectCanMap from "can-connect/can/map/map";
+
+class Todo extends ObservableObject {
+    static get props() {
+        return {
+            id: type.maybeConvert(Number),
+            name: type.maybeConvert(String),
+            complete: type.maybeConvert(Boolean)
+        };
+    }
+}
+
+class TodoList extends ObservableArray {
+    static get props() {
+        return {};
+    }
+
+    static get items() {
+        return type.maybeConvert(Todo);
+    }
+}
+
+// A connection that gets todos data
+var todosConnection = connect([
+	realTime,
+	dataUrl,
+	connectConstructor,
+	constructorStore,
+	callbacksOnce,
+	connectCanMap
+],{
+	url: "/todos",
+	Map: Todo,
+	List: TodoList
+});
+
+// Trap ajax requests to return and modify the following `todo` object.
+
+fixture({
+	"GET /todos": function(request){
+
+		if(request.data.filter.priority == 0) {
+			return {data: [
+				{id: 1, name: "dishes", priority: 0, complete: false},
+				{id: 2, name: "lawn", priority: 0, complete: false},
+				{id: 3, name: "garbage", priority: 0, complete: true}
+			]};
+		}
+		if(request.data.filter.complete == "false") {
+			return {data: [
+				{id: 1, name: "dishes", priority: 0, complete: false},
+				{id: 2, name: "lawn", priority: 0, complete: false},
+				{id: 4, name: "laundry", priority: 1, complete: false}
+			]};
+		}
+	}
+});
+
+var todoItem = function(todo) {
+	var li = $("<li>");
+	var liUpdate = new Observation(function(){
+		if(todo.complete) {
+			li.css("text-decoration","line-through");
+		} else {
+			li.css("text-decoration","");
+		}
+		li.text(todo.id+": "+todo.name);
+	});
+
+	var handler = function(){};
+	liUpdate.on(liUpdate)
+	domEvents.addEventListener(li[0], "removed", function(){
+		liUpdate.off(liUpdate);
+	});
+
+	li.bind("click", function(){
+		todo.complete = !todo.complete
+	});
+	return li;
+};
+
+
+var todoList = function(set){
+	var element = $('<ul>Loading</ul>');
+	var todos;
+
+	var add = function(ev, inserted, index) {
+		var lis = [].map.call(inserted, function(todo){
+			return todoItem(todo).hide()[0];
+		});
+
+		if(element.children().length > index) {
+			element.children().eq(index).after( $(lis) );
+		} else if(element.children().length) {
+			element.children().last().after( $(lis) );
+		} else {
+			element.append($(lis));
+		}
+		$(lis).fadeIn();
+	};
+
+	var remove = function(ev, inserted, index) {
+		console.log(inserted, index);
+		var li = element.children().eq( index );
+		var count = 0;
+		while(count < inserted.length) {
+			let cur = li;
+			li.fadeOut(function(){
+				cur.remove();
+			});
+			li = li.next();
+			count++;
+		}
+	};
+
+	todosConnection.getList(set).then(function(retrievedTodos){
+
+		element.empty();
+		todos = retrievedTodos;
+
+		todos.on("add", add).on("remove", remove);
+
+		add({},todos, 0)
+	});
+	domEvents.addEventListener(element[0], "removed", function(){
+		todos.off("add", add).off("remove", remove);
+		remove([],todos,0);
+	});
+
+	return element;
+};
+
+$("#lists").append("<h2>Critical (p0)</h2>");
+$("#lists").append(todoList({filter: {priority: 0 }}));
+
+$("#lists").append("<h2>Incomplete</h2>");
+$("#lists").append(todoList({filter: {complete: false }}));
+
+
+var steps = [
+	function(){
+		todosConnection.createInstance({
+			id: 5,
+			name: "sweep floor",
+			priority: 0,
+			complete: false
+		});
+		todosConnection.createInstance({
+			id: 6,
+			name: "wash windows",
+			priority: 1,
+			complete: true
+		});
+	},
+	function(){
+		todosConnection.updateInstance({
+			id: 5,
+			name: "sweep floor",
+			priority: 0,
+			complete: true
+		});
+	},
+	function(){
+		todosConnection.updateInstance({
+			id: 6,
+			name: "wash windows",
+			priority: 1,
+			complete: false
+		});
+	},
+	function(){
+		todosConnection.destroyInstance({id: 6});
+	}
+];
+var index = -1;
+
+var doNext = function(){
+	var next = steps[index+1];
+	if(next) {
+		var source = next.toString().replace("function () {\n","")
+			.replace(/\}$/,"")
+
+		.replace(/\t/g,"").replace(/([,\{])\n/g,function(whole, part){
+			return part+"\n  ";
+		});
+		$("#next-source").html(source);
+	} else {
+		$("#next, #next-source").remove();
+	}
+
+	if(steps[index]) {
+		steps[index]();
+	}
+	index++;
+};
+
+$("#next").click(doNext);
+doNext();
+
+</script>
+</body>

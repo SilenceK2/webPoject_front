@@ -1,0 +1,28 @@
+<style>
+.focused {
+	border-bottom: 4px solid blue;
+}
+</style>
+
+<on-focus></on-focus>
+
+<script src="../../node_modules/steal/steal.js" dev-bundle main="@empty" id="demo-source">
+import { StacheElement } from "can";
+
+class OnFocus extends StacheElement {
+    static view = `
+        {{let focusedOnName = null}}
+        <label>
+            <span {{# if(focusedOnName }}class="focused"{{/ if }}>
+                Name:
+            </span>
+            <input type="text" value:bind="this.name" focused:to="focusedOnName">
+        </label>
+    `;
+
+    static props = {
+        name: "Jake"
+    };
+};
+customElements.define("on-focus", OnFocus);
+</script>

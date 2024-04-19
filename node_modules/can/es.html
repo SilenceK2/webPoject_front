@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>CanJS + Modules</title>
+
+<my-app></my-app>
+
+<script type="module">
+	import { fixture, realtimeRestModel, StacheElement } from "//unpkg.com/can@6/core.mjs";
+
+    class MyApp extends StacheElement {
+        static get view() {
+            return `CanJS {{ feels }} modules`;
+        }
+
+        static get props() {
+            return {
+                feels: { default: "😍" }
+            };
+        }
+    };
+    customElements.define("my-app", MyApp);
+</script>

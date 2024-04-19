@@ -1,0 +1,30 @@
+<script type="text/stache" id="demo-html">
+<year-selector this:to="scope.vars.yearSelector" />
+Celebrate like it's {{ scope.vars.yearSelector.selectedYear }}!
+</script>
+<script src="../../node_modules/steal/steal.js" id='demo-source'>
+import { ObservableObject, stache, StacheElement, type } from "can";
+
+class YearSelector extends StacheElement {
+    static get view() {
+        return stache("<select value:bind='selectedYear'>"+
+                "<option value='1999'>1999</option>"+
+                "<option value='2014'>2014</option>"+
+            "</select>");
+    }
+
+    static get props() {
+        return {
+            selectedYear: {
+							default: 1999,
+							type: type.convert(Number)
+						}
+        };
+    }
+};
+
+customElements.define("year-selector", YearSelector);
+
+var tree = stache.from('demo-html')({});
+document.body.appendChild(tree);
+</script>
