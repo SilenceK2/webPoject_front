@@ -5,7 +5,7 @@ export const TopSection = styled.div`
   flex-direction: column;
   text-align: left;
   width: 100%;
-  flex-basis: 20px;
+  flex-basis: 50px;
   align-items: space-between;
   & > div:nth-child(1) {
     width: 100%;
@@ -37,8 +37,7 @@ flex-grow:1 ;
 
 export const MainContentContainer = styled.section`
   width: 100%;
-  flex: 3;
-  min-height: 50px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   margin: 0 5px;

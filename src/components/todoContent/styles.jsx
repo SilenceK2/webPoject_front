@@ -1,11 +1,11 @@
 import styled from "styled-components";
+
 export const TodoListTitle = styled.div`
   width: 100%;
   height: 10%;
   margin: 20px 20px;
   display: flex;
   flex: 1;
-
   flex-direction: row;
   & > div:nth-child(1) {
     background-image: url("/images/todoLogo.svg");
@@ -15,6 +15,7 @@ export const TodoListTitle = styled.div`
     background-repeat: no-repeat;
   }
 `;
+
 export const TodoListTitleContet = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +32,7 @@ export const TodoListTitleContet = styled.div`
     color: gray;
   }
 `;
+
 export const TodoListBoard = styled.div`
   display: flex;
   flex-grow: 1;
@@ -50,8 +52,10 @@ export const TodoListWeek = styled.div`
   flex-direction: row;
   margin-top: 10px;
   width: 90%;
-  border-bottom: 1px solid black;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
+  background-color: lightgray;
+  border-radius: 20px;
+  font-size: 16px;
 `;
 
 export const TodoListSat = styled.div`
@@ -100,11 +104,13 @@ export const TodoListFri = styled.div`
   align-items: center;
 `;
 export const TodoListDateBox = styled.div`
+  border-top: 1px solid black;
   flex: 1;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   width: 90%;
   justify-content: center;
+
   align-items: center;
   & > div {
     width: 100%;
@@ -113,15 +119,34 @@ export const TodoListDateBox = styled.div`
 `;
 
 export const TodoListDate = styled.div`
+display: flex;
+flex; 1;
+justify-content: center;
+font-size: 16px;
+height: 20%;
+margin-top: 10px;
+flex-direction: column;
+align-items: center;
+&: hover{
+  background-color: lightgray;
+  border-radius: 20px;
+}
+`;
+
+export const TodoListDetail = styled.div`
   display: flex;
   flex: 1;
-  justify-content: center;
+  jstify-content: center;
   align-items: center;
-  font-size: 18px;
+  width: 100%;
 `;
 
 export const Redcolor = styled.div`
   color: red;
+`;
+
+export const Bluecolor = styled.div`
+  color: blue;
 `;
 
 export const Topsection = styled.section`
@@ -130,7 +155,63 @@ export const Topsection = styled.section`
 
 export const BottomSection = styled.section`
   display: flex;
-  flex-grow: 1;
   flex: 1;
   flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+export const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  outline: none;
+`;
+
+export const ModalContainer = styled.div`
+  display: flex;
+  height: 60%;
+  flex-direction: column;
+  background-color: white;
+  width: 70%;
+  align-items: center;
+  border-radius: 20px;
+  padding: 20px;
+`;
+
+export const ModalTopSection = styled.section`
+  flex: 0.2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+export const ModalBottomSection = styled.section`
+  flex: 0.8;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+export const ModalInput = styled.input`
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+`;
+
+export const ModalButton = styled.div`
+  display: flex;
+  flex-basis: 40px;
+  flex-direction: row;
+  justify-content: space-between;
 `;

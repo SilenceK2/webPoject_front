@@ -140,7 +140,8 @@ export const MainContent = styled.div`
   flex-direction: column;
   margin-bottom: 20px;
   width: 100%;
-  max-height: 140px;
+  max-height: 500px;
+  min-height: 180px;
   opacity: ${({ show }) => (show ? 1 : 0)};
   transition: opacity 1s ease;
 `;

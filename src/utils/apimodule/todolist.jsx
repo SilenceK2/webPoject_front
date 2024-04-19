@@ -5,11 +5,11 @@ import api from "../api/Instance";
  * @get
  * @success
  */
-const getTodoListAllTable = async () => {
+const getTodoListAllTableApi = async () => {
   try {
-    const response = await api.get("/todolist/alllist");
+    const response = await api.get(`/todo/alllist/${1}`);
     const result = response.data;
-    console.log(result);
+    console.log(result.data);
     if (response.data.success) {
       return { success: true };
     } else {
@@ -22,19 +22,37 @@ const getTodoListAllTable = async () => {
 };
 
 /**
- * 홈에서 날짜 선택후 투두리스트 생성
+ * 홈화면 마운트될때 멤버이메일에 맞는 todolist불러오기
  * @post
  * @param title
  * @param content
  * @param member
  * @param selectedTodoId
  * @success
- * @todo memberemail값 보내기 테스트중
  */
-const createTodoList = async (useremail) => {
+
+const readTodoListApi = async (todoemail) => {
   try {
-    const response = await api.post("/todolist/create", {
-      todoEmail: useremail,
+    const response = await api.get(`/todo/mylist`, {
+      todoemail,
+    });
+    if (response.data.success) {
+      console.log(response.data);
+
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "불러오기 실패" };
+  }
+};
+
+const createTodoListApi = async (todoemail) => {
+  try {
+    const response = await api.post("/todo/create", {
+      todoemail,
     });
     if (response.data.success) {
       console.log(response.data);
@@ -55,10 +73,10 @@ const createTodoList = async (useremail) => {
  * @param selectedTodoId
  * @success
  */
-const deleteTodoList = async (selectedTodoId) => {
+const deleteTodoListApi = async (selectedId, todoemail) => {
   try {
-    const response = await api.post("/todolist/delete", {
-      selectedTodoId,
+    const response = await api.post(`/todo/delete/${selectedId}`, {
+      todoemail,
     });
     return { success: true };
   } catch (error) {
@@ -75,13 +93,12 @@ const deleteTodoList = async (selectedTodoId) => {
  * @param selectedTodoId
  * @success
  */
-const updateTodoList = async (title, content, member, selectedTodoId) => {
+const updateTodoListApi = async (title, content, todoemail, selectedId) => {
   try {
-    const response = await api.post("/todolist/update", {
+    const response = await api.post(`/todolist/update/${selectedId}`, {
       title,
       content,
-      member,
-      selectedTodoId,
+      todoemail,
     });
     return { success: true };
   } catch (error) {
@@ -90,4 +107,9 @@ const updateTodoList = async (title, content, member, selectedTodoId) => {
   }
 };
 
-export { createTodoList, deleteTodoList, updateTodoList, getTodoListAllTable };
+export {
+  createTodoListApi,
+  deleteTodoListApi,
+  updateTodoListApi,
+  getTodoListAllTableApi,
+};

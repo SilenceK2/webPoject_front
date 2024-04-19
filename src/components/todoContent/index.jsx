@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   TodoListTitle,
   TodoListTitleContet,
@@ -16,22 +16,95 @@ import {
   TodoListThu,
   TodoListDate,
   TodoListDateBox,
-  Redcolor,
+  TodoListDetail,
+  ModalContainer,
+  ModalBackdrop,
+  TitleInput,
+  ContentInput,
+  ModalTopSection,
+  ModalBottomSection,
+  Input,
+  ModalInput,
+  ModalButton,
 } from "./styles";
-
-import { useremailState } from "../../utils/recoil/atom";
+import {
+  createTodoListApi,
+  updateTodoListApi,
+  deleteTodoListApi,
+} from "../../utils/apimodule/todolist";
 import { useRecoilValue } from "recoil";
-import { createTodoList } from "../../utils/apimodule/todolist";
-const TodoContentBox = () => {
-  const useremail = useRecoilValue(useremailState);
+import { useremailState } from "../../utils/recoil/atom";
 
-  const sendMemberEmail = async () => {
+const TodoContentBox = () => {
+  const [selectedId, setSelectedDate] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const todoemail = useRecoilValue(useremailState);
+
+  useEffect(() => {}, []);
+
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const createTodoList = async () => {
     try {
-      const result = await createTodoList(useremail);
+      const result = await createTodoListApi(title, content, todoemail);
     } catch (error) {
-      alert(`${error.message}`);
+      console.log(`${error}`);
     }
   };
+
+  const updateTodoList = async () => {
+    try {
+      const result = await updateTodoListApi(
+        title,
+        content,
+        todoemail,
+        selectedId
+      );
+    } catch (error) {
+      console.log(`${error}`);
+    }
+  };
+
+  const deleteTodoList = async () => {
+    try {
+      const result = await deleteTodoListApi(selectedId, todoemail);
+    } catch (error) {
+      console.log(`${error}`);
+    }
+  };
+
+  const renderDates = () => {
+    const dates = [];
+    for (let i = 1; i <= 31; i++) {
+      const dayStyle =
+        i === 6 || i === 13 || i === 20 || i === 27
+          ? "blue"
+          : i === 7 || i === 14 || i === 21 || i === 28
+          ? "red"
+          : null;
+      dates.push(
+        <TodoListDate
+          key={i}
+          onClick={() => handleDateClick(i)}
+          style={{ opacity: i <= 4 || i > 30 ? 0.5 : 1, color: dayStyle }}
+        >
+          {i}
+          <TodoListDetail></TodoListDetail>
+        </TodoListDate>
+      );
+    }
+    return dates;
+  };
+
   return (
     <>
       <Topsection>
@@ -44,12 +117,10 @@ const TodoContentBox = () => {
         </TodoListTitle>
       </Topsection>
       <BottomSection>
-        <button onClick={sendMemberEmail}>memberEmail보내기</button>
-        {/* <TodoListBoard />
         <TodoListBoard>
           <TodoListMonth>4월</TodoListMonth>
           <TodoListWeek>
-            <TodoListSun>일</TodoListSun>
+            <TodoListSun>월</TodoListSun>
             <TodoListMon>월</TodoListMon>
             <TodoListTue>화</TodoListTue>
             <TodoListWed>수</TodoListWed>
@@ -57,54 +128,36 @@ const TodoContentBox = () => {
             <TodoListFri>금</TodoListFri>
             <TodoListSat>토</TodoListSat>
           </TodoListWeek>
-          <TodoListDateBox>
-            <TodoListDate>
-              <Redcolor>31</Redcolor>
-            </TodoListDate>
-            <TodoListDate>1</TodoListDate>
-            <TodoListDate>2</TodoListDate>
-            <TodoListDate>3</TodoListDate>
-            <TodoListDate>4</TodoListDate>
-            <TodoListDate>5</TodoListDate>
-            <TodoListDate>6</TodoListDate>
-            <TodoListDate>
-              <Redcolor>7</Redcolor>
-            </TodoListDate>
-            <TodoListDate>8</TodoListDate>
-            <TodoListDate>9</TodoListDate>
-            <TodoListDate>10</TodoListDate>
-            <TodoListDate>11</TodoListDate>
-            <TodoListDate>12</TodoListDate>
-            <TodoListDate>13</TodoListDate>
-            <TodoListDate>
-              <Redcolor>14</Redcolor>
-            </TodoListDate>
-            <TodoListDate>15</TodoListDate>
-            <TodoListDate>16</TodoListDate>
-            <TodoListDate>17</TodoListDate>
-            <TodoListDate>18</TodoListDate>
-            <TodoListDate>19</TodoListDate>
-            <TodoListDate>20</TodoListDate>
-            <TodoListDate>
-              <Redcolor>21</Redcolor>
-            </TodoListDate>
-            <TodoListDate>22</TodoListDate>
-            <TodoListDate>23</TodoListDate>
-            <TodoListDate>24</TodoListDate>
-            <TodoListDate>25</TodoListDate>
-            <TodoListDate>26</TodoListDate>
-            <TodoListDate>27</TodoListDate>
-            <TodoListDate>
-              <Redcolor>28</Redcolor>
-            </TodoListDate>
-            <TodoListDate>29</TodoListDate>
-            <TodoListDate>30</TodoListDate>
-            <TodoListDate>1</TodoListDate>
-            <TodoListDate>2</TodoListDate>
-            <TodoListDate>3</TodoListDate>
-            <TodoListDate>4</TodoListDate>
-          </TodoListDateBox>
-        </TodoListBoard> */}
+          <TodoListDateBox>{renderDates()}</TodoListDateBox>
+        </TodoListBoard>
+        {isModalOpen && (
+          <ModalBackdrop>
+            <ModalContainer>
+              <ModalTopSection>
+                <ModalInput
+                  // value="제목을 입력하세요"
+                  type="text"
+                  placeholder="제목을 입력하세요"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </ModalTopSection>
+              <ModalBottomSection>
+                <ModalInput
+                  // value="제목을 입력하세요"
+                  type="text"
+                  placeholder="내용을 입력하세요"
+                  onChange={(e) => setContent(e.target.value)}
+                />
+                <ModalButton>
+                  <button onClick={closeModal}>모달 닫기</button>
+                  <button onClick={createTodoList}>추가</button>
+                  <button onClick={updateTodoList}>수정</button>
+                  <button onClick={deleteTodoList}>삭제</button>
+                </ModalButton>
+              </ModalBottomSection>
+            </ModalContainer>
+          </ModalBackdrop>
+        )}
       </BottomSection>
     </>
   );

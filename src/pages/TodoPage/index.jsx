@@ -19,31 +19,50 @@ import {
 } from "./styles";
 import Header from "../../style/stylecomponents/Layout/Header";
 import { useEffect, useState } from "react";
-import { getTodoListAllTable } from "../../utils/apimodule/todolist";
+import { getTodoListAllTableApi } from "../../utils/apimodule/todolist";
 
 const TodoPage = () => {
-  const [listTableData, setListTableData] = useState({
-    title: "",
-    content: "",
-    memberName: "",
-    like: "",
-  });
-  useEffect(
-    () => {
-      const fetchGetTodoListData = async () => {
-        try {
-          const result = await getTodoListAllTable();
-          setListTableData(result);
-          console.log(result);
-        } catch (error) {
-          console.log(error);
+  const [topThreeTodos, setTopThreeTodos] = useState([]);
+  const [latestUpdates, setLatestUpdates] = useState([]);
+
+  useEffect(() => {
+    const fetchTopThreeTodos = async () => {
+      try {
+        const response = await getTodoListAllTableApi();
+        if (response.success) {
+          const sortedTodos = response.data.sort(
+            (a, b) => b.todo_like - a.todo_like
+          );
+          const topThree = sortedTodos.slice(0, 3);
+          setTopThreeTodos(topThree);
+        } else {
+          console.log("Failed to fetch todo list");
         }
-      };
-      fetchGetTodoListData();
-    },
-    [],
-    []
-  );
+      } catch (error) {
+        console.error("Error fetching todo list:", error);
+      }
+    };
+
+    const fetchLatestUpdates = async () => {
+      try {
+        const response = await getTodoListAllTableApi(); // Assuming this API also returns latest updates
+        if (response.success) {
+          const sortedUpdates = response.data.sort(
+            (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+          );
+          const latestFive = sortedUpdates.slice(0, 5);
+          setLatestUpdates(latestFive);
+        } else {
+          console.log("Failed to fetch latest updates");
+        }
+      } catch (error) {
+        console.error("Error fetching latest updates:", error);
+      }
+    };
+
+    fetchTopThreeTodos();
+    fetchLatestUpdates();
+  }, []);
 
   return (
     <>
@@ -59,7 +78,59 @@ const TodoPage = () => {
               </UpdateListTitleContent>
             </UpdateListTitle>
             <RatingContent>
-              <RatingBody>
+              {topThreeTodos.map((todo, index) => (
+                <RatingBody key={todo.id}>
+                  <RatingNumber>
+                    <div>{index + 1}</div>
+                    <div></div>
+                  </RatingNumber>
+                  <RatingBodyTitle>
+                    <div>{todo.todo_title}</div>
+                    <div>
+                      <p>#{todo.todo_category}</p>
+                    </div>
+                  </RatingBodyTitle>
+                  <RatingBodyContent>
+                    <div>⭐️&nbsp;&nbsp;{todo.todo_like}</div>
+                    <div>@{todo.todo_email}</div>
+                  </RatingBodyContent>
+                </RatingBody>
+              ))}
+            </RatingContent>
+          </RatingContainer>
+        </TopSection>
+        <BottomSection>
+          <TodoUpdateList>
+            <UpdateListTitle>
+              <div>✅</div>
+              <UpdateListTitleContent>
+                실시간 업데이트
+                <div>사람들이 공유한 todolist를 확인해보세요!</div>
+              </UpdateListTitleContent>
+            </UpdateListTitle>
+            <UpdateListContent>
+              {latestUpdates.map((update, index) => (
+                <UpdateContent key={update.id}>
+                  <UpdateContentTitle>{update.todo_title}</UpdateContentTitle>
+                  <UpdateContentContent>
+                    <div>
+                      <p>#{update.todo_category}</p>
+                    </div>
+                    <div>{update.todo_description}</div>
+                  </UpdateContentContent>
+                </UpdateContent>
+              ))}
+            </UpdateListContent>
+          </TodoUpdateList>
+        </BottomSection>
+      </TodoContainer>
+    </>
+  );
+};
+export default TodoPage;
+
+{
+  /* <RatingBody>
                 <RatingNumber>
                   <div>1</div>
                   <div></div>
@@ -106,85 +177,5 @@ const TodoPage = () => {
                   <div>⭐️&nbsp;&nbsp;798</div>
                   <div>@raebagi</div>
                 </RatingBodyContent>
-              </RatingBody>
-            </RatingContent>
-          </RatingContainer>
-        </TopSection>
-        <BottomSection>
-          <TodoUpdateList>
-            <UpdateListTitle>
-              <div>✅</div>
-              <UpdateListTitleContent>
-                실시간 업데이트
-                <div>사람들이 공유한 todolist를 확인해보세요!</div>
-              </UpdateListTitleContent>
-            </UpdateListTitle>
-            <UpdateListContent>
-              <UpdateContent>
-                <UpdateContentTitle>정보처리산업기사실기</UpdateContentTitle>
-                <UpdateContentContent>
-                  <div>
-                    <p>#정산기</p>
-                    <p>#나는최고</p>
-                    <p>#자기개발</p>
-                  </div>
-                  <div>
-                    책 사서 공부하려고 하는데 카페를 가야하는데 아주 힘들고
-                    위태롭고 애처롭다
-                  </div>
-                </UpdateContentContent>
-              </UpdateContent>
-              <UpdateContent>
-                {" "}
-                <UpdateContentTitle>박찬민은 빵꾸똥꾸</UpdateContentTitle>
-                <UpdateContentContent>
-                  <div>
-                    <p>#박찬민</p>
-                    <p>#이상함</p>
-                    <p>#똥꼬</p>
-                  </div>
-                  <div>
-                    찬민이는 백엔드를 공부하고 있는데 이상하다 애가아주아중
-                    ㅣ아한다 그냥 이상하다 뭐가 이상한지 모르겠는데 이상하다
-                  </div>
-                </UpdateContentContent>
-              </UpdateContent>
-              <UpdateContent>
-                {" "}
-                <UpdateContentTitle>박찬민은 빵꾸똥꾸</UpdateContentTitle>
-                <UpdateContentContent>
-                  <div>
-                    <p>#박찬민</p>
-                    <p>#이상함</p>
-                    <p>#똥꼬</p>
-                  </div>
-                  <div>
-                    찬민이는 백엔드를 공부하고 있는데 이상하다 애가아주아중
-                    ㅣ아한다 그냥 이상하다 뭐가 이상한지 모르겠는데 이상하다
-                  </div>
-                </UpdateContentContent>
-              </UpdateContent>
-              <UpdateContent>
-                {" "}
-                <UpdateContentTitle>박찬민은 빵꾸똥꾸</UpdateContentTitle>
-                <UpdateContentContent>
-                  <div>
-                    <p>#박찬민</p>
-                    <p>#이상함</p>
-                    <p>#똥꼬</p>
-                  </div>
-                  <div>
-                    찬민이는 백엔드를 공부하고 있는데 이상하다 애가아주아중
-                    ㅣ아한다 그냥 이상하다 뭐가 이상한지 모르겠는데 이상하다
-                  </div>
-                </UpdateContentContent>
-              </UpdateContent>
-            </UpdateListContent>
-          </TodoUpdateList>
-        </BottomSection>
-      </TodoContainer>
-    </>
-  );
-};
-
-export default TodoPage;
+              </RatingBody> */
+}
