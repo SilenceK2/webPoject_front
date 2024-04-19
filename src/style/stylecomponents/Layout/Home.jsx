@@ -29,7 +29,7 @@ export const WheaterContent = styled.div`
   max-height: 80px;
 `;
 export const TodoListContent = styled.div`
-  margin-top: 50px;
+  // margin-top: 50px;
   flex: 0.3;
   display: flex;
   border-radius: 20px;

@@ -6,16 +6,16 @@ const HeaderContainer = styled.header`
   align-items: center;
   padding: 10px;
   height: 8%;
-  width: 100%;
+  width: 100vw;
   background-color: white;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   display: flex;
   justify-content: space-between;
   position: fixed;
   box-sizing: border-box;
-  // @media (min-width: 1200px) {
-  //   width: 30vw;
-  // }
+  @media (min-width: 1200px) {
+    width: 30vw;
+  }
 
   & div:nth-child(1) {
     justify-content: flex-start;

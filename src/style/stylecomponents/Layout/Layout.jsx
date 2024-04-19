@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const MainContainer = styled.div`
-  width: 40vw;
+  width: 30vw;
   height: 100vh;
   background-color: #fff;
   overflow-x: hidden;

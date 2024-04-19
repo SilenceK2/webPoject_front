@@ -4,7 +4,7 @@ export const TodoContainer = styled.section`
   display: flex;
   flex-direction: column;
   margin: 0 24px;
-  margin-top: 100px;
+  margin-top: 8vw;
   height: 100%;
   letter-spacing: -1px;
 `;

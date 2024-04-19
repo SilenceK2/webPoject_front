@@ -1,49 +1,45 @@
 import styled from "styled-components";
 
 export const TopSection = styled.div`
-  flex: 1;
+  flex: 0.2;
   flex-direction: column;
-  margin: 0 20px;
-
-  margin-left: 10px;
   text-align: left;
   width: 100%;
   flex-basis: 20px;
   align-items: space-between;
-
   & > div:nth-child(1) {
     width: 100%;
     font-size: 21px;
     font-weight: bold;
     transition: opacity 0.5s ease-in-out;
   }
-
   & > div:nth-child(2) {
     margin-top: -3px;
     font-weight: light;
     color: #868e96;
     transition: opacity 0.5s ease-in-out;
   }
-  & > div:nth-child(3) {
-    font-weight: light;
-    color: black;
-    margin-top: 25%;
-
-    font-weight: bold;
-    height: 30%;
-    width: 90%;
-    border-radius: 20px;
-    align-items: center;
-    display: flex;
-    justify-content: right;
+`;
+export const BottomSection = styled.div`
+  font-weight: light;
+  flex-direction: column;
+flex-grow:1 ;
+  color: black;
+  font-weight: bold;
+  width: 95%;
+  height:100%;
+  border-radius: 20px;
+  align-items: flex-end;
+  display: flex;
+  justify-content: flex-end;
   }
 `;
 
-export const BottomSection = styled.div`
-  flex-grow: 1;
-  flex-direction: column;
+export const MainContentContainer = styled.section`
   width: 100%;
-  margin- & > div:nth-child(1) {
-    font-size: 12px;
-  }
+  flex: 3;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 5px;
 `;
