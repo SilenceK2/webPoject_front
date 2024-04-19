@@ -22,7 +22,7 @@ export const WeatherBottomSection = styled.section`
     border-radius: 20px;
     border: 5px solid rgb(165, 159, 255);
     width: 100%;
-    margin-top: 20px;
+    margin-top: 50px;
   }
 `;
 

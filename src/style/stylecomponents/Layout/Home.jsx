@@ -25,8 +25,8 @@ export const WheaterContent = styled.div`
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   width: 100%;
-  min-height: 200px;
-  max-height: 80px;
+  min-height: 220px;
+  max-height: 220px;
 `;
 export const TodoListContent = styled.div`
   // margin-top: 50px;
@@ -48,7 +48,8 @@ export const LocationContent = styled.div`
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   width: 100%;
-  min-height: 200px;
+  min-height: 220px;
+  max-height: 220px;
 `;
 
 export const LocationTitle = styled.div`

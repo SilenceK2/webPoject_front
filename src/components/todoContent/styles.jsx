@@ -166,7 +166,7 @@ export const ModalBackdrop = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
@@ -178,40 +178,74 @@ export const ModalBackdrop = styled.div`
 
 export const ModalContainer = styled.div`
   display: flex;
-  height: 60%;
+  height: 150vw;
   flex-direction: column;
   background-color: white;
   width: 70%;
   align-items: center;
   border-radius: 20px;
   padding: 20px;
+  @media (min-width: 1200px) {
+    height: 40vw;
+    width: 22vw;
+  }
+  & > div:nth-child(1) {
+    margin-top: -70px;
+    margin-bottom: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    text-align: right;
+  }
 `;
 
 export const ModalTopSection = styled.section`
-  flex: 0.2;
+  flex: 0.3;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
 `;
 
 export const ModalBottomSection = styled.section`
-  flex: 0.8;
+  flex-grow: 1;
   width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  & > label {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 10px;
+  }
 `;
 
 export const ModalInput = styled.input`
   flex: 1;
-  border: none;
+  border-radius: 50px;
   outline: none;
   font-size: 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 `;
 
 export const ModalButton = styled.div`
   display: flex;
   flex-basis: 40px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
+  & > button {
+    background-color: black;
+    border: none;
+    border-radius: 10px;
+    width: 60px;
+    height: 30px;
+    color: white;
+    font-weight: bold;
+    margin-left: 15px;
+  }
 `;

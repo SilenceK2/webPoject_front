@@ -41,6 +41,8 @@ const TodoContentBox = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const todoemail = useRecoilValue(useremailState);
+  const [sharedState, setSharedState] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {}, []);
 
@@ -51,11 +53,35 @@ const TodoContentBox = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setTitle("");
+    setContent("");
   };
 
   const createTodoList = async () => {
     try {
-      const result = await createTodoListApi(title, content, todoemail);
+      if (title.trim().length > 10 || content.trim().length > 50) {
+        alert("입력한 내용이 제한을 초과했습니다.");
+        return;
+      }
+      if (!title.trim() || !content.trim()) {
+        alert("빈 칸을 채워주세요.");
+        return;
+      }
+
+      const result = await createTodoListApi(
+        title,
+        content,
+        todoemail,
+        sharedState,
+        categories
+      );
+      if (result.data.success) {
+        if (window.confirm("작성하시겠습니까?")) {
+          setIsModalOpen(false);
+        }
+      } else {
+        alert("글 작성 실패");
+      }
     } catch (error) {
       console.log(`${error}`);
     }
@@ -63,12 +89,30 @@ const TodoContentBox = () => {
 
   const updateTodoList = async () => {
     try {
+      if (title.trim().length > 10 || content.trim().length > 50) {
+        alert("입력한 내용이 제한을 초과했습니다.");
+        return;
+      }
+
+      if (!title.trim() || !content.trim()) {
+        alert("빈 칸을 채워주세요.");
+        return;
+      }
+
       const result = await updateTodoListApi(
         title,
         content,
         todoemail,
-        selectedId
+        selectedId,
+        categories
       );
+      if (result.data.success) {
+        if (window.confirm("수정하시겠습니까?")) {
+          setIsModalOpen(false);
+        }
+      } else {
+        alert("글 작성 실패");
+      }
     } catch (error) {
       console.log(`${error}`);
     }
@@ -77,6 +121,13 @@ const TodoContentBox = () => {
   const deleteTodoList = async () => {
     try {
       const result = await deleteTodoListApi(selectedId, todoemail);
+      if (result.data.success) {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+          setIsModalOpen(false);
+        }
+      } else {
+        alert("글 작성 실패");
+      }
     } catch (error) {
       console.log(`${error}`);
     }
@@ -86,16 +137,12 @@ const TodoContentBox = () => {
     const dates = [];
     for (let i = 1; i <= 31; i++) {
       const dayStyle =
-        i === 6 || i === 13 || i === 20 || i === 27
-          ? "blue"
-          : i === 7 || i === 14 || i === 21 || i === 28
-          ? "red"
-          : null;
+        i === 6 || i === 13 || i === 20 || i === 27 ? "blue" : "black";
       dates.push(
         <TodoListDate
           key={i}
           onClick={() => handleDateClick(i)}
-          style={{ opacity: i <= 4 || i > 30 ? 0.5 : 1, color: dayStyle }}
+          style={{ opacity: i <= 0 || i > 30 ? 0.5 : 1, color: dayStyle }}
         >
           {i}
           <TodoListDetail></TodoListDetail>
@@ -131,32 +178,59 @@ const TodoContentBox = () => {
           <TodoListDateBox>{renderDates()}</TodoListDateBox>
         </TodoListBoard>
         {isModalOpen && (
-          <ModalBackdrop>
-            <ModalContainer>
-              <ModalTopSection>
-                <ModalInput
-                  // value="제목을 입력하세요"
-                  type="text"
-                  placeholder="제목을 입력하세요"
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </ModalTopSection>
-              <ModalBottomSection>
-                <ModalInput
-                  // value="제목을 입력하세요"
-                  type="text"
-                  placeholder="내용을 입력하세요"
-                  onChange={(e) => setContent(e.target.value)}
-                />
-                <ModalButton>
-                  <button onClick={closeModal}>모달 닫기</button>
-                  <button onClick={createTodoList}>추가</button>
-                  <button onClick={updateTodoList}>수정</button>
-                  <button onClick={deleteTodoList}>삭제</button>
-                </ModalButton>
-              </ModalBottomSection>
-            </ModalContainer>
-          </ModalBackdrop>
+          <>
+            <ModalBackdrop>
+              <ModalContainer>
+                <div>
+                  <p onClick={closeModal}>❌</p>
+                </div>
+                <ModalTopSection>
+                  <ModalInput
+                    type="text"
+                    placeholder="제목을 입력하세요"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <ModalInput
+                    type="text"
+                    placeholder="카테고리를 입력하세요"
+                    value={categories.join(", ")}
+                    onChange={(e) => {
+                      const categoryArray = e.target.value.split("# ");
+
+                      if (categoryArray.length > 10) {
+                        categoryArray.pop();
+                      }
+                      setCategories(categoryArray);
+                    }}
+                  />
+                </ModalTopSection>
+                <ModalBottomSection>
+                  <ModalInput
+                    type="text"
+                    placeholder="내용을 입력하세요"
+                    onChange={(e) => {
+                      setContent(e.target.value);
+                    }}
+                  />
+                  <label>
+                    <input
+                      type="checkbox"
+                      onChange={() => {
+                        setSharedState(true);
+                      }}
+                    />
+                    공유하기
+                  </label>
+                  <ModalButton>
+                    <button onClick={createTodoList}>추가</button>
+                    <button onClick={updateTodoList}>수정</button>
+                    <button onClick={deleteTodoList}>삭제</button>
+                  </ModalButton>
+                </ModalBottomSection>
+              </ModalContainer>
+            </ModalBackdrop>
+          </>
         )}
       </BottomSection>
     </>

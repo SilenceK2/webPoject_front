@@ -34,7 +34,7 @@ const getTodoListAllTableApi = async () => {
 const readTodoListApi = async (todoemail) => {
   try {
     const response = await api.get(`/todo/mylist`, {
-      todoemail,
+      todoEmail: todoemail,
     });
     if (response.data.success) {
       console.log(response.data);
@@ -52,7 +52,7 @@ const readTodoListApi = async (todoemail) => {
 const createTodoListApi = async (todoemail) => {
   try {
     const response = await api.post("/todo/create", {
-      todoemail,
+      todoEmail: todoemail,
     });
     if (response.data.success) {
       console.log(response.data);
@@ -76,7 +76,7 @@ const createTodoListApi = async (todoemail) => {
 const deleteTodoListApi = async (selectedId, todoemail) => {
   try {
     const response = await api.post(`/todo/delete/${selectedId}`, {
-      todoemail,
+      todoEmail: todoemail,
     });
     return { success: true };
   } catch (error) {
@@ -96,9 +96,9 @@ const deleteTodoListApi = async (selectedId, todoemail) => {
 const updateTodoListApi = async (title, content, todoemail, selectedId) => {
   try {
     const response = await api.post(`/todolist/update/${selectedId}`, {
-      title,
-      content,
-      todoemail,
+      todoTitle: title,
+      totoContent: content,
+      todoEmail: todoemail,
     });
     return { success: true };
   } catch (error) {
@@ -112,4 +112,5 @@ export {
   deleteTodoListApi,
   updateTodoListApi,
   getTodoListAllTableApi,
+  readTodoListApi,
 };
