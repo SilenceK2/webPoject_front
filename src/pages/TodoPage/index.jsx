@@ -19,8 +19,10 @@ import {
 } from "./styles";
 import Header from "../../style/stylecomponents/Layout/Header";
 import { useEffect, useState } from "react";
-import { getTodoListAllTableApi } from "../../utils/apimodule/todolist";
-
+import {
+  getRatingTodoListApi,
+  getTodoListAllTableApi,
+} from "../../utils/apimodule/todolist";
 const TodoPage = () => {
   const [topThreeTodos, setTopThreeTodos] = useState([]);
   const [latestUpdates, setLatestUpdates] = useState([]);
@@ -29,34 +31,33 @@ const TodoPage = () => {
     const fetchTopThreeTodos = async () => {
       try {
         const response = await getTodoListAllTableApi();
-        if (response.success) {
-          const sortedTodos = response.data.sort(
-            (a, b) => b.todo_like - a.todo_like
-          );
-          const topThree = sortedTodos.slice(0, 3);
+        if (response && response.success) {
+          const sortedData = response.data.data.sort(
+            (a, b) => b.todoLikes - a.todoLikes
+          ); // todoLike 기준으로 내림차순 정렬
+          const topThree = sortedData.slice(0, 3);
           setTopThreeTodos(topThree);
+          return topThree;
         } else {
-          console.log("Failed to fetch todo list");
+          console.log("상위 3개 가져오기 실패");
+          return []; // 실패 시 빈 배열 반환
         }
       } catch (error) {
-        console.error("Error fetching todo list:", error);
+        console.error("fetching error:", error);
+        return []; // 에러 발생 시 빈 배열 반환
       }
     };
-
     const fetchLatestUpdates = async () => {
       try {
-        const response = await getTodoListAllTableApi(); // Assuming this API also returns latest updates
-        if (response.success) {
-          const sortedUpdates = response.data.sort(
-            (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
-          );
-          const latestFive = sortedUpdates.slice(0, 5);
+        const response = await getTodoListAllTableApi();
+        if (response && response.success && response.data.data) {
+          const latestFive = response.data.data.slice(0, 5);
           setLatestUpdates(latestFive);
         } else {
-          console.log("Failed to fetch latest updates");
+          console.log("최신 업데이트 불러오기 실패");
         }
       } catch (error) {
-        console.error("Error fetching latest updates:", error);
+        console.error("fetching error:", error);
       }
     };
 
@@ -85,14 +86,16 @@ const TodoPage = () => {
                     <div></div>
                   </RatingNumber>
                   <RatingBodyTitle>
-                    <div>{todo.todo_title}</div>
+                    <div>{todo.todoTitle}</div>
                     <div>
-                      <p>#{todo.todo_category}</p>
+                      <p>#{todo.todoCategory}</p>
+                      <p>#word</p>
+                      <p>#enter</p>
                     </div>
                   </RatingBodyTitle>
                   <RatingBodyContent>
-                    <div>⭐️&nbsp;&nbsp;{todo.todo_like}</div>
-                    <div>@{todo.todo_email}</div>
+                    <div>⭐️&nbsp;&nbsp;{todo.todoLikes}</div>
+                    <div>@{todo.todoEmail}</div>
                   </RatingBodyContent>
                 </RatingBody>
               ))}
@@ -111,12 +114,14 @@ const TodoPage = () => {
             <UpdateListContent>
               {latestUpdates.map((update, index) => (
                 <UpdateContent key={update.id}>
-                  <UpdateContentTitle>{update.todo_title}</UpdateContentTitle>
+                  <UpdateContentTitle>{update.todoTitle}</UpdateContentTitle>
                   <UpdateContentContent>
                     <div>
-                      <p>#{update.todo_category}</p>
+                      <p>#{update.todoCategory}</p>
+                      <p>#enter</p>
+                      <p>#tae</p>
                     </div>
-                    <div>{update.todo_description}</div>
+                    <div>{update.todoContent}</div>
                   </UpdateContentContent>
                 </UpdateContent>
               ))}

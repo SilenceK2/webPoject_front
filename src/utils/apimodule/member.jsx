@@ -1,3 +1,4 @@
+import { mehBlank } from "fontawesome";
 import api from "../api/Instance";
 
 /**
@@ -7,28 +8,30 @@ import api from "../api/Instance";
  * @returns
  */
 
-export const loginGetMeberId = async () => {
-  try {
-    const response = await api.get("/member/getmemberid");
-    const result = response.data.memberid;
-    console.log(result);
-    const memberId = response.data.memberid;
-    localStorage.setItem("memberIdNumber", memberId);
-    console.log(response.data);
-    return { success: true, result };
-  } catch (error) {
-    console.error("error:", error);
-    return { success: false, error: "실패" };
-  }
-};
+// export const loginGetMemberId = async () => {
+//   try {
+//     const response = await api.get("/member/login");
+//     const result = response.data;
+//     const memberId = response.data.id;
+//     console.log(result);
+//     localStorage.setItem("memberIdNumber", memberId);
+//     console.log(response.data);
+//     return { success: true, result };
+//   } catch (error) {
+//     console.error("error:", error);
+//     return { success: false, error: "실패" };
+//   }
+// };
 export const loginUser = async (email, pwd) => {
   try {
     const response = await api.post("/member/login", {
       memberEmail: email,
       memberPassword: pwd,
     });
-
-    if (response.data.success) {
+    const memberId = response.data.data.id;
+    console.log(response.data);
+    if (response.data.success === "true") {
+      localStorage.setItem("memberIdNumber", memberId);
       return { success: true };
     } else {
       return { success: false };
@@ -76,7 +79,7 @@ export const signupUser = async (email, pwd, name) => {
 
     console.log(email, pwd);
 
-    if (response.data.success) {
+    if (response.data.success === "true") {
       return { success: true, message: "회원가입 성공" };
     } else {
       return { success: false };

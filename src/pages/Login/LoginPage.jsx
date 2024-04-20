@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-regular-svg-icons"; // 사용할 아이콘 불러오기
 import { LinkContainer, Link } from "../../style/stylecomponents/widget/Link";
 import { useState } from "react";
-import { loginUser, loginGetMeberId } from "../../utils/apimodule/member";
+import { loginUser, loginGetMemberId } from "../../utils/apimodule/member";
 import { useremailState } from "../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
 const LoginBox = () => {
@@ -30,11 +30,9 @@ const LoginBox = () => {
   const handelLoginClick = async () => {
     try {
       const result = await loginUser(email, pwd);
-      const id = await loginGetMeberId();
-      setMemberId(id.loginId);
+      const response = result.data;
+      console.log(response);
       if (result.success) {
-        console.log(memberId);
-        localStorage.setItem("memberId", memberId);
         navigate("/homepage");
         useremail(email);
         alert("로그인이 완료되었습니다.");

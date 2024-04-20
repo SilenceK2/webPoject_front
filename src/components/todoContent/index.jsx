@@ -92,28 +92,27 @@ const TodoContentBox = () => {
         return;
       }
 
-      const result = await createTodoListApi(
-        title,
-        content,
-        todoemail,
-        sharedState,
-        selectedId,
-        categories
-      );
-      console.log(
-        title,
-        content,
-        todoemail,
-        selectedId,
-        sharedState,
-        categories,
-        selectedId
-      );
-      if (result.data.success) {
-        if (window.confirm("작성하시겠습니까?")) {
+      if (window.confirm("작성하시겠습니까?")) {
+        const response = await createTodoListApi(
+          title,
+          content,
+          todoemail,
+          sharedState,
+          selectedId,
+          categories
+        );
+        console.log(
+          title,
+          content,
+          todoemail,
+          selectedId,
+          sharedState,
+          categories,
+          selectedId
+        );
+        if (response.success === true) {
           setIsModalOpen(false);
         }
-      } else {
       }
     } catch (error) {
       console.log(`${error}`);

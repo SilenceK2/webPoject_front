@@ -13,13 +13,27 @@ const api = axios.create({
  * 요청 인터셉터
  * 로컬 스토리지에 access_token이 없으면 요청 url을 /users/login으로 변경
  */
-// api.interceptors.request.use((config) => {
-//   if (!localStorage.getItem("memberIdNumber")) {
-//     alert("로그인을 진행해주세요");
-//     window.location.href = "/login";
-//   }
-//   return config;
-// });
+
+api.interceptors.request.use(
+  (config) => {
+    if (
+      window.location.pathname === "/login" ||
+      window.location.pathname === "/signup"
+    ) {
+      return config;
+    }
+    if (!localStorage.getItem("memberIdNumber")) {
+      // 로그인 페이지로 리디렉션
+      window.location.href = "/login";
+      alert("로그인을 진행해주세요");
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 /**
  * 응답 인터셉터

@@ -34,15 +34,23 @@ const HeaderContainer = styled.header`
   & div:nth-child(3) {
     justify-content: flex-end;
     flex: 0.3;
+    cursor: pointer; /* 마우스 커서를 포인터로 변경 */
   }
 `;
 
 const Header = () => {
+  const handleLogout = () => {
+    if (window.confirm("로그아웃하시겠습니까?")) {
+      localStorage.removeItem("memberIdNumber");
+      window.location.href = "/login";
+    }
+  };
+
   return (
     <HeaderContainer>
       <div></div>
       <div></div>
-      <div>user</div>
+      <div onClick={handleLogout}>user</div>
     </HeaderContainer>
   );
 };

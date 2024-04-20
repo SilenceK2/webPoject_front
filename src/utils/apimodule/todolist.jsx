@@ -7,11 +7,11 @@ import api from "../api/Instance";
  */
 const getTodoListAllTableApi = async () => {
   try {
-    const response = await api.get(`/todo/alllist/${1}`);
+    const response = await api.get(`/todo/alllist`);
     const result = response.data;
-    console.log(result.data);
-    if (response.data.success) {
-      return { success: true };
+    console.log(result);
+    if (result.success) {
+      return { success: true, data: result };
     } else {
       return { success: false };
     }
@@ -33,7 +33,7 @@ const getTodoListAllTableApi = async () => {
 
 const readTodoListApi = async (todoemail) => {
   try {
-    const response = await api.get(`/todo/mylist`, {
+    const response = await api.post(`/todo/mylist`, {
       todoEmail: todoemail,
     });
     if (response.data.success) {
@@ -62,7 +62,7 @@ const createTodoListApi = async (
       todoDate: selectedId,
       todoCheck: sharedState,
     });
-    console.log(response.data);
+    console.log(response);
     if (response.data.success) {
       console.log(response.data);
       return { success: true };
@@ -119,6 +119,10 @@ const updateTodoListApi = async (title, content, todoemail, selectedId) => {
   }
 };
 
+/**
+ * rating불러오기
+ * @returns
+ */
 export {
   createTodoListApi,
   deleteTodoListApi,
