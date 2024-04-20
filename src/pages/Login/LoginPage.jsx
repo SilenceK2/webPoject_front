@@ -8,6 +8,7 @@ import {
   Topsection,
   BottomSection,
   Paragraph,
+  LoginText
 } from "../../style/stylecomponents/MemberStyle/style";
 import { useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -49,6 +50,7 @@ const LoginBox = () => {
     <LoginBoxContainer>
       <Topsection>
         <Title></Title>
+        <LoginText>LogIn</LoginText>
       </Topsection>
       <BottomSection>
         <TextBox>

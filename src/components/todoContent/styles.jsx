@@ -178,9 +178,9 @@ export const ModalBackdrop = styled.div`
 
 export const ModalContainer = styled.div`
   display: flex;
-  height: 150vw;
+  height: 80%;
   flex-direction: column;
-  background-color: white;
+  background-color: #eff0f3;
   width: 70%;
   align-items: center;
   border-radius: 20px;
@@ -206,6 +206,8 @@ export const ModalTopSection = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed black;
 `;
 
 export const ModalBottomSection = styled.section`
@@ -223,14 +225,14 @@ export const ModalBottomSection = styled.section`
 
 export const ModalInput = styled.input`
   flex: 1;
-  border-radius: 50px;
   outline: none;
-  font-size: 15px;
   font-size: 16px;
-  border: none;
-  border-radius: 10px;
+  border: 2px solid black;
+  border-radius: 25px;
   margin-bottom: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  background-color: #fffffe;
+  padding: 20px;
 `;
 
 export const ModalButton = styled.div`
@@ -239,12 +241,12 @@ export const ModalButton = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   & > button {
-    background-color: black;
-    border: none;
-    border-radius: 10px;
+    background-color: #c2c2c2;
+    border: 2px solid black;
+    border-radius: 5px;
     width: 60px;
     height: 30px;
-    color: white;
+    color: #0d0d0d;
     font-weight: bold;
     margin-left: 15px;
   }

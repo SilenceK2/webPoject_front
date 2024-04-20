@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const LoginBoxContainer = styled.div`
   max-width: 500px;
-  padding: 28px;
+ 
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -15,19 +15,34 @@ export const LoginBoxContainer = styled.div`
 export const Topsection = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
   width: 100%;
-  height: 20%;
+  height: 40%;
   justify-content: center;
+  background-color: #626262;
+  margin-bottom: 50px;
+  border-bottom-right-radius: 250px;
 `;
+export const LoginText = styled.div`
+display: flex;  
+font-size: 70px;
+font-weight: bold;
+flex: 1;
+align-items: flex-end;
+justify-content: flex-start;
+margin-left: 30px;
+margin-bottom: 40px;  
+  color: white;
+`
 
 export const BottomSection = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 28px;
   flex: 2;
-  width: 100%;
+  width: 90%;
   height: 50%;
   justify-content: center;
+  align-items: center;
 `;
 
 export const Title = styled.h2`
@@ -36,11 +51,14 @@ export const Title = styled.h2`
 `;
 
 export const TextBox = styled.div`
-  position: relative;
-  margin-bottom: 20px;
-  width: 100%;
-  height: 100%;
-  margin: 0;
+position: relative;
+display: flex;
+width: 100%;
+height: 100%;
+margin: 0;
+flex-direction: column;
+align-items: center;
+justify-content: center;
 
   & > div:nth-child(2) {
     display: flex;
@@ -55,31 +73,34 @@ export const TextBox = styled.div`
 `;
 
 export const Input = styled.input`
-  width: 93%;
-  height: 50px;
+  width: 80%;
+  height: 36px;
   padding: 10px;
   font-size: 16px;
   border: none;
-  border-radius: 10px;
+  border-radius: 30px;
+  border: 2px solid black;
   margin-bottom: 20px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 `;
 
 export const SubmitButton = styled.input`
-  width: 100%;
-  height: 13%;
+  width: 90%;
+  height: 20%;
   max-height: 70px;
-  background-color: ${(props) => props.bgColor || "#0056b3"};
-  border: none;
+  display: flex;  
+  /* background-color: ${(props) => props.bgColor || "#4c4c4c"}; */
+  background-color: #4c4c4c;
+  border-radius: 20px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 17px;
   color: #ffffff;
-  border-radius: 4px;
   cursor: pointer;
   margin-top: 20px;
   font-weight: bolder;
   outline: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  justify-content: center;
   // &:hover {
   //   background: #0056b3;
   // }
@@ -96,24 +117,54 @@ export const Paragraph = styled.p`
   position: relative;
 `;
 
+
+
+export const SignupTopsection = styled.section`
+display: flex;
+flex-direction: column;
+width: 100%;
+height: 40%;
+justify-content: center;
+background-color: #626262;
+margin-bottom: 50px;
+border-bottom-right-radius: 250px;
+`;
+
+export const EmailCheck = styled.div`
+display: flex;
+    flex: 1;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`
+export const EmailInput = styled.input`
+display: flex;
+
+width: 60%;
+  height: 36px;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 30px;
+  border: 2px solid black;
+  margin-bottom: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+`
+
 export const SignupButton = styled.button`
-  width: 100%;
-  height: 50px;
-  flex: 1;
+display: flex;  
+  width: 20%;
   margin-bottom: 20px;
   border: none;
-  padding: 0 20px;
+  margin-left: 10px;
   border-radius: 5px;
-  background-color: gray;
+  background-color: #4c4c4c;
+  justify-content: center;
   & > p {
     color: white;
     font-size: 17px;
     text-align: center;
     font-weight: bold;
   }
-`;
-
-export const SignupTopsection = styled.section`
-  width: 100%;
-  height: 120px;
 `;

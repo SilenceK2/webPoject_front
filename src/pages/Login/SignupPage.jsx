@@ -8,6 +8,9 @@ import {
   SignupTopsection,
   BottomSection,
   SignupButton,
+  LoginText,
+  EmailCheck,
+  EmailInput
 } from "../../style/stylecomponents/MemberStyle/style";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -59,12 +62,13 @@ const SignupPage = () => {
 
   return (
     <LoginBoxContainer>
-      <SignupTopsection></SignupTopsection>
+      <SignupTopsection><LoginText>SignUp</LoginText></SignupTopsection>
       <BottomSection>
         <TextBox>
           {successVerify ? (
             <>
-              <Input
+            <EmailCheck>
+              <EmailInput
                 type="text"
                 placeholder="이메일을 입력하세요"
                 required
@@ -78,8 +82,9 @@ const SignupPage = () => {
                 value="이메일 중복확인"
                 onClick={handleSignupVerify}
               >
-                <p>이메일 중복확인</p>
+                <p>중복확인</p>
               </SignupButton>
+              </EmailCheck>
             </>
           ) : (
             <>

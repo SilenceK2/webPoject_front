@@ -210,7 +210,7 @@ const TodoContentBox = () => {
           </TodoListWeek>
           <TodoListDateBox>{renderDates()}</TodoListDateBox>
         </TodoListBoard>
-        {isModalOpen && (
+        {/* {isModalOpen && ( */}
           <>
             <ModalBackdrop>
               <ModalContainer>
@@ -243,13 +243,14 @@ const TodoContentBox = () => {
                     }}
                   />
                   <label>
+                    공유
                     <input
                       type="checkbox"
                       onChange={() => {
                         setSharedState(true);
                       }}
                     />
-                    공유하기
+                    
                   </label>
                   <ModalButton>
                     <button onClick={createTodoList}>추가</button>
@@ -260,7 +261,7 @@ const TodoContentBox = () => {
               </ModalContainer>
             </ModalBackdrop>
           </>
-        )}
+      {/*   )} */}
       </BottomSection>
     </>
   );
