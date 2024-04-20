@@ -37,8 +37,6 @@ const readTodoListApi = async (todoemail) => {
       todoEmail: todoemail,
     });
     if (response.data.success) {
-      console.log(response.data);
-
       return { success: true };
     } else {
       return { success: false };
@@ -49,14 +47,24 @@ const readTodoListApi = async (todoemail) => {
   }
 };
 
-const createTodoListApi = async (todoemail) => {
+const createTodoListApi = async (
+  todoemail,
+  title,
+  content,
+  selectedId,
+  sharedState
+) => {
   try {
     const response = await api.post("/todo/create", {
       todoEmail: todoemail,
+      todoTitle: title,
+      todoContent: content,
+      todoDate: selectedId,
+      todoCheck: sharedState,
     });
+    console.log(response.data);
     if (response.data.success) {
       console.log(response.data);
-
       return { success: true };
     } else {
       return { success: false };
@@ -78,7 +86,11 @@ const deleteTodoListApi = async (selectedId, todoemail) => {
     const response = await api.post(`/todo/delete/${selectedId}`, {
       todoEmail: todoemail,
     });
-    return { success: true };
+    if (response.data.success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
   } catch (error) {
     console.error("error:", error);
     return { success: false, error: "삭제 실패" };
@@ -95,7 +107,7 @@ const deleteTodoListApi = async (selectedId, todoemail) => {
  */
 const updateTodoListApi = async (title, content, todoemail, selectedId) => {
   try {
-    const response = await api.post(`/todolist/update/${selectedId}`, {
+    const response = await api.post(`/todo/update/${selectedId}`, {
       todoTitle: title,
       totoContent: content,
       todoEmail: todoemail,

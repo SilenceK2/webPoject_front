@@ -31,12 +31,13 @@ import {
   createTodoListApi,
   updateTodoListApi,
   deleteTodoListApi,
+  readTodoListApi,
 } from "../../utils/apimodule/todolist";
 import { useRecoilValue } from "recoil";
 import { useremailState } from "../../utils/recoil/atom";
 
 const TodoContentBox = () => {
-  const [selectedId, setSelectedDate] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -44,17 +45,40 @@ const TodoContentBox = () => {
   const [sharedState, setSharedState] = useState(false);
   const [categories, setCategories] = useState([]);
 
-  useEffect(() => {}, []);
-
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
+  const handleDateClick = async (date) => {
+    setSelectedId(date);
     setIsModalOpen(true);
+    try {
+      const result = await readTodoListApi(todoemail);
+      console.log(result.data);
+      if (result && result.data && result.data.length > 0) {
+        const selectedTodo = result.data.find((todo) => todo.todoDate === date);
+        if (selectedTodo) {
+          setTitle(selectedTodo.title);
+          setContent(selectedTodo.content);
+          setCategories(selectedTodo.categories);
+        } else {
+          setTitle("");
+          setContent("");
+          setCategories([]);
+        }
+      } else {
+        setTitle("");
+        setContent("");
+        setCategories([]);
+      }
+    } catch (error) {
+      console.error("Error fetching todo list:", error);
+      // 에러 처리
+    }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setTitle("");
     setContent("");
+    setSharedState("");
+    setCategories([]);
   };
 
   const createTodoList = async () => {
@@ -73,14 +97,23 @@ const TodoContentBox = () => {
         content,
         todoemail,
         sharedState,
+        selectedId,
         categories
+      );
+      console.log(
+        title,
+        content,
+        todoemail,
+        selectedId,
+        sharedState,
+        categories,
+        selectedId
       );
       if (result.data.success) {
         if (window.confirm("작성하시겠습니까?")) {
           setIsModalOpen(false);
         }
       } else {
-        alert("글 작성 실패");
       }
     } catch (error) {
       console.log(`${error}`);
@@ -194,13 +227,9 @@ const TodoContentBox = () => {
                   <ModalInput
                     type="text"
                     placeholder="카테고리를 입력하세요"
-                    value={categories.join(", ")}
+                    value={categories.join("#")}
                     onChange={(e) => {
-                      const categoryArray = e.target.value.split("# ");
-
-                      if (categoryArray.length > 10) {
-                        categoryArray.pop();
-                      }
+                      const categoryArray = e.target.value.split("#");
                       setCategories(categoryArray);
                     }}
                   />

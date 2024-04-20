@@ -23,7 +23,8 @@ export const getWeatherByCurrentLocation = async (latitude, longitude) => {
     const icon = data.weather[0].icon;
     const condition = data.weather[0].main;
     const title = data.name;
-    const rainCondition = data.rain;
+    const rainCondition = data.rain ? data.rain["1h"] : null;
+
     console.log(response.data);
 
     console.log("최고기온값:", tempMin);
