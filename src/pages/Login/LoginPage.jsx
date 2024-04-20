@@ -10,7 +10,7 @@ import {
   Paragraph,
 } from "../../style/stylecomponents/MemberStyle/style";
 import { useNavigate } from "react-router-dom";
-import { faUser } from "@fortawesome/free-regular-svg-icons"; // 사용할 아이콘 불러오기
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { LinkContainer, Link } from "../../style/stylecomponents/widget/Link";
 import { useState } from "react";
 import { loginUser, loginGetMemberId } from "../../utils/apimodule/member";

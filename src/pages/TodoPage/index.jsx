@@ -88,9 +88,12 @@ const TodoPage = () => {
                   <RatingBodyTitle>
                     <div>{todo.todoTitle}</div>
                     <div>
-                      <p>#{todo.todoCategory}</p>
-                      <p>#word</p>
-                      <p>#enter</p>
+                      {todo.todoCategory
+                        .split("#")
+                        .filter((category) => category !== "")
+                        .map((category, index) => (
+                          <p key={index}>#{category}</p>
+                        ))}
                     </div>
                   </RatingBodyTitle>
                   <RatingBodyContent>
@@ -117,9 +120,12 @@ const TodoPage = () => {
                   <UpdateContentTitle>{update.todoTitle}</UpdateContentTitle>
                   <UpdateContentContent>
                     <div>
-                      <p>#{update.todoCategory}</p>
-                      <p>#enter</p>
-                      <p>#tae</p>
+                      {update.todoCategory
+                        .split("#")
+                        .filter((category) => category !== "")
+                        .map((category, index) => (
+                          <p key={index}>#{category}</p>
+                        ))}
                     </div>
                     <div>{update.todoContent}</div>
                   </UpdateContentContent>

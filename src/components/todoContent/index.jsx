@@ -50,13 +50,14 @@ const TodoContentBox = () => {
     setIsModalOpen(true);
     try {
       const result = await readTodoListApi(todoemail);
-      console.log(result.data);
-      if (result && result.data && result.data.length > 0) {
-        const selectedTodo = result.data.find((todo) => todo.todoDate === date);
+
+      if (true) {
+        console.log(result);
+        const selectedTodo = result.data.todoDate === date ? result.data : null;
         if (selectedTodo) {
-          setTitle(selectedTodo.title);
-          setContent(selectedTodo.content);
-          setCategories(selectedTodo.categories);
+          setTitle(selectedTodo.todoTitle);
+          setContent(selectedTodo.todoContent);
+          setCategories(selectedTodo.todoCategory);
         } else {
           setTitle("");
           setContent("");
@@ -131,19 +132,19 @@ const TodoContentBox = () => {
         return;
       }
 
-      const result = await updateTodoListApi(
-        title,
-        content,
-        todoemail,
-        selectedId,
-        categories
-      );
-      if (result.data.success) {
-        if (window.confirm("수정하시겠습니까?")) {
+      if (window.confirm("수정하시겠습니까?")) {
+        const result = await updateTodoListApi(
+          title,
+          content,
+          todoemail,
+          selectedId,
+          categories
+        );
+        if (result.success) {
           setIsModalOpen(false);
+        } else {
+          alert("글 작성 실패");
         }
-      } else {
-        alert("글 작성 실패");
       }
     } catch (error) {
       console.log(`${error}`);
@@ -152,13 +153,13 @@ const TodoContentBox = () => {
 
   const deleteTodoList = async () => {
     try {
-      const result = await deleteTodoListApi(selectedId, todoemail);
-      if (result.data.success) {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
+      if (window.confirm("정말 삭제하시겠습니까?")) {
+        const result = await deleteTodoListApi(todoemail, selectedId);
+        if (result.data.success) {
           setIsModalOpen(false);
+        } else {
+          alert("글 작성 실패");
         }
-      } else {
-        alert("글 작성 실패");
       }
     } catch (error) {
       console.log(`${error}`);
@@ -225,11 +226,10 @@ const TodoContentBox = () => {
                   />
                   <ModalInput
                     type="text"
-                    placeholder="카테고리를 입력하세요"
-                    value={categories.join("#")}
+                    placeholder="#으로 카테고리를 입력하세요"
+                    value={categories}
                     onChange={(e) => {
-                      const categoryArray = e.target.value.split("#");
-                      setCategories(categoryArray);
+                      setCategories(e.target.value);
                     }}
                   />
                 </ModalTopSection>
@@ -237,6 +237,7 @@ const TodoContentBox = () => {
                   <ModalInput
                     type="text"
                     placeholder="내용을 입력하세요"
+                    value={content}
                     onChange={(e) => {
                       setContent(e.target.value);
                     }}

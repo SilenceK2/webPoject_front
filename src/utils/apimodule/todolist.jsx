@@ -37,7 +37,7 @@ const readTodoListApi = async (todoemail) => {
       todoEmail: todoemail,
     });
     if (response.data.success) {
-      return { success: true };
+      return { success: true, data: response.data.data[0] };
     } else {
       return { success: false };
     }
@@ -48,19 +48,21 @@ const readTodoListApi = async (todoemail) => {
 };
 
 const createTodoListApi = async (
-  todoemail,
   title,
   content,
+  todoemail,
+  sharedState,
   selectedId,
-  sharedState
+  categories
 ) => {
   try {
     const response = await api.post("/todo/create", {
-      todoEmail: todoemail,
       todoTitle: title,
       todoContent: content,
+      todoEmail: todoemail,
+      todoCheck: 1, // **반드시 추후 수정
       todoDate: selectedId,
-      todoCheck: sharedState,
+      todoCategory: categories,
     });
     console.log(response);
     if (response.data.success) {
@@ -81,9 +83,9 @@ const createTodoListApi = async (
  * @param selectedTodoId
  * @success
  */
-const deleteTodoListApi = async (selectedId, todoemail) => {
+const deleteTodoListApi = async (todoemail, selectedId) => {
   try {
-    const response = await api.post(`/todo/delete/${selectedId}`, {
+    const response = await api.delete(`/todo/delete/${selectedId}`, {
       todoEmail: todoemail,
     });
     if (response.data.success) {
@@ -105,14 +107,25 @@ const deleteTodoListApi = async (selectedId, todoemail) => {
  * @param selectedTodoId
  * @success
  */
-const updateTodoListApi = async (title, content, todoemail, selectedId) => {
+const updateTodoListApi = async (
+  title,
+  content,
+  todoemail,
+  selectedId,
+  categories
+) => {
   try {
     const response = await api.post(`/todo/update/${selectedId}`, {
       todoTitle: title,
       totoContent: content,
       todoEmail: todoemail,
+      todoCategory: categories,
     });
-    return { success: true };
+    if (response.data.success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
   } catch (error) {
     console.error("error:", error);
     return { success: false, error: "수정 실패" };

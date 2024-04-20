@@ -22,7 +22,7 @@ export const WeatherBottomSection = styled.section`
     border-radius: 20px;
     border: 5px solid rgb(165, 159, 255);
     width: 100%;
-    margin-top: 50px;
+    margin-top: 30px;
   }
 `;
 
@@ -35,8 +35,8 @@ export const WeatherTitleStyled = styled.div`
 
 export const WeatherIconStyled = styled.div`
   background-image: url("/images/openweathermap/${(props) => props.id}.svg");
-  width: 30%;
-  height: 100px;
+  width: 40%;
+  height: 120px;
   justify-content: flex-start;
   background-repeat: no-repeat;
 `;

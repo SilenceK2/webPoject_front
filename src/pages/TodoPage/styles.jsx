@@ -146,6 +146,8 @@ export const RatingBodyContent = styled.div`
   width: 100%;
   flex-direction: column;
   border-left: 0.2px solid lightgray;
+  padding-left: 10px;
+  padding-right: 10px;
   align-items: flex-start;
 
   & > div:nth-child(1) {

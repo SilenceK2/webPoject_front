@@ -30,7 +30,7 @@ export const loginUser = async (email, pwd) => {
     });
     const memberId = response.data.data.id;
     console.log(response.data);
-    if (response.data.success === "true") {
+    if (response.data.success) {
       localStorage.setItem("memberIdNumber", memberId);
       return { success: true };
     } else {
