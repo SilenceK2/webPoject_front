@@ -134,6 +134,30 @@ const updateTodoListApi = async (
 };
 
 /**
+ * 투두리스트 검색
+ * @param input
+ * @returns
+ */
+const sendInputApi = async (input: any) => {
+  try {
+    const response: any = await api.post(`/todo/search`, {
+      todoTitle: input,
+    });
+    const data = response.data;
+    console.log(response);
+    if (response.data.success) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "글찾기 불러오기 실패" };
+  }
+};
+
+const sendLocationApi = async (x: any, y: any) => {};
+/**
  * rating불러오기
  * @returns
  */
@@ -143,4 +167,5 @@ export {
   updateTodoListApi,
   getTodoListAllTableApi,
   readTodoListApi,
+  sendInputApi,
 };
