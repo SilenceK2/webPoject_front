@@ -14,6 +14,7 @@ import Weather from "../components/weatherContent";
 import TodoContentBox from "../components/todoContent";
 import MainContentBox from "../components/MainContent";
 import LocationContentBox from "../components/locationContent";
+import { useSetRecoilState } from "recoil";
 
 function Home() {
   const [loadingPage, setLoadingPage]: any = useState(false);

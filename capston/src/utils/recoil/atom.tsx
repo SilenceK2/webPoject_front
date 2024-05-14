@@ -1,5 +1,10 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
+
+interface locationStateType {
+  gridX?: string | number;
+  girdY?: string | number;
+}
 const sessionStorage =
   typeof window !== "undefined" ? window.sessionStorage : undefined;
 
@@ -31,4 +36,20 @@ export const wheaterCondition = atom({
 export const locationSuccessState = atom({
   key: "locationState",
   default: "",
+});
+
+export const locationXY = atom({
+  key: "locationXY",
+  default: "",
+});
+
+export const myLocation = selector<locationStateType>({
+  key: "mylocation",
+  get: ({ get }) => {
+    const userCompare = get(locationXY);
+    return userCompare;
+  },
+  set: ({ set }, newValue: any) => {
+    set(locationXY, newValue);
+  },
 });
