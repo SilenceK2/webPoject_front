@@ -11,7 +11,7 @@ import {
 } from "./style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { sendInputApi } from "../../utils/apimodule/todolist";
+import { sendSearchApi } from "../../utils/apimodule/todolist";
 
 const SearchPage = () => {
   const [input, setInput]: any = useState("");
@@ -49,7 +49,7 @@ const SearchPage = () => {
 
   const sendInput = async () => {
     try {
-      const response = await sendInputApi(input);
+      const response = await sendSearchApi(input);
       console.log(response);
       if (response.success) {
         // 성공했을때 상태값 하나 넣기?

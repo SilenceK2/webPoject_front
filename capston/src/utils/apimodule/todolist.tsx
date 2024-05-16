@@ -138,13 +138,14 @@ const updateTodoListApi = async (
  * @param input
  * @returns
  */
-const sendInputApi = async (input: any) => {
+const sendSearchApi = async (input: any) => {
   try {
     const response: any = await api.post(`/todo/search`, {
       todoTitle: input,
     });
+    console.log(input);
     const data = response.data;
-    console.log(response);
+    console.log(data);
     if (response.data.success) {
       return { success: true, data };
     } else {
@@ -167,5 +168,5 @@ export {
   updateTodoListApi,
   getTodoListAllTableApi,
   readTodoListApi,
-  sendInputApi,
+  sendSearchApi,
 };

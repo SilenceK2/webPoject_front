@@ -13,8 +13,8 @@ const mappingLocation = async (latitude: any, longitude: any) => {
     const x = rs.x;
     const y = rs.y;
     const response = await api.post("/location", {
-      x,
-      y,
+      currentLocationX: x,
+      currentLocationY: y,
     });
     console.log(`gridX: ${x}, gridY: ${y}`);
     if (response.data.success) {

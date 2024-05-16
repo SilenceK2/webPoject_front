@@ -43,13 +43,13 @@ export const locationXY = atom({
   default: "",
 });
 
-export const myLocation = selector<locationStateType>({
-  key: "mylocation",
-  get: ({ get }) => {
-    const userCompare = get(locationXY);
-    return userCompare;
-  },
-  set: ({ set }, newValue: any) => {
-    set(locationXY, newValue);
-  },
-});
+// export const myLocation = selector<locationStateType>({
+//   key: "mylocation",
+//   get: ({ get }) => {
+//     const userCompare = get(locationXY);
+//     return userCompare;
+//   },
+//   set: ({ set }, newValue: any) => {
+//     set(locationXY, newValue);
+//   },
+// });
