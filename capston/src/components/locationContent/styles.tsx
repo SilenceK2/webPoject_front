@@ -41,24 +41,24 @@ export const LocationBoard = styled.div`
   flex-direction: column;
   align-items: center;
 
-  & > div:nth-child(1) {
-    flex: 0.1;
-    justify-content: space-between;
-    display: flex;
+  // & > div:nth-child(1) {
+  //   flex: 0.1;
+  //   justify-content: space-between;
+  //   display: flex;
 
-    flex-direction: row;
-    & > input {
-      border-radius: 10px;
-      height: 30px;
-      width: 40%;
-      border: none;
-    }
+  //   flex-direction: row;
+  //   & > input {
+  //     border-radius: 10px;
+  //     height: 30px;
+  //     width: 40%;
+  //     border: none;
+  //   }
   }
 
-  & > div:nth-child(2) {
-    flex: 1;
-    flex-direction: row;
-  }
+  // & > div:nth-child(2) {
+  //   flex: 1;
+  //   flex-direction: row;
+  // }
 `;
 
 export const Topsection = styled.section`
@@ -66,7 +66,59 @@ export const Topsection = styled.section`
 `;
 
 export const BottomSection = styled.section`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
+  display: flex;  
+  flex: 1;
+  border: 1px solid lightgray;
+  margin: 10px;
+  border-radius: 15px;
+  padding: 10px;
 `;
+
+export const StartPointInput = styled.div`
+display:flex;
+flex:1;
+// border-bottom: 1px dashed lightgray;
+width: 95%;
+height: 50px;
+justify-content: center;
+align-items: center;
+padding: 0px 10px 0px 10px;
+`
+export const Input = styled.input`
+display: flex;
+flex: 1;
+border: 1px dotted white;
+border-radius: 15px;
+color: #9b9b9b;
+font-weight: bold;
+font-size: 17px;
+padding: 10px;
+`
+export const EndPointInput = styled.div`
+display:flex;
+flex:1;
+// border: 1px solid lightgray;
+border-radius: 15px;
+width: 95%;
+height: 50px;
+justify-content: center;
+align-items: center;
+padding: 0px 10px 0px 10px;
+`
+export const ChangeContent = styled.div`
+border-top: 1px dashed lightgray;
+width: 95%;
+display: flex;
+height: 1px;
+`
+export const Change = styled.button`
+padding: 7px;
+border-radius: 10px;
+border: 1px solid lightgray;
+background-color: white;
+position: absolute;
+font-size: 16px;
+line-height: 1px;
+color: gray;
+left: 80%;
+`

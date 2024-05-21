@@ -1,5 +1,5 @@
 import React from "react";
-import { faRoad } from "@fortawesome/free-solid-svg-icons";
+import { faRoad,faArrowRightArrowLeft,faLocationDot,faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   LocationTitle,
@@ -7,6 +7,11 @@ import {
   LocationBoard,
   Topsection,
   BottomSection,
+  StartPointInput,
+  EndPointInput,
+  Input,
+  Change,
+  ChangeContent,
 } from "./styles";
 
 const LocationContentBox = () => {
@@ -23,15 +28,18 @@ const LocationContentBox = () => {
       </Topsection>
       <BottomSection>
         <LocationBoard>
-          {/* <div>
-            <input value={"출발지"} readOnly />
-            <FontAwesomeIcon icon={faRoad} style={{ color: "#4287ff" }} />
-
-            <input value={"도착지"} readOnly />
-          </div>
-          <div>
-            <p></p>
-          </div> */}
+            <StartPointInput>
+              <FontAwesomeIcon icon={faRoad} style={{ color: "#4287ff", fontSize: "20px",width: "9%"}}/>
+              <Input value={"출발지"} readOnly/>
+              <FontAwesomeIcon icon={faMagnifyingGlass}style={{ color:"gray" , fontSize: "20px"}} />
+            </StartPointInput>
+            <ChangeContent></ChangeContent>
+            <Change><FontAwesomeIcon icon={faArrowRightArrowLeft} /></Change>
+            <EndPointInput>
+              <FontAwesomeIcon icon={faLocationDot} style={{ color:"#4287ff" , fontSize: "20px",width: "9%"}} />
+              <Input value={"도착지"} readOnly/>
+              <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color:"gray" , fontSize: "20px" }} />
+            </EndPointInput>
         </LocationBoard>
       </BottomSection>
     </>
