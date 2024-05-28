@@ -71,18 +71,22 @@ export const BottomSection = styled.section`
   border: 1px solid lightgray;
   margin: 10px;
   border-radius: 15px;
-  padding: 10px;
+  padding: 20px 10px 20px 10px;
 `;
 
 export const StartPointInput = styled.div`
 display:flex;
 flex:1;
-// border-bottom: 1px dashed lightgray;
-width: 95%;
+border-bottom: 1px dashed lightgray;
+width: 90%;
 height: 50px;
 justify-content: center;
 align-items: center;
-padding: 0px 10px 0px 10px;
+padding: 0px 10px 5px 10px;
+position: relative;
+justify-content: center;
+align-items:center;
+
 `
 export const Input = styled.input`
 display: flex;
@@ -93,23 +97,17 @@ color: #9b9b9b;
 font-weight: bold;
 font-size: 17px;
 padding: 10px;
+margin-right: 20px;
 `
 export const EndPointInput = styled.div`
 display:flex;
 flex:1;
-// border: 1px solid lightgray;
-border-radius: 15px;
-width: 95%;
+border-bottom: 1px dashed lightgray;
+width: 90%;
 height: 50px;
 justify-content: center;
 align-items: center;
-padding: 0px 10px 0px 10px;
-`
-export const ChangeContent = styled.div`
-border-top: 1px dashed lightgray;
-width: 95%;
-display: flex;
-height: 1px;
+padding: 0px 10px 5px 10px;
 `
 export const Change = styled.button`
 padding: 7px;
@@ -118,7 +116,51 @@ border: 1px solid lightgray;
 background-color: white;
 position: absolute;
 font-size: 16px;
-line-height: 1px;
 color: gray;
+top: 65%;
 left: 80%;
+transform: tranlate(-50%,-50%);
+`
+
+export const Select = styled.div`
+margin-top: 30px;
+display: flex;
+flex: 1;
+justify-items: center;
+justify-content: center;
+align-items: center;
+width: 100%;
+`
+
+export const SelectBus = styled.button`
+display: flex;
+flex: 1;
+margin-left: 10px;
+border: 1px solid lightgray;
+background-color: white;
+border-top-left-radius: 10px;
+border-bottom-left-radius: 10px;
+color: gray;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+padding: 5px;
+`
+
+export const SelectSubway = styled.button`
+display: flex;
+flex: 1;
+margin-right: 10px;
+border: 1px solid lightgray;
+background-color: white;
+border-top-right-radius: 10px;
+border-bottom-right-radius: 10px;
+color: gray;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+padding: 5px;
+`
+
+export const ShowStartContent = styled.div`
 `

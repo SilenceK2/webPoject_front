@@ -49,7 +49,6 @@ export const LocationContent = styled.div`
   margin-bottom: 20px;
   width: 100%;
   min-height: 220px;
-  max-height: 220px;
 `;
 
 export const LocationTitle = styled.div`
