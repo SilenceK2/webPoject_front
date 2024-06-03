@@ -99,6 +99,9 @@ font-size: 17px;
 padding: 10px;
 margin-right: 20px;
 `
+
+
+
 export const EndPointInput = styled.div`
 display:flex;
 flex:1;
@@ -145,6 +148,10 @@ justify-content: center;
 align-items: center;
 flex-direction: column;
 padding: 5px;
+&.selected {
+  border: 1px solid blue; 
+  color: blue; 
+}
 `
 
 export const SelectSubway = styled.button`
@@ -160,7 +167,55 @@ justify-content: center;
 align-items: center;
 flex-direction: column;
 padding: 5px;
+&.selected {
+  border: 1px solid blue; 
+  color: blue; 
+}
 `
 
-export const ShowStartContent = styled.div`
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; 
+`;
+
+export const SearchBox = styled.div`
+  background: white;
+  width: 100%;
+  height: 70%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const SearchBoxHeader = styled.div`
+  display: flex;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 20px;
+  border-bottom: 1px solid lightgray;
+  padding: 20px;
+  align-items: center;
+`
+export const SearchBoxBody = styled.div`
+  display: flex;
+  padding: 0px 20px 0px 20px;
+`
+
+export const InputPoint = styled.input`
+display: flex;
+border: 1px dotted white;
+border-bottom: 1px dotted gray;
+color: #9b9b9b;
+font-weight: bold;
+font-size: 17px;
+padding: 10px;
+width: 100%;
 `
