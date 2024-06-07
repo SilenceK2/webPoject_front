@@ -1,0 +1,19 @@
+/* App.css */
+:root {
+    --gmpx-font-size-base: 1.125rem;
+  }
+  
+  .container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    gap: 10px;
+  }
+  
+  .result {
+    display: flex;
+    height: 1rem;
+    padding: 8px;
+  }
+  

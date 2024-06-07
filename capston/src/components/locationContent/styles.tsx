@@ -135,7 +135,7 @@ align-items: center;
 width: 100%;
 `
 
-export const SelectBus = styled.button`
+export const SelectPublicTransportation = styled.button`
 display: flex;
 flex: 1;
 margin-left: 10px;
@@ -154,7 +154,7 @@ padding: 5px;
 }
 `
 
-export const SelectSubway = styled.button`
+export const SelectCar= styled.button`
 display: flex;
 flex: 1;
 margin-right: 10px;
@@ -205,17 +205,38 @@ export const SearchBoxHeader = styled.div`
   align-items: center;
 `
 export const SearchBoxBody = styled.div`
-  display: flex;
-  padding: 0px 20px 0px 20px;
+display: flex;
+border: 1px solid gray;
+border-radius: 10px;
+padding: 5px;
+margin: 10px 10px 20px 10px;
+align-items: center;
 `
 
 export const InputPoint = styled.input`
 display: flex;
-border: 1px dotted white;
-border-bottom: 1px dotted gray;
+flex-grow:1;
+border: none;
 color: #9b9b9b;
 font-weight: bold;
 font-size: 17px;
 padding: 10px;
-width: 100%;
+margin-left: 10px;
 `
+
+export const AddressSection = styled.div`
+display: flex;
+flex: 1;
+width: 100%;
+flex-direction: column;
+align-content: center;
+align-items: center;
+`
+export const AddressBox = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
+  width: 100%;
+`;
+
