@@ -12,9 +12,9 @@ const NaverSearchComponent = () => {
     if (query.length > 2) {
       const fetchData = async () => {
         try {
-          const response = await axios.get('https://openapi.naver.com/v1/search/local.json', {
+          const response = await axios.get('/naver/search', { // 수정된 부분: /naver/search 엔드포인트로 요청 보냄
             params: {
-              query: query,
+              text: query, // 수정된 부분: 사용자가 입력한 query 값을 사용하여 검색
               display: 5,
               start: 1,
               sort: 'random'
@@ -24,6 +24,7 @@ const NaverSearchComponent = () => {
               'X-Naver-Client-Secret': 'Tkg91YuVMY'
             }
           });
+          console.log('Received data:', response.data);
           setResults(response.data.items);
         } catch (error) {
           console.error('Error fetching data from Naver API', error);
@@ -34,7 +35,7 @@ const NaverSearchComponent = () => {
       setResults([]);
     }
   }, [query]);
-
+  
   const handleSelectAddress = (address: string) => {
     setSelectedAddress(address);
     setQuery('');

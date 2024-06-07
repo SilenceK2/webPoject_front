@@ -28,7 +28,7 @@ import {
   SelectPublicTransportation,
   SelectCar,
 } from "./styles";
-import PlacePickerComponent from "./locationAPI";
+import PlacePickerComponent from "./PlacePickerComponent";
 import NaverSearchComponent from "./naverAPI";
 
 
@@ -79,8 +79,9 @@ const LocationContentBox = () => {
               <SelectCar onClick={() => setSelected("car")} 
                 className={selected === "car" ? "selected" : ""}><FontAwesomeIcon icon={faCar} style={{fontSize: '20px',padding: '0 0 5px 0'}}/>자동차</SelectCar>
             </Select> 
-            <PlacePickerComponent></PlacePickerComponent>
-            <NaverSearchComponent></NaverSearchComponent>
+            {/* <PlacePickerComponent></PlacePickerComponent> */}
+
+            {/* <NaverSearchComponent></NaverSearchComponent> */}
         </LocationBoard>        
       </BottomSection>
 
@@ -89,7 +90,9 @@ const LocationContentBox = () => {
           <SearchBox onClick={(e) => e.stopPropagation()}>
             <SearchBoxHeader>출발지 검색<FontAwesomeIcon icon={faX} style={{color: "gray", marginLeft: "auto"}} onClick={toggleStartPointInput}/></SearchBoxHeader>
             <SearchBoxBody>
-             <InputPoint placeholder="출발지를 입력하세요" ></InputPoint><FontAwesomeIcon icon={faMagnifyingGlass} style={{ color:"gray" , fontSize: "20px",padding: "10px"}} />
+             {/* <InputPoint placeholder="출발지를 입력하세요" ></InputPoint> */}
+             <PlacePickerComponent></PlacePickerComponent>
+             <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color:"gray" , fontSize: "20px",padding: "10px"}} />
             </SearchBoxBody>
           </SearchBox>
         </Overlay>
