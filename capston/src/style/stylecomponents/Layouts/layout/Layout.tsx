@@ -31,14 +31,14 @@ const Layout = () => {
   );
 
   const sendSearchData = async () => {
+    updateRecentSearches(searchInput);
+    console.log(searchListValue);
     try {
-      setSearchListValue([searchInput]);
       const response = await sendSearchApi(searchInput);
       console.log(response);
 
       if (response.success) {
         setSearchSuccessData(response.data);
-        updateRecentSearches(searchInput);
       } else {
         toast.warning("검색결과가 없습니다.");
       }
@@ -48,9 +48,13 @@ const Layout = () => {
   };
 
   const updateRecentSearches = (searchKeyword: any) => {
-    if (!searchListValue.includes(searchKeyword)) {
-      setSearchListValue([searchKeyword, ...searchListValue]);
-    }
+    setSearchListValue((prevSearchList: any) => {
+      if (!prevSearchList.includes(searchKeyword)) {
+        return [...prevSearchList, searchKeyword];
+      } else {
+        return prevSearchList;
+      }
+    });
   };
 
   const handleBackdropClick = () => {
@@ -75,6 +79,21 @@ const Layout = () => {
         <MyPageMenuContainer>
           <FontAwesomeIcon icon={faUser} size="lg" />
         </MyPageMenuContainer>
+        {searchBackDropState && (
+          <RecentSearchList>
+            {searchListValue !== null &&
+            searchListValue !== undefined &&
+            searchListValue.length > 0 ? (
+              searchListValue.map((search: any, index: any) => (
+                <div key={index}>{search}</div>
+              ))
+            ) : (
+              <>
+                <div>최근 검색어가 없습니다.</div>
+              </>
+            )}
+          </RecentSearchList>
+        )}
       </Header>
       <Outlet />
       {searchBackDropState && (
@@ -85,12 +104,6 @@ const Layout = () => {
           }}
         ></ModalBackdrop>
       )}
-      <RecentSearchList>
-        {searchListValue &&
-          searchListValue.map((search: any, index: any) => (
-            <div key={index}>{search}</div>
-          ))}
-      </RecentSearchList>
     </>
   );
 };

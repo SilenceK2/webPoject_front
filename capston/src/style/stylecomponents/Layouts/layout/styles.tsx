@@ -40,7 +40,7 @@ export const SearchInput = styled.input`
   width: 100%;
   border: none;
   outline: none;
-  font-size: 13px;
+  font-size: 15px;
   color: #333;
   padding: 8px;
   background: transparent;
@@ -89,6 +89,7 @@ export const ModalBackdrop = styled.div`
 export const RecentSearchList = styled.div`
   position: absolute;
   top: 100%;
+  z-index: 999;
   left: 0;
   width: 100%;
   background-color: #ffffff;
@@ -96,7 +97,6 @@ export const RecentSearchList = styled.div`
   border-top: none;
   border-radius: 0 0 10px 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 98;
   padding: 10px;
   max-height: 150px;
   overflow-y: auto;
@@ -105,6 +105,7 @@ export const RecentSearchList = styled.div`
     padding: 5px 10px;
     cursor: pointer;
     transition: background-color 0.3s;
+    background-color: #ffffff;
   }
 
   div:hover {

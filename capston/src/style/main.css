@@ -3,6 +3,7 @@
   &::-webkit-scrollbar {
     display: none;
   }
+  letter-spacing: -0.4px;
 }
 
 body {
