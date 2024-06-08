@@ -12,6 +12,7 @@ export const WeatherTopSection = styled.section`
 export const WeatherTitleTopSection = styled.section`
   display: flex;
   flex-direction: row;
+  width: 100%;
 `;
 
 export const WeatherBottomSection = styled.section`

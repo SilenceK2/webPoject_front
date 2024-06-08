@@ -5,7 +5,6 @@ export const PageContainer = styled.section`
   flex-direction: column;
   min-height: 100vh;
   margin: 0 24px;
-  margin-top: 100px;
   letter-spacing: -1px;
 `;
 
@@ -19,8 +18,10 @@ export const Content = styled.section`
 `;
 
 export const WheaterContent = styled.div`
-  flex: 1;
+  flex: 0.3;
+  flex-shrink: 0;
   display: flex;
+  margin-right: 0px;
   border-radius: 20px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
@@ -29,26 +30,30 @@ export const WheaterContent = styled.div`
   max-height: 220px;
 `;
 export const TodoListContent = styled.div`
-  // margin-top: 50px;
   flex: 0.3;
+  flex-shrink: 0;
   display: flex;
+  margin-top: 80px;
   border-radius: 20px;
   flex-direction: column;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   width: 100%;
+
+  flex-shrink: 0; /* 내용이 넘칠 때 축소되지 않도록 */
   min-height: 200px;
 `;
 
 export const LocationContent = styled.div`
-  flex: 0.3;
   display: flex;
   flex-direction: column;
+
   border-radius: 20px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 20px;
   width: 100%;
   min-height: 220px;
+  flex-shrink: 0; /* 내용이 넘칠 때 축소되지 않도록 */
   max-height: 220px;
 `;
 
@@ -82,18 +87,6 @@ export const LocationTitleContet = styled.div`
     font-weight: light;
     color: gray;
   }
-`;
-
-export const LocationTranspost = styled.div`
-  width: 100%;
-  height: 30%;
-  background-color: gray;
-`;
-
-export const LocationTime = styled.div`
-  width: 100%;
-  height: 30%;
-  background-color: gray;
 `;
 
 export const TodoListTitle = styled.div`
@@ -146,3 +139,26 @@ export const MainContent = styled.div<{ show: any }>`
   opacity: ${({ show }) => (show ? 1 : 0)};
   transition: opacity 1s ease;
 `;
+
+export const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 배경색 */
+  z-index: 999; /* 모달보다 더 위에 위치 */
+`;
+
+// export const ScrollBoxContainer = styled.section`
+//   flex: 1;
+//   margin-top: 20px;
+//   display: flex;
+//   margin-left: 20px;
+//   margin-bottom: 20px;
+//   width: 100%;
+//   max-height: 300px;
+//   flex-direction: row;
+//   overflow-x: auto;
+//   align-items: center;
+// `;

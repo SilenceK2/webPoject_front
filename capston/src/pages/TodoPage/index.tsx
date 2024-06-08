@@ -16,7 +16,6 @@ import {
   UpdateContentTitle,
   UpdateListTitleContent,
 } from "./styles";
-import Header from "../../style/stylecomponents/Layout/Header";
 import { useEffect, useState } from "react";
 import { getTodoListAllTableApi } from "../../utils/apimodule/todolist";
 import React from "react";
@@ -64,7 +63,6 @@ const TodoPage = () => {
 
   return (
     <>
-      <Header></Header>
       <TodoContainer>
         <TopSection>
           <RatingContainer>

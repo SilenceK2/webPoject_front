@@ -1,37 +1,36 @@
 import styled from "styled-components";
-import React from "react";
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
+import React from "react";
+import { Header } from "./layout/styles";
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background-color: #eee;
 `;
 
 const MainContainer = styled.div`
-  width: 100%;
+  width: 375px;
   height: 100vh;
   background-color: #fff;
   overflow-x: hidden;
-  position: fixed;
+
   @media (max-width: 575px) {
-    width: 100%;
+    width: 100vw;
   }
 `;
 
-const Layout = () => {
+const ViewPort = () => {
   return (
     <Container>
       <MainContainer>
-        <Header></Header>
         <Outlet />
       </MainContainer>
     </Container>
   );
 };
 
-export default Layout;
+export default ViewPort;

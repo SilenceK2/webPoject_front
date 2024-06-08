@@ -1,4 +1,5 @@
 import React from "react";
+import { weatherSelector } from "../../utils/recoil/atom";
 import {
   WeatherIconStyled,
   WeatherTitleStyled,
@@ -7,20 +8,19 @@ import {
   WeatherTitleTopSection,
   WeatherBottomSection,
 } from "./styles";
+import { useRecoilValue } from "recoil";
 
-interface WeatherContentType {
-  id?: string;
-  text?: string;
-  temp?: string;
-  rainCondition?: string;
-}
+// interface WeatherContentType {
+//   id?: string;
+//   text?: string;
+//   temp?: string;
+//   rainCondition?: string;
+// }
 
-const WeatherContentBox: React.FC<WeatherContentType> = ({
-  id,
-  text,
-  temp,
-  rainCondition,
-}) => {
+const WeatherContentBox = () => {
+  const weatherValue = useRecoilValue(weatherSelector);
+  console.log(weatherValue);
+  const { text, id, temp, rainCondition }: any = weatherValue;
   return (
     <>
       <WeatherTopSection>

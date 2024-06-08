@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Header from "../style/stylecomponents/Layout/Header";
-import { getWeatherByCurrentLocation } from "../utils/apimodule/wheater";
-import Loading from "./RouterPages/Loading";
+import { getWeatherByCurrentLocation } from "../../utils/apimodule/wheater";
+import Loading from "../RouterPages/Loading";
+import TodoContentComponent from "../../components/todoContentComponent";
 import {
   PageContainer,
   Content,
@@ -9,21 +9,19 @@ import {
   WheaterContent,
   TodoListContent,
   MainContent,
-} from "../style/stylecomponents/Layout/Home";
-import Weather from "../components/weatherContent";
-import TodoContentBox from "../components/todoContent";
-import MainContentBox from "../components/MainContent";
-import LocationContentBox from "../components/locationContent";
+  // ScrollBoxContainer,
+} from "./styles";
+import Weather from "../../components/weatherContent";
+import MainContentBox from "../../components/MainContent";
+import LocationContentBox from "../../components/locationContent";
+import WeatherContentBox from "../../components/weatherContent";
+import { weatherSelector } from "../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
 
 function Home() {
   const [loadingPage, setLoadingPage]: any = useState(false);
-  const [weatherData, setWeatherData]: any = useState({
-    temp: null,
-    rainCondition: null,
-    icon: null,
-    title: "",
-  });
+
+  const weatherValue: any = useSetRecoilState(weatherSelector);
 
   const [mainContentVisible, setMainContentVisible]: any = useState(false); // mainContent 보여지는 여부 추가
   useEffect(() => {
@@ -38,7 +36,14 @@ function Home() {
                   latitude,
                   longitude
                 );
-                setWeatherData(weatherData);
+
+                weatherValue({
+                  temp: weatherData.temp,
+                  rainCondition: weatherData.rainCondition,
+                  id: weatherData.icon,
+                  text: weatherData.title,
+                });
+
                 setLoadingPage(true);
               } catch (error) {
                 console.log(error);
@@ -72,28 +77,29 @@ function Home() {
   return (
     <>
       <>
-        <Header />
         <PageContainer>
           <Content>
-            <MainContent show={mainContentVisible}>
+            {/* <MainContent show={mainContentVisible}>
               <MainContentBox />
-            </MainContent>
-            <TodoListContent>{/* <TodoContentBox /> */}</TodoListContent>
-            <WheaterContent>
-              {loadingPage ? (
-                <Weather
-                  id={weatherData.icon}
-                  text={weatherData.title}
-                  temp={weatherData.temp}
-                  rainCondition={weatherData.rainCondition}
-                />
-              ) : (
-                <Loading />
-              )}
-            </WheaterContent>
+            </MainContent> */}
+            <TodoListContent>
+              {/* <TodoContentBox /> */}
+              <TodoContentComponent />
+            </TodoListContent>
+
             <LocationContent>
               <LocationContentBox />
             </LocationContent>
+
+            <WheaterContent>
+              {loadingPage ? (
+                <WeatherContentBox />
+              ) : (
+                <>
+                  <Loading />
+                </>
+              )}
+            </WheaterContent>
           </Content>
         </PageContainer>
       </>
