@@ -36,9 +36,6 @@ const Loading = () => {
   return (
     <>
       <LoadingPage>
-        <TopSection>
-          <div>날씨 데이터를 불러오고 있습니다</div>
-        </TopSection>
         <BottomSection>
           <MoonLoader color="#5c8be9" />
         </BottomSection>

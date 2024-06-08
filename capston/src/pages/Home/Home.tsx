@@ -15,8 +15,11 @@ import Weather from "../../components/weatherContent";
 import MainContentBox from "../../components/MainContent";
 import LocationContentBox from "../../components/locationContent";
 import WeatherContentBox from "../../components/weatherContent";
-import { weatherSelector } from "../../utils/recoil/atom";
-import { useSetRecoilState } from "recoil";
+import {
+  weatherSelector,
+  searchBackDropSelector,
+} from "../../utils/recoil/atom";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
 function Home() {
   const [loadingPage, setLoadingPage]: any = useState(false);
@@ -82,6 +85,7 @@ function Home() {
             {/* <MainContent show={mainContentVisible}>
               <MainContentBox />
             </MainContent> */}
+
             <TodoListContent>
               {/* <TodoContentBox /> */}
               <TodoContentComponent />

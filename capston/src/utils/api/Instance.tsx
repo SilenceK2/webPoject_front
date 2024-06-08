@@ -60,5 +60,5 @@ const api = axios.create({
 //   }
 // );
 
-api.defaults.timeout = 3000;
+api.defaults.timeout = 2000;
 export default api;

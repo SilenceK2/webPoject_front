@@ -103,7 +103,7 @@ export const searchSuccessSelector = selector({
 
 export const searchListAtom = atom({
   key: "searchListAtom",
-  default: "",
+  default: [],
 });
 
 export const searchListSelector = selector({
@@ -123,7 +123,7 @@ export const searchListSelector = selector({
 
 export const searchBackDropAtom = atom({
   key: "searchBackDropAtom",
-  default: "",
+  default: false,
 });
 
 export const searchBackDropSelector = selector({

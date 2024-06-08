@@ -5,7 +5,9 @@ export const PageContainer = styled.section`
   flex-direction: column;
   min-height: 100vh;
   margin: 0 24px;
-  letter-spacing: -1px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Content = styled.section`
@@ -15,6 +17,9 @@ export const Content = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const WheaterContent = styled.div`
@@ -24,9 +29,11 @@ export const WheaterContent = styled.div`
   margin-right: 0px;
   border-radius: 20px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
-  margin-bottom: 20px;
+
   width: 100%;
-  min-height: 220px;
+
+  padding-bottom: 40px;
+  overflow: hidden;
   max-height: 220px;
 `;
 export const TodoListContent = styled.div`
@@ -140,14 +147,20 @@ export const MainContent = styled.div<{ show: any }>`
   transition: opacity 1s ease;
 `;
 
-export const Backdrop = styled.div`
+export const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
+  bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 배경색 */
-  z-index: 999; /* 모달보다 더 위에 위치 */
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  outline: none;
 `;
 
 // export const ScrollBoxContainer = styled.section`

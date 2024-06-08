@@ -1,46 +1,61 @@
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import {
-  BottomNav,
   Header,
   SearchButton,
   SearchContainer,
   SearchInput,
   MyPageMenuContainer,
+  ModalBackdrop,
+  RecentSearchList,
 } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSearch } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from "react";
-import { sendSearchApi } from "../../../../utils/apimodule/todolist";
 import {
   searchSuccessSelector,
   searchListSelector,
+  searchBackDropSelector,
 } from "../../../../utils/recoil/atom";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import { sendSearchApi } from "../../../../utils/apimodule/todolist";
+import { toast } from "react-toastify";
 
 const Layout = () => {
-  /**
-   * 검색 성공했을시에 데이터값 저장하는 selector
-   */
-
-  const setSearchSuccessData = useSetRecoilState(searchSuccessSelector);
   const [searchInput, setSearchInput] = useState("");
+  const setSearchSuccessData = useSetRecoilState(searchSuccessSelector);
+  const [searchListValue, setSearchListValue]: any =
+    useRecoilState(searchListSelector);
 
-  const setSearchListSelector = useSetRecoilState(searchListSelector);
-  /**
-   * 검색 버튼 클릭시 api Post요청
-   */
+  const [searchBackDropState, setSearchBackDropState] = useRecoilState(
+    searchBackDropSelector
+  );
+
   const sendSearchData = async () => {
     try {
-      setSearchListSelector(searchInput);
+      setSearchListValue([searchInput]);
       const response = await sendSearchApi(searchInput);
       console.log(response);
-      setSearchSuccessData(response.data);
+
+      if (response.success) {
+        setSearchSuccessData(response.data);
+        updateRecentSearches(searchInput);
+      } else {
+        toast.warning("검색결과가 없습니다.");
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const searchBackGround = () => {};
+  const updateRecentSearches = (searchKeyword: any) => {
+    if (!searchListValue.includes(searchKeyword)) {
+      setSearchListValue([searchKeyword, ...searchListValue]);
+    }
+  };
+
+  const handleBackdropClick = () => {
+    setSearchBackDropState(true);
+  };
 
   return (
     <>
@@ -51,7 +66,7 @@ const Layout = () => {
             placeholder="투두리스트 검색..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            onClick={searchBackGround}
+            onClick={handleBackdropClick}
           />
           <SearchButton onClick={sendSearchData}>
             <FontAwesomeIcon icon={faSearch} />
@@ -61,11 +76,21 @@ const Layout = () => {
           <FontAwesomeIcon icon={faUser} size="lg" />
         </MyPageMenuContainer>
       </Header>
-
       <Outlet />
-      <BottomNav>
-        <ul></ul>
-      </BottomNav>
+      {searchBackDropState && (
+        <ModalBackdrop
+          onClick={() => {
+            setSearchBackDropState(false);
+            setSearchInput("");
+          }}
+        ></ModalBackdrop>
+      )}
+      <RecentSearchList>
+        {searchListValue &&
+          searchListValue.map((search: any, index: any) => (
+            <div key={index}>{search}</div>
+          ))}
+      </RecentSearchList>
     </>
   );
 };

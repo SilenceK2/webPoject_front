@@ -1,18 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import router from "./utils/router/router";
-import "./style/main.css";
+import App from "./App";
+import "../src/style//main.css";
 import { RecoilRoot } from "recoil";
-import { Suspense } from "react";
-import Loading from "./pages/RouterPages/Loading";
 
-const root = ReactDOM.createRoot(document.getElementById("root")!);
-
-root.render(
-  <RecoilRoot>
-    <Suspense fallback={<Loading />}>
-      <RouterProvider router={router} />
-    </Suspense>
-  </RecoilRoot>
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
+  </React.StrictMode>
 );

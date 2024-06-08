@@ -17,7 +17,6 @@ const MainContainer = styled.div`
   height: 100vh;
   background-color: #fff;
   overflow-x: hidden;
-
   @media (max-width: 575px) {
     width: 100vw;
   }
