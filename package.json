@@ -1,0 +1,41 @@
+{
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "axios": "^1.7.2",
+    "font-awesome": "^4.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
+    "react-scripts": "^5.0.1",
+    "react-spinners": "^0.13.8",
+    "react-toastify": "^10.0.5",
+    "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
+    "styled-components": "^6.1.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^4.9.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
