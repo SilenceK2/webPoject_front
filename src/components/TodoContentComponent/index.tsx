@@ -26,7 +26,7 @@ const TodoContentComponent = () => {
   const dummyTodayTodo = [
     {
       id: 1,
-      todoTitle: "Dummy Todo 1",
+      todoTitle: "자기전에 양치하기",
       todoTag: "#tag1#origin#oracle",
       todoContent: "This is a dummy todo content 1.",
       todoCheck: false,
@@ -36,7 +36,7 @@ const TodoContentComponent = () => {
     },
     {
       id: 2,
-      todoTitle: "Dummy Todo 2",
+      todoTitle: "일어나서 코딩하기",
       todoTag: "#tag2",
       todoContent: "This is a dummy todo content 2.",
       todoCheck: false,
@@ -49,7 +49,7 @@ const TodoContentComponent = () => {
   const dummyTomorrowTodo = [
     {
       id: 1,
-      todoTitle: "Dummy TomorrowTodo 1",
+      todoTitle: "오늘은 무엇을 해볼까",
       todoTag: "#tag1",
       todoContent: "This is a dummy todo content 1.",
       todoCheck: false,
