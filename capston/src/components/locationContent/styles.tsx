@@ -40,25 +40,7 @@ export const LocationBoard = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-
-  // & > div:nth-child(1) {
-  //   flex: 0.1;
-  //   justify-content: space-between;
-  //   display: flex;
-
-  //   flex-direction: row;
-  //   & > input {
-  //     border-radius: 10px;
-  //     height: 30px;
-  //     width: 40%;
-  //     border: none;
-  //   }
-  }
-
-  // & > div:nth-child(2) {
-  //   flex: 1;
-  //   flex-direction: row;
-  // }
+  position: relative; /* 추가된 스타일 */
 `;
 
 export const Topsection = styled.section`
@@ -66,7 +48,7 @@ export const Topsection = styled.section`
 `;
 
 export const BottomSection = styled.section`
-  display: flex;  
+  display: flex;
   flex: 1;
   border: 1px solid lightgray;
   margin: 10px;
@@ -75,103 +57,100 @@ export const BottomSection = styled.section`
 `;
 
 export const StartPointInput = styled.div`
-display:flex;
-flex:1;
-border-bottom: 1px dashed lightgray;
-width: 90%;
-height: 50px;
-justify-content: center;
-align-items: center;
-padding: 0px 10px 5px 10px;
-position: relative;
-justify-content: center;
-align-items:center;
+  display: flex;
+  flex: 1;
+  border-bottom: 1px dashed lightgray;
+  width: 90%;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px 5px 10px;
+  position: relative;
+`;
 
-`
 export const Input = styled.input`
-display: flex;
-flex: 1;
-border: 1px dotted white;
-border-radius: 15px;
-color: #9b9b9b;
-font-weight: bold;
-font-size: 17px;
-padding: 10px;
-margin-right: 20px;
-`
-
-
+  display: flex;
+  flex: 1;
+  border: 1px dotted white;
+  border-radius: 15px;
+  color: #9b9b9b;
+  font-weight: bold;
+  font-size: 17px;
+  padding: 10px;
+  margin-right: 20px;
+`;
 
 export const EndPointInput = styled.div`
-display:flex;
-flex:1;
-border-bottom: 1px dashed lightgray;
-width: 90%;
-height: 50px;
-justify-content: center;
-align-items: center;
-padding: 0px 10px 5px 10px;
-`
+  display: flex;
+  flex: 1;
+  border-bottom: 1px dashed lightgray;
+  width: 90%;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px 5px 10px;
+`;
+
 export const Change = styled.button`
-padding: 7px;
-border-radius: 10px;
-border: 1px solid lightgray;
-background-color: white;
-position: absolute;
-font-size: 16px;
-color: gray;
-top: 65%;
-left: 80%;
-transform: tranlate(-50%,-50%);
-`
+  padding: 7px;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+  background-color: white;
+  position: absolute;
+  font-size: 16px;
+  color: gray;
+  top: 26%; /* 변경된 위치 */
+  left: 80%; /* 중앙 정렬 */
+  transform: translate(-50%, -50%); /* 중앙 정렬 */
+`;
 
 export const Select = styled.div`
-margin-top: 30px;
-display: flex;
-flex: 1;
-justify-items: center;
-justify-content: center;
-align-items: center;
-width: 100%;
-`
+  margin-top: 30px;
+  display: flex;
+  flex: 1;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
 
 export const SelectPublicTransportation = styled.button`
-display: flex;
-flex: 1;
-margin-left: 10px;
-border: 1px solid lightgray;
-background-color: white;
-border-top-left-radius: 10px;
-border-bottom-left-radius: 10px;
-color: gray;
-justify-content: center;
-align-items: center;
-flex-direction: column;
-padding: 5px;
-&.selected {
-  border: 1px solid blue; 
-  color: blue; 
-}
-`
+  display: flex;
+  flex: 1;
+  margin-left: 10px;
+  border: 1px solid lightgray;
+  background-color: white;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  color: gray;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 5px;
+  &.selected {
+    border: 1px solid blue;
+    color: blue;
+  }
+`;
 
-export const SelectCar= styled.button`
-display: flex;
-flex: 1;
-margin-right: 10px;
-border: 1px solid lightgray;
-background-color: white;
-border-top-right-radius: 10px;
-border-bottom-right-radius: 10px;
-color: gray;
-justify-content: center;
-align-items: center;
-flex-direction: column;
-padding: 5px;
-&.selected {
-  border: 1px solid blue; 
-  color: blue; 
-}
-`
+export const SelectCar = styled.button`
+  display: flex;
+  flex: 1;
+  margin-right: 10px;
+  border: 1px solid lightgray;
+  background-color: white;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: gray;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 5px;
+  &.selected {
+    border: 1px solid blue;
+    color: blue;
+  }
+`;
 
 export const Overlay = styled.div`
   position: fixed;
@@ -179,10 +158,11 @@ export const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); 
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: flex-end; 
+  align-items: flex-end;
+  overflow: auto; /* 스크롤 가능하게 설정 */
 `;
 
 export const SearchBox = styled.div`
@@ -203,35 +183,37 @@ export const SearchBoxHeader = styled.div`
   border-bottom: 1px solid lightgray;
   padding: 20px;
   align-items: center;
-`
+`;
+
 export const SearchBoxBody = styled.div`
-display: flex;
-border: 1px solid gray;
-border-radius: 10px;
-padding: 5px;
-margin: 10px 10px 20px 10px;
-align-items: center;
-`
+  display: flex;
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 10px 10px 20px 10px;
+  align-items: center;
+`;
 
 export const InputPoint = styled.input`
-display: flex;
-flex-grow:1;
-border: none;
-color: #9b9b9b;
-font-weight: bold;
-font-size: 17px;
-padding: 10px;
-margin-left: 10px;
-`
+  display: flex;
+  flex-grow: 1;
+  border: none;
+  color: #9b9b9b;
+  font-weight: bold;
+  font-size: 17px;
+  padding: 10px;
+  margin-left: 10px;
+`;
 
 export const AddressSection = styled.div`
-display: flex;
-flex: 1;
-width: 100%;
-flex-direction: column;
-align-content: center;
-align-items: center;
-`
+  display: flex;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+`;
+
 export const AddressBox = styled.div`
   display: flex;
   align-items: center;
@@ -240,3 +222,41 @@ export const AddressBox = styled.div`
   width: 100%;
 `;
 
+
+//PlacePickerComponent.tsx
+export const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  gap: 10px;
+`;
+
+export const InputContainer = styled.div`
+  display: flex;
+  width:100%;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const InputSearch = styled.input`
+  padding: 8px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+export const ResultContainer = styled.div`
+  
+`;
+
+export const ResultItem = styled.p`
+  margin: 5px 0;
+  padding: 8px;
+  background: white;
+  cursor: pointer;
+  border-bottom: 1px solid gray;
+  &:hover {
+    background: #f0f0f0;
+  }
+`;

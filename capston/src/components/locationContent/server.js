@@ -24,7 +24,8 @@ app.get('/naver/search', async (req, res) => {
       },
       headers: {
         'X-Naver-Client-Id': 'nfiMlVtIR8DmtDMqhvpO',
-        'X-Naver-Client-Secret': 'Tkg91YuVMY'
+        'X-Naver-Client-Secret': 'Tkg91YuVMY',
+        'Content-Type': 'application/json'
       }
     });
 
@@ -36,29 +37,7 @@ app.get('/naver/search', async (req, res) => {
   }
 });
 
-// POST 요청 처리
-app.post('/naver/search', async (req, res) => {
-  try {
-    const { query, display, start, sort } = req.body;
-  
-    const response = await axios.post('https://openapi.naver.com/v1/search/local.json', {
-      query,
-      display,
-      start,
-      sort
-    }, {
-      headers: {
-        'X-Naver-Client-Id': 'nfiMlVtIR8DmtDMqhvpO',
-        'X-Naver-Client-Secret': 'Tkg91YuVMY'
-      }
-    });
-  
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error fetching data from Naver API:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+
 
 // 서버 시작
 app.listen(PORT, () => {
