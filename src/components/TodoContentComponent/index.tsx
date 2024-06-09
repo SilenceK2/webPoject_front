@@ -101,36 +101,36 @@ const TodoContentComponent = () => {
     }));
   };
 
-  const sendKaKaoMessage = () => {
-    window.Kakao.Link.sendDefault({
-      objectType: "feed",
-      content: {
-        title: "title",
-        description: "#케익 #딸기 #삼평동 #카페 #분위기 #소개팅",
+  // const sendKaKaoMessage = () => {
+  //   window.Kakao.Link.sendDefault({
+  //     objectType: "feed",
+  //     content: {
+  //       title: "title",
+  //       description: "#케익 #딸기 #삼평동 #카페 #분위기 #소개팅",
 
-        link: {
-          mobileWebUrl: document.location.href,
-          webUrl: document.location.href,
-        },
-      },
-      buttons: [
-        {
-          title: "웹으로 보기",
-          link: {
-            mobileWebUrl: document.location.href,
-            webUrl: document.location.href,
-          },
-        },
-        {
-          title: "앱으로 보기",
-          link: {
-            mobileWebUrl: document.location.href,
-            webUrl: document.location.href,
-          },
-        },
-      ],
-    });
-  };
+  //       link: {
+  //         mobileWebUrl: document.location.href,
+  //         webUrl: document.location.href,
+  //       },
+  //     },
+  //     buttons: [
+  //       {
+  //         title: "웹으로 보기",
+  //         link: {
+  //           mobileWebUrl: document.location.href,
+  //           webUrl: document.location.href,
+  //         },
+  //       },
+  //       {
+  //         title: "앱으로 보기",
+  //         link: {
+  //           mobileWebUrl: document.location.href,
+  //           webUrl: document.location.href,
+  //         },
+  //       },
+  //     ],
+  //   });
+  // };
 
   useEffect(() => {
     todoData();
@@ -206,7 +206,7 @@ const TodoContentComponent = () => {
                 <div>
                   <FontAwesomeIcon
                     icon={faShareFromSquare}
-                    onClick={sendKaKaoMessage}
+                    // onClick={sendKaKaoMessage}
                   />
                 </div>
                 <div>
