@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Header = styled.section`
-  position: fixed;
-  // position: relative;
+  // position: fixed;
+  position: relative;
   width: 100%;
   padding: 11px 8px;
   display: flex;
@@ -107,6 +107,7 @@ export const RecentSearchList = styled.div`
 
 export const BottomNav = styled.nav`
   position: fixed;
+  // position: relative;
   width: 100%;
   bottom: 0;
   margin-top: auto;

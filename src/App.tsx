@@ -6,6 +6,7 @@ import Loading from "./pages/RouterPages/Loading";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import React from "react";
+import "./index.css";
 
 const App = () => {
   return (

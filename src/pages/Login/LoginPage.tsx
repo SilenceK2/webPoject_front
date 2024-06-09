@@ -8,10 +8,10 @@ import {
   Topsection,
   BottomSection,
   Paragraph,
-} from "../../style/stylecomponents/MemberStyle/style";
+} from "../../styles/stylecomponents/MemberStyle/style";
 import { useNavigate } from "react-router-dom";
 
-import { LinkContainer, Link } from "../../style/stylecomponents/widget/Link";
+import { LinkContainer, Link } from "../../styles/stylecomponents/widget/Link";
 import { useState } from "react";
 import { loginUser } from "../../utils/apimodule/member";
 import { useremailState } from "../../utils/recoil/atom";

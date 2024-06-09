@@ -5,8 +5,8 @@ export const PageContainer = styled.section`
   flex-direction: column;
   min-height: 100vh;
   margin: 0 24px;
-  margin-top: 80px;
-  margin-bottom: 70px;
+  margin-top: 20px;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -140,10 +140,9 @@ export const TodoListBoard = styled.div`
   align-items: center;
 `;
 export const MainContent = styled.div<{ show: any }>`
-  flex: 1;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+
   width: 100%;
   max-height: 500px;
   min-height: 180px;

@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
 export const TopSection = styled.div`
-  flex: 1;
+  flex: 0.5;
   flex-direction: column;
   text-align: left;
   width: 100%;
-
   flex-basis: 20px;
   align-items: space-between;
 `;
@@ -23,9 +22,8 @@ export const BottomSection = styled.div`
 
 export const MainContentContainer = styled.section`
   width: 100%;
-  flex: 1;
+  max-height: 200px;
   display: flex;
-
   flex-direction: column;
   margin: 0 5px;
 `;

@@ -6,7 +6,6 @@ export const WeatherTopSection = styled.section`
   width: 100%;
   max-height: 100px;
   margin: 0 20px;
-  margin-top: 18px;
 `;
 
 export const WeatherTitleTopSection = styled.section`

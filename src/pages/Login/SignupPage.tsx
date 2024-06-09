@@ -7,7 +7,7 @@ import {
   SignupTopsection,
   BottomSection,
   SignupButton,
-} from "../../style/stylecomponents/MemberStyle/style";
+} from "../../styles/stylecomponents/MemberStyle/style";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signupVerify, signupUser } from "../../utils/apimodule/member";
