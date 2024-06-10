@@ -106,7 +106,6 @@ const LocationContentBox: React.FC = () => {
 
       {startPoint && endPoint && (
         <DirectionComponent start={startPoint} end={endPoint} selected={selected} />
-
       )}
     </>
   );

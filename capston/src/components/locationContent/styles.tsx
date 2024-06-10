@@ -260,3 +260,32 @@ export const ResultItem = styled.p`
     background: #f0f0f0;
   }
 `;
+
+//DirectionComponent styles
+
+export const DirectionComponentBox = styled.div`
+  display: flex;
+    flex-direction: column;
+    padding: 23px;
+    
+`
+export const LocationDataBox = styled.div`
+display: flex;
+padding: 20px;
+flex-direction: column;
+border: 1px solid lightgray;
+border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+`
+export const LocationDataBoxHeader = styled.div`
+display: flex;
+`
+export const LocationDataBoxBody = styled.div`
+display: flex;
+align-items: baseline;
+`
+
+export const LocationDataBoxFooter = styled.div`
+display: flex;
+align-items: baseline;
+`
