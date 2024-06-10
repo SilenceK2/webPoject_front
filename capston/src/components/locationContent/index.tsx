@@ -1,41 +1,24 @@
 import React, { useState } from "react";
-import { 
-  faRoad,
-  faArrowRightArrowLeft,
-  faLocationDot,
-  faMagnifyingGlass,
-  faBus,
-  faX,
-  faCar
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  LocationTitle,
-  LocationTitleContent,
-  LocationBoard,
-  Topsection,
-  BottomSection,
-  StartPointInput,
-  EndPointInput,
-  Input,
-  Change,
-  Select,
-  Overlay,
-  SearchBox,
-  InputPoint,
-  SearchBoxHeader,
-  SearchBoxBody,
-  SelectPublicTransportation,
-  SelectCar,
-} from "./styles";
+import { faRoad, faArrowRightArrowLeft, faLocationDot, faMagnifyingGlass, faBus, faX, faCar } from "@fortawesome/free-solid-svg-icons";
+import { LocationTitle, LocationTitleContent, LocationBoard, Topsection, BottomSection, StartPointInput, EndPointInput, Input, Change, Select, Overlay, SearchBox, SearchBoxHeader, SelectPublicTransportation, SelectCar } from "./styles";
 import PlacePickerComponent from "./PlacePickerComponent";
+import DirectionComponent from "./DirectionComponent";
 
-const LocationContentBox = () => {
+interface Place {
+  title: string;
+  address: string;
+  roadAddress: string;
+  mapx: string;
+  mapy: string;
+}
+
+const LocationContentBox: React.FC = () => {
   const [showStartPoint, setShowStartPoint] = useState(false);
   const [showEndPoint, setShowEndPoint] = useState(false);
-  const [startPointValue, setStartPointValue] = useState("");
-  const [endPointValue, setEndPointValue] = useState("");
-  const [selected, setSelected] = useState("");
+  const [startPoint, setStartPoint] = useState<Place | null>(null);
+  const [endPoint, setEndPoint] = useState<Place | null>(null);
+  const [selected, setSelected] = useState<string>("publicTransportation");
 
   const toggleStartPointInput = () => {
     setShowStartPoint(!showStartPoint);
@@ -45,22 +28,25 @@ const LocationContentBox = () => {
     setShowEndPoint(!showEndPoint);
   };
 
-  // 출발지와 도착지를 구분하여 선택된 값을 설정하는 함수
-  const handlePlaceSelect = (value: string, type: 'start' | 'end') => {
+  const handlePlaceSelect = (place: Place, type: 'start' | 'end') => {
     if (type === 'start') {
-      setStartPointValue(value); // 출발지 값 설정
-      setShowStartPoint(false); // 출발지 입력창 닫기
+      setStartPoint(place);
+      setShowStartPoint(false);
     } else {
-      setEndPointValue(value); // 도착지 값 설정
-      setShowEndPoint(false); // 도착지 입력창 닫기
+      setEndPoint(place);
+      setShowEndPoint(false);
     }
+    console.log(`${type} selected:`, place);
   };
 
-  // 출발지와 도착지 값을 교환하는 함수
   const swapPoints = () => {
-    const temp = startPointValue;
-    setStartPointValue(endPointValue);
-    setEndPointValue(temp);
+    const temp = startPoint;
+    setStartPoint(endPoint);
+    setEndPoint(temp);
+  };
+
+  const handleTransportationSelect = (type: string) => {
+    setSelected(type);
   };
 
   return (
@@ -78,20 +64,22 @@ const LocationContentBox = () => {
         <LocationBoard>
           <StartPointInput onClick={toggleStartPointInput}>
             <FontAwesomeIcon icon={faRoad} style={{ color: "#4287ff", fontSize: "20px", width: "9%" }}/>
-            <Input value={startPointValue} placeholder="출발지" readOnly />
+            <Input value={startPoint?.title || ''} placeholder="출발지" readOnly />
             <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color:"gray", fontSize: "20px" }} />
-           
-          </StartPointInput> <Change onClick={swapPoints}><FontAwesomeIcon icon={faArrowRightArrowLeft} /></Change>
+          </StartPointInput> 
+          <Change onClick={swapPoints}>
+            <FontAwesomeIcon icon={faArrowRightArrowLeft} />
+          </Change>
           <EndPointInput onClick={toggleEndPointInput}>
             <FontAwesomeIcon icon={faLocationDot} style={{ color:"#4287ff", fontSize: "20px", width: "9%" }} />
-            <Input value={endPointValue} readOnly placeholder="도착지"/>
+            <Input value={endPoint?.title || ''} readOnly placeholder="도착지"/>
             <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color:"gray", fontSize: "20px" }} />
           </EndPointInput>
           <Select>
-            <SelectPublicTransportation onClick={() => setSelected("publicTransportation")} className={selected === "publicTransportation" ? "selected" : ""}>
+            <SelectPublicTransportation onClick={() => handleTransportationSelect("publicTransportation")} className={selected === "publicTransportation" ? "selected" : ""}>
               <FontAwesomeIcon icon={faBus} style={{ fontSize: '20px', padding: '0 0 5px 0' }} />대중교통
             </SelectPublicTransportation>
-            <SelectCar onClick={() => setSelected("car")} className={selected === "car" ? "selected" : ""}>
+            <SelectCar onClick={() => handleTransportationSelect("car")} className={selected === "car" ? "selected" : ""}>
               <FontAwesomeIcon icon={faCar} style={{ fontSize: '20px', padding: '0 0 5px 0' }} />자동차
             </SelectCar>
           </Select>
@@ -102,8 +90,7 @@ const LocationContentBox = () => {
         <Overlay onClick={toggleStartPointInput}>
           <SearchBox onClick={(e) => e.stopPropagation()}>
             <SearchBoxHeader>출발지 검색<FontAwesomeIcon icon={faX} style={{ color: "gray", marginLeft: "auto" }} onClick={toggleStartPointInput} /></SearchBoxHeader>
-            {/* 출발지 선택 시 handlePlaceSelect에 'start' 타입 전달 */}
-            <PlacePickerComponent onSelect={(value) => handlePlaceSelect(value, 'start')} />
+            <PlacePickerComponent onSelect={(value) => handlePlaceSelect(value, 'start')} placeholder="출발지를 입력해주세요" />
           </SearchBox>
         </Overlay>
       )}
@@ -112,10 +99,14 @@ const LocationContentBox = () => {
         <Overlay onClick={toggleEndPointInput}>
           <SearchBox onClick={(e) => e.stopPropagation()}>
             <SearchBoxHeader>도착지 검색 <FontAwesomeIcon icon={faX} style={{ color: "gray", marginLeft: "auto" }} onClick={toggleEndPointInput} /></SearchBoxHeader>
-            {/* 도착지 선택 시 handlePlaceSelect에 'end' 타입 전달 */}
-            <PlacePickerComponent onSelect={(value) => handlePlaceSelect(value, 'end')} />
+            <PlacePickerComponent onSelect={(value) => handlePlaceSelect(value, 'end')} placeholder="도착지를 입력해주세요" />
           </SearchBox>
         </Overlay>
+      )}
+
+      {startPoint && endPoint && (
+        <DirectionComponent start={startPoint} end={endPoint} selected={selected} />
+
       )}
     </>
   );

@@ -8,13 +8,11 @@ const PORT = 8000;
 app.use(cors());
 app.use(express.json()); // JSON 파싱을 위해 추가
 
-// GET 요청 처리
+// GET 요청 처리 - 네이버 장소 검색 API
 app.get('/naver/search', async (req, res) => {
   try {
-    // 클라이언트로부터 검색어를 받아옴
     const { text } = req.query;
     
-    // 네이버 API에 검색 요청을 보냄
     const response = await axios.get('https://openapi.naver.com/v1/search/local.json', {
       params: {
         query: text,
@@ -29,13 +27,87 @@ app.get('/naver/search', async (req, res) => {
       }
     });
 
-    // 네이버 API에서 받아온 검색 결과를 클라이언트에 전송
     res.json(response.data);
   } catch (error) {
     console.error('Error fetching data from Naver API:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// GET 요청 처리 - 네이버 지도 경로 API
+app.get('/naver/direction', async (req, res) => {
+  try {
+    const { start, goal, option } = req.query;
+    
+    const response = await axios.get(`https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=${start}&goal=${goal}&option=${option}`, {
+      headers: {
+        'X-NCP-APIGW-API-KEY-ID': 'sr9ox19ub6',
+        'X-NCP-APIGW-API-KEY': 'V8pEuKAgZB1sHY6RvcVKELtaBEJPFjliZNfUiARg',
+      }
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching data from Naver Map Direction API:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// // GET 요청 처리 - 네이버 지도 경로 이미지 API
+// app.get('/naver/direction-map', async (req, res) => {
+//   try {
+//     const { w, h, center, level } = req.query;
+    
+//     const response = await axios.get('https://naveropenapi.apigw.ntruss.com/map-static/v2/raster', {
+//       params: {
+//         w,
+//         h,
+//         center,
+//         level,
+//       },
+//       headers: {
+//         'X-NCP-APIGW-API-KEY-ID': 'sr9ox19ub6',
+//         'X-NCP-APIGW-API-KEY': 'V8pEuKAgZB1sHY6RvcVKELtaBEJPFjliZNfUiARg',
+//       },
+//     });
+
+//     res.set('Content-Type', 'image/png');
+//     res.send(response.data);
+//   } catch (error) {
+//     console.error('Error fetching route map:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
+
+// GET 요청 처리 - 네이버 지도 경로 이미지 API
+app.get('/naver/direction-map', async (req, res) => {
+  try {
+    const { w, h, center, level } = req.query;
+    
+    const response = await axios.get('https://naveropenapi.apigw.ntruss.com/map-static/v3/raster', {
+      params: {
+        w,
+        h,
+        center,
+        level,
+      },
+      headers: {
+        'X-NCP-APIGW-API-KEY-ID': 'sr9ox19ub6',
+        'X-NCP-APIGW-API-KEY': 'V8pEuKAgZB1sHY6RvcVKELtaBEJPFjliZNfUiARg',
+      },
+      responseType: 'arraybuffer', // 이미지 데이터를 ArrayBuffer로 받아오기 위해 responseType을 지정합니다.
+    });
+
+    // 받아온 이미지 데이터를 클라이언트에게 전송합니다.
+    res.set('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error fetching route map:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 
 

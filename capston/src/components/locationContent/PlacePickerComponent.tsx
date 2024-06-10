@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faMagnifyingGlass,faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import { faX, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { InputSearch, InputContainer, ResultContainer, ResultItem, SearchBoxBody } from './styles';
 
-// PlacePickerComponent가 부모 컴포넌트로 값을 전달할 수 있도록 props에 onSelect 추가
-interface PlacePickerComponentProps {
-  onSelect: (value: string) => void;
+interface Place {
+  title: string;
+  address: string;
+  roadAddress: string;
+  mapx: string;
+  mapy: string;
 }
 
-const PlacePickerComponent: React.FC<PlacePickerComponentProps> = ({ onSelect }) => {
+interface PlacePickerComponentProps {
+  onSelect: (place: Place) => void;
+  placeholder: string;
+}
+
+const PlacePickerComponent: React.FC<PlacePickerComponentProps> = ({ onSelect, placeholder }) => {
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<{ title: string, address: string }[]>([]);
+  const [suggestions, setSuggestions] = useState<Place[]>([]);
 
   const fetchSuggestions = async (text: string) => {
     try {
@@ -23,7 +31,6 @@ const PlacePickerComponent: React.FC<PlacePickerComponentProps> = ({ onSelect })
         }
       });
       setSuggestions(response.data.items);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
@@ -39,11 +46,11 @@ const PlacePickerComponent: React.FC<PlacePickerComponentProps> = ({ onSelect })
     }
   };
 
-  const handleSuggestionClick = (title: string) => {
-    const cleanedTitle = title.replace(/<\/?b>/g, ''); // HTML 태그 제거
+  const handleSuggestionClick = (place: Place) => {
+    const cleanedTitle = place.title.replace(/<\/?b>/g, '');
     setQuery(cleanedTitle);
     setSuggestions([]);
-    onSelect(cleanedTitle); // 부모 컴포넌트로 선택된 값 전달
+    onSelect({ ...place, title: cleanedTitle });
   };
 
   const clearInput = () => {
@@ -60,18 +67,18 @@ const PlacePickerComponent: React.FC<PlacePickerComponentProps> = ({ onSelect })
             id="postLoc"
             value={query}
             onChange={handleInputChange}
-            placeholder="출발지를 입력해주세요."
+            placeholder={placeholder}
           />
           <FontAwesomeIcon icon={faX} style={{ color: "gray", marginLeft: "auto" }} onClick={clearInput} />
-          <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color:"gray", fontSize: "20px", padding: "10px" }} />
+          <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "gray", fontSize: "20px", padding: "10px" }} />
         </InputContainer>
       </SearchBoxBody>
       <ResultContainer>
         {suggestions.map((item, index) => (
           <ResultItem
             key={index}
-            onClick={() => handleSuggestionClick(item.title)}
-            dangerouslySetInnerHTML={{ __html: `${item.title}<br>${item.address}` }} // HTML을 그대로 출력
+            onClick={() => handleSuggestionClick(item)}
+            dangerouslySetInnerHTML={{ __html: `${item.title}<br>${item.address}` }}
           ></ResultItem>
         ))}
       </ResultContainer>
