@@ -163,6 +163,7 @@ export const Overlay = styled.div`
   justify-content: center;
   align-items: flex-end;
   overflow: auto; /* 스크롤 가능하게 설정 */
+  z-index: 999; /* 입력창을 항상 위에 나타나도록 설정 */
 `;
 
 export const SearchBox = styled.div`
@@ -265,10 +266,11 @@ export const ResultItem = styled.p`
 
 export const DirectionComponentBox = styled.div`
   display: flex;
-    flex-direction: column;
-    padding: 23px;
-    
-`
+  flex-direction: column;
+  padding: 23px;
+  position: relative; /* 지도 컨테이너의 위치를 상대적으로 설정 */
+  z-index: 1; /* 입력창 위에 나타나도록 설정 */
+`;
 export const LocationDataBox = styled.div`
 display: flex;
 padding: 20px;
