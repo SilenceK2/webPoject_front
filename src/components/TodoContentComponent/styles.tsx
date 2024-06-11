@@ -68,7 +68,6 @@ export const TodoNumber = styled.div`
 
 export const TodoBodyTitle = styled.div`
   flex: 1;
-  font-weight: bold;
 
   justify-content: center;
   text-align: left;
@@ -116,10 +115,12 @@ export const TodoBodyContent = styled.div`
   justify-content: center;
   overflow: hidden;
   & > div:nth-child(1) {
+    font-size: 13px;
   }
 
   & > div:nth-child(2) {
     margin-left: 15px;
+    font-size: 13px;
   }
 `;
 
@@ -152,4 +153,10 @@ export const CustomCheckbox = styled.input.attrs({ type: "checkbox" })`
     color: white;
     font-size: 16px;
   }
+`;
+export const TimeSeparator = styled.div`
+  margin: 10px 0;
+  color: black;
+  text-align: left;
+  // border-bottom: 1px solid #f1f1f1;
 `;

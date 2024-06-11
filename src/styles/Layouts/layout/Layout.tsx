@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Modal from "../../../components/Modal";
 import {
   Header,
   SearchButton,
@@ -31,6 +32,12 @@ import { toast } from "react-toastify";
 const Layout = () => {
   const [activePage, setActivePage] = useRecoilState(navState);
   const [searchInput, setSearchInput] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const showTodoModal = () => {
+    setIsModalOpen(true);
+    setModalType("searchResult");
+  };
   const setSearchSuccessData = useSetRecoilState(searchSuccessSelector);
   const [searchListValue, setSearchListValue]: any =
     useRecoilState(searchListSelector);
@@ -45,8 +52,9 @@ const Layout = () => {
     updateRecentSearches(searchInput);
     console.log(searchListValue);
     try {
-      const response = await sendSearchApi(searchInput);
+      const response: any = await sendSearchApi(searchInput);
       console.log(response);
+      showTodoModal();
 
       if (response.success) {
         setSearchSuccessData(response.data);
@@ -100,9 +108,7 @@ const Layout = () => {
             <FontAwesomeIcon icon={faSearch} />
           </SearchButton>
         </SearchContainer>
-        <MyPageMenuContainer>
-          <FontAwesomeIcon icon={faUser} size="lg" />
-        </MyPageMenuContainer>
+
         {searchBackDropState && (
           <RecentSearchList>
             {searchListValue !== null &&
@@ -150,6 +156,9 @@ const Layout = () => {
           </li>
         </ul>
       </BottomNav>
+      {isModalOpen && (
+        <Modal closeModal={() => setIsModalOpen(false)} modalType={modalType} />
+      )}
     </>
   );
 };

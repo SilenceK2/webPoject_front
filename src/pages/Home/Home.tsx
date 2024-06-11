@@ -8,6 +8,7 @@ import {
   LocationContent,
   TodoListContent,
   MainContent,
+  LogoutDiv,
   // ScrollBoxContainer,
 } from "./styles";
 import MainContentBox from "../../components/MainContent";
@@ -89,6 +90,9 @@ function Home() {
               <LocationContentBox />
             </LocationContent>
           </Content>
+          <LogoutDiv>
+            <p>로그아웃</p>
+          </LogoutDiv>
         </PageContainer>
       </>
     </>

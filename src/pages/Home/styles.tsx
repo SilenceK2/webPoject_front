@@ -60,7 +60,7 @@ export const LocationContent = styled.div`
 
   border-radius: 20px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
-  margin-bottom: 20px;
+  margin-bottom: 100px;
 
   width: 100%;
   min-height: 220px;
@@ -164,6 +164,13 @@ export const ModalBackdrop = styled.div`
   align-items: center;
   overflow: hidden;
   outline: none;
+`;
+
+export const LogoutDiv = styled.div`
+  display: flex;
+  width: 100%;
+  text-align: right;
+  color: #fff;
 `;
 
 // export const ScrollBoxContainer = styled.section`

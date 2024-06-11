@@ -17,7 +17,7 @@ const mappingLocation = async (latitude: any, longitude: any) => {
       currentLocationY: y,
     });
     console.log(`gridX: ${x}, gridY: ${y}`);
-    if (response.data.success) {
+    if (response.status === 200) {
       return { success: true, x, y };
     } else {
       return { success: false };

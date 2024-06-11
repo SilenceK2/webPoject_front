@@ -29,8 +29,8 @@ export const loginUser = async (email: any, pwd: any) => {
     });
     const memberId = response.data.data.id;
     console.log(response.data);
-    if (response.data.success) {
-      localStorage.setItem("memberIdNumber", memberId);
+    if (response.status === 200) {
+      localStorage.setItem("memberId", memberId);
       return { success: true };
     } else {
       return { success: false };
@@ -51,7 +51,7 @@ export const signupVerify = async (email: any) => {
       memberEmail: email,
     });
 
-    if (response.data.success) {
+    if (response.status === 200) {
       return { success: true, message: "사용하실 수 있는 이메일입니다." };
     } else {
       return { success: false };
@@ -82,7 +82,7 @@ export const signupUser = async (
 
     console.log(email, pwd);
 
-    if (response.data.success === "true") {
+    if (response.status === 200) {
       return { success: true, message: "회원가입 성공" };
     } else {
       return { success: false };

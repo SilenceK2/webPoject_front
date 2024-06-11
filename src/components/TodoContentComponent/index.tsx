@@ -9,6 +9,7 @@ import {
   TodoBodyTitle,
   TodoBodyContent,
   CustomCheckbox,
+  TimeSeparator,
 } from "./styles";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import {
@@ -23,7 +24,7 @@ import {
 import Modal from "../Modal";
 
 const TodoContentComponent = () => {
-  const dummyTodayTodo = [
+  const dummyTodayTodo: any = [
     {
       id: 1,
       todoTitle: "자기전에 양치하기",
@@ -33,6 +34,24 @@ const TodoContentComponent = () => {
       todoCategory: "#work#personal",
       todoLikes: 10,
       todoEmail: "dummy1@example.com",
+      todoTime: "08:00",
+      comment: [
+        {
+          id: 1,
+          commentContent: "sae1afe",
+          memberEmail: "ktg5679",
+        },
+        {
+          id: 2,
+          commentContent: "sa2afe",
+          memberEmail: "qkrfogusqudtls",
+        },
+        {
+          id: 3,
+          commentContent: "saefs3e",
+          memberEmail: "qkrcksalskEHdrh",
+        },
+      ],
     },
     {
       id: 2,
@@ -43,10 +62,12 @@ const TodoContentComponent = () => {
       todoCategory: "#work",
       todoLikes: 5,
       todoEmail: "dummy2@example.com",
+      todoTime: "09:00",
+      comment: [],
     },
   ];
 
-  const dummyTomorrowTodo = [
+  const dummyTomorrowTodo: any = [
     {
       id: 1,
       todoTitle: "오늘은 무엇을 해볼까",
@@ -56,6 +77,8 @@ const TodoContentComponent = () => {
       todoCategory: "#personal",
       todoLikes: 3,
       todoEmail: "dummy1@example.com",
+      todoTime: "10:00",
+      comment: [],
     },
   ];
 
@@ -64,16 +87,26 @@ const TodoContentComponent = () => {
     todoMainContentListSelector
   );
 
-  const todoData = async () => {
-    try {
-      todoListSet({
-        todayTodo: dummyTodayTodo,
-        tomorrowTodo: dummyTomorrowTodo,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const sortByTime = (todos: any) => {
+    // 배열을 복제하여 정렬
+    const sortedTodos = [...todos].sort((a: any, b: any) => {
+      const timeA = parseInt(a.todoTime.replace(":", ""));
+      const timeB = parseInt(b.todoTime.replace(":", ""));
+      return timeA - timeB;
+    });
+    return sortedTodos;
   };
+
+  const todoData = () => {
+    todoListSet({
+      todayTodo: sortByTime(dummyTodayTodo),
+      tomorrowTodo: sortByTime(dummyTomorrowTodo),
+    });
+  };
+
+  useEffect(() => {
+    todoData();
+  }, []);
 
   const addTodayTodo = () => {
     setModalType("today");
@@ -103,17 +136,13 @@ const TodoContentComponent = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [selectedTodo, setSelectedTodo] = useState<any>(null);
+  const [selectedTodo, setSelectedTodo] = useState(null);
 
   const showTodoModal = (todo: any) => {
     setSelectedTodo(todo);
     setIsModalOpen(true);
     setModalType("showtodo");
   };
-
-  useEffect(() => {
-    todoData();
-  }, []);
 
   return (
     <Container>
@@ -124,35 +153,39 @@ const TodoContentComponent = () => {
         </TodoTitle>
         <TodoContent>
           {todayTodo.map((todo: any, index: any) => (
-            <TodoBody key={todo.id}>
-              <TodoNumber>
-                <CustomCheckbox />
-              </TodoNumber>
-              <TodoBodyTitle onClick={() => showTodoModal(todo)}>
-                <div>{todo.todoTitle}</div>
-                <div>
-                  {todo.todoTag
-                    .split("#")
-                    .filter((tag: any) => tag !== "")
-                    .map((tag: any, index: any) => (
-                      <p key={index}>#{tag}</p>
-                    ))}
-                </div>
-              </TodoBodyTitle>
-              <TodoBodyContent>
-                <div>
-                  <FontAwesomeIcon icon={faShareFromSquare} />
-                </div>
-                <div>
-                  <FontAwesomeIcon
-                    icon={faTrashCan}
-                    onClick={() => {
-                      deleteTodayTodo(todo.id);
-                    }}
-                  />
-                </div>
-              </TodoBodyContent>
-            </TodoBody>
+            <React.Fragment key={todo.id}>
+              {index === 0 ||
+              todayTodo[index - 1].todoTime !== todo.todoTime ? (
+                <TimeSeparator>{todo.todoTime}</TimeSeparator>
+              ) : null}
+              <TodoBody>
+                <TodoNumber>
+                  <CustomCheckbox />
+                </TodoNumber>
+                <TodoBodyTitle onClick={() => showTodoModal(todo)}>
+                  <div>{todo.todoTitle}</div>
+                  <div>
+                    {todo.todoTag
+                      .split("#")
+                      .filter((tag: any) => tag !== "")
+                      .map((tag: any, index: any) => (
+                        <p key={index}>#{tag}</p>
+                      ))}
+                  </div>
+                </TodoBodyTitle>
+                <TodoBodyContent>
+                  <div>
+                    <FontAwesomeIcon icon={faShareFromSquare} />
+                  </div>
+                  <div>
+                    <FontAwesomeIcon
+                      icon={faTrashCan}
+                      onClick={() => deleteTodayTodo(todo.id)}
+                    />
+                  </div>
+                </TodoBodyContent>
+              </TodoBody>
+            </React.Fragment>
           ))}
         </TodoContent>
       </ContentWrap>
@@ -163,35 +196,39 @@ const TodoContentComponent = () => {
         </TodoTitle>
         <TodoContent>
           {tomorrowTodo.map((todo: any, index: any) => (
-            <TodoBody key={todo.id}>
-              <TodoNumber>
-                <CustomCheckbox />
-              </TodoNumber>
-              <TodoBodyTitle onClick={() => showTodoModal(todo)}>
-                <div>{todo.todoTitle}</div>
-                <div>
-                  {todo.todoTag
-                    .split("#")
-                    .filter((tag: any) => tag !== "")
-                    .map((tag: any, index: any) => (
-                      <p key={index}>#{tag}</p>
-                    ))}
-                </div>
-              </TodoBodyTitle>
-              <TodoBodyContent>
-                <div>
-                  <FontAwesomeIcon icon={faShareFromSquare} />
-                </div>
-                <div>
-                  <FontAwesomeIcon
-                    icon={faTrashCan}
-                    onClick={() => {
-                      deleteTomorrowTodo(todo.id);
-                    }}
-                  />
-                </div>
-              </TodoBodyContent>
-            </TodoBody>
+            <React.Fragment key={todo.id}>
+              {index === 0 ||
+              tomorrowTodo[index - 1].todoTime !== todo.todoTime ? (
+                <TimeSeparator>{todo.todoTime}</TimeSeparator> // 변경: 구분선으로 사용할 컴포넌트 사용
+              ) : null}
+              <TodoBody>
+                <TodoNumber>
+                  <CustomCheckbox />
+                </TodoNumber>
+                <TodoBodyTitle onClick={() => showTodoModal(todo)}>
+                  <div>{todo.todoTitle}</div>
+                  <div>
+                    {todo.todoTag
+                      .split("#")
+                      .filter((tag: any) => tag !== "")
+                      .map((tag: any, index: any) => (
+                        <p key={index}>#{tag}</p>
+                      ))}
+                  </div>
+                </TodoBodyTitle>
+                <TodoBodyContent>
+                  <div>
+                    <FontAwesomeIcon icon={faShareFromSquare} />
+                  </div>
+                  <div>
+                    <FontAwesomeIcon
+                      icon={faTrashCan}
+                      onClick={() => deleteTomorrowTodo(todo.id)}
+                    />
+                  </div>
+                </TodoBodyContent>
+              </TodoBody>
+            </React.Fragment>
           ))}
         </TodoContent>
       </ContentWrap>

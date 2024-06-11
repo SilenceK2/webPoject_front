@@ -75,33 +75,21 @@ const tomorrowTodoListApi = async (userEmail: any) => {
 
 /**
  * 투두리스트 생성 api
- * @param title
- * @param content
- * @param todoemail
- * @param sharedState
- * @param selectedId
- * @param categories
- * @returns
+
  */
 const createTodoListApi = async (
-  title: string | undefined,
-  content: string | undefined,
-  todoemail: string | undefined,
-  sharedState: boolean,
-  selectedId: any,
-  categories: any
+  title: any,
+  content: any,
+  time: any,
+  memberId: any
 ) => {
   try {
     const response = await api.post("/todo/create", {
-      todoTitle: title,
-      todoContent: content,
-      todoEmail: todoemail,
-      todoCheck: sharedState,
-      todoDate: selectedId,
-      todoCategory: categories,
+      todoListApi: title,
+      todosafe: memberId,
     });
     console.log(response);
-    if (response.data.success) {
+    if (response.status === 200) {
       console.log(response.data);
       return { success: true };
     } else {
@@ -125,7 +113,7 @@ const deleteTodoListApi = async (todoemail: any, selectedId: any) => {
       todoEmail: todoemail,
     });
 
-    if (response.data.success) {
+    if (response.status === 200) {
       return { success: true };
     } else {
       return { success: false };
@@ -158,7 +146,7 @@ const updateTodoListApi = async (
       todoEmail: todoemail,
       todoCategory: categories,
     });
-    if (response.data.success) {
+    if (response.status === 200) {
       return { success: true };
     } else {
       return { success: false };
@@ -176,13 +164,13 @@ const updateTodoListApi = async (
  */
 const sendSearchApi = async (input: any) => {
   try {
-    const response: any = await api.post(`/todo/search`, {
+    const response: any = await api.post(`/todo/searchTitle`, {
       todoTitle: input,
     });
     console.log(input);
     const data = response.data;
     console.log(data);
-    if (response.data.success) {
+    if (response.status === 200) {
       return { success: true, data };
     } else {
       return { success: false };
