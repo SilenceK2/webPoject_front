@@ -46,4 +46,89 @@ const locationResultResponse = async () => {
   }
 };
 
-export { mappingLocation, locationResultResponse };
+/**
+ *
+ */
+// function searchPubTransPathAJAX() {
+//   var xhr = new XMLHttpRequest();
+//   var url =
+//     "https://api.odsay.com/v1/api/searchPubTransPathT?SX=126.9027279&SY=37.5349277&EX=126.9145430&EY=37.5499421&OPT=1&apiKey={YOUR_API_KEY}";
+//   xhr.open("GET", url, true);
+//   xhr.send();
+//   xhr.onreadystatechange = function () {
+//     if (xhr.readyState == 4 && xhr.status == 200) {
+//       console.log(xhr.responseText);
+//     }
+//   };
+// }
+
+const  searchNaverPlaces = async (text: any) => {
+  try {
+    const response = await api.get(
+      'https://openapi.naver.com/v1/search/local.json', {
+      params: {
+        query: text,
+        display: 5,
+        start: 1,
+        sort: 'random',
+      },
+      headers: {
+        'X-Naver-Client-Id': 'nfiMlVtIR8DmtDMqhvpO',
+        'X-Naver-Client-Secret': 'Tkg91YuVMY',
+        'Content-Type': 'application/json',
+      },
+      }
+    );
+    const data = response.data;
+    if (response.status === 200){
+      return{ suceess: true, data };
+    } else {
+      return{ success: false };
+    }
+  }catch(error){
+    console.error("Error fetching data from Naver API: ", error);
+    throw new Error("Internal server error");
+  }
+};
+
+// 네이버 지도 경로 API 호출 함수
+const getNaverMapDirection = async (start: any, goal: any, option: any) => {
+  try {
+    const response = await api.get(`https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=${start}&goal=${goal}&option=${option}`, {
+      headers: {
+        'X-NCP-APIGW-API-KEY-ID': 'sr9ox19ub6',
+        'X-NCP-APIGW-API-KEY': 'V8pEuKAgZB1sHY6RvcVKELtaBEJPFjliZNfUiARg',
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data from Naver Map Direction API:', error);
+    throw new Error('Internal server error');
+  }
+};
+
+// 네이버 지도 경로 이미지 API 호출 함수
+const getNaverDirectionMap = async (w: any, h: any, center: any, level: any) => {
+  try {
+    const response = await api.get('https://naveropenapi.apigw.ntruss.com/map-static/v3/raster', {
+      params: {
+        w,
+        h,
+        center,
+        level,
+      },
+      headers: {
+        'X-NCP-APIGW-API-KEY-ID': 'sr9ox19ub6',
+        'X-NCP-APIGW-API-KEY': 'V8pEuKAgZB1sHY6RvcVKELtaBEJPFjliZNfUiARg',
+      },
+      responseType: 'arraybuffer', // 이미지 데이터를 ArrayBuffer로 받아오기 위해 responseType을 지정합니다.
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching route map:', error);
+    throw new Error('Internal server error');
+  }
+};
+
+
+export { mappingLocation, locationResultResponse,searchNaverPlaces,getNaverMapDirection,getNaverDirectionMap};

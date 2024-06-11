@@ -267,7 +267,8 @@ export const ResultItem = styled.p`
 export const DirectionComponentBox = styled.div`
   display: flex;
     flex-direction: column;
-    padding: 23px;
+   margin: 20px;
+   border-radius: 15px;
     z-index: 1;
 `
 export const LocationDataBox = styled.div`
@@ -275,8 +276,7 @@ display: flex;
 padding: 20px;
 flex-direction: column;
 border: 1px solid lightgray;
-border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+
 `
 export const LocationDataBoxHeader = styled.div`
 display: flex;

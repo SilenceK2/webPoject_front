@@ -25,14 +25,15 @@ declare global {
 }
 
 const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) => {
-  const [route, setRoute] = useState<Route | null>(null);
+  const [traoptimalRoute, setTraoptimalRoute] = useState<Route | null>(null);
+  const [trafastRoute, setTrafastRoute] = useState<Route | null>(null);
+  const [tracomfortRoute, setTracomfortRoute] = useState<Route | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchRoute = async () => {
       try {
         setLoading(true);
-        // mapx, mapy 값 조작
         const formattedStart = {
           mapx: `${start.mapx.slice(0, 3)}.${start.mapx.slice(3)}`,
           mapy: `${start.mapy.slice(0, 2)}.${start.mapy.slice(2)}`,
@@ -41,24 +42,35 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
           mapx: `${end.mapx.slice(0, 3)}.${end.mapx.slice(3)}`,
           mapy: `${end.mapy.slice(0, 2)}.${end.mapy.slice(2)}`,
         };
-        const response = await axios.get("http://localhost:8000/naver/direction", {
+
+        const traoptimalResponse = await axios.get("http://localhost:8000/naver/direction", {
           params: {
             start: `${formattedStart.mapx},${formattedStart.mapy}`,
             goal: `${formattedEnd.mapx},${formattedEnd.mapy}`,
-            option: selected === "car" ? "traoptimal" : "cpublicTransportationar"
+            option: "traoptimal"
           },
         });
-        console.log("Route response data:", response.data);
-        const routeData = response.data.route;
-        if (selected === "car" && routeData && routeData.traoptimal && routeData.traoptimal.length > 0) {
-          const route = routeData.traoptimal[0];
-          setRoute(route);
-        } else if (selected === "publicTransportation" && routeData && routeData.car) {
-          const route = routeData.car;
-          setRoute(route);
-        } else {
-          setRoute(null);
-        }
+
+        const trafastResponse = await axios.get("http://localhost:8000/naver/direction", {
+          params: {
+            start: `${formattedStart.mapx},${formattedStart.mapy}`,
+            goal: `${formattedEnd.mapx},${formattedEnd.mapy}`,
+            option: "trafast"
+          },
+        });
+
+        const tracomfortResponse = await axios.get("http://localhost:8000/naver/direction", {
+          params: {
+            start: `${formattedStart.mapx},${formattedStart.mapy}`,
+            goal: `${formattedEnd.mapx},${formattedEnd.mapy}`,
+            option: "tracomfort"
+          },
+        });
+
+        setTraoptimalRoute(traoptimalResponse.data.route.traoptimal[0]);
+        setTrafastRoute(trafastResponse.data.route.trafast[0]);
+        setTracomfortRoute(tracomfortResponse.data.route.tracomfort[0]);
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching route:", error);
@@ -94,7 +106,7 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
     let polyline: any;
 
     loadScript().then(() => {
-      if (route) {
+      if (traoptimalRoute) {
         const mapOptions = {
           center: new window.naver.maps.LatLng(37.3595704, 127.105399),
           zoom: 13
@@ -102,7 +114,7 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
         map = new window.naver.maps.Map("map", mapOptions);
 
         const startLatLng = new window.naver.maps.LatLng(parseFloat(start.mapy.slice(0, 2) + "." + start.mapy.slice(2)), parseFloat(start.mapx.slice(0, 3) + "." + start.mapx.slice(3)));
-        const endLatLng = new window.naver.maps.LatLng(parseFloat(end.mapy.slice(0, 2) + "." + end.mapy.slice(2)), parseFloat(end.mapx.slice(0, 3) + "." + end.mapx.slice(3)));
+        const endLatLng = new window.naver.maps.LatLng(parseFloat(end.mapy.slice(0,2) + "." + end.mapy.slice(2)), parseFloat(end.mapx.slice(0, 3) + "." + end.mapx.slice(3)));
 
         new window.naver.maps.Marker({
           position: startLatLng,
@@ -116,7 +128,7 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
           title: "End Point"
         });
 
-        const path = route.path.map(([x, y]) => new window.naver.maps.LatLng(y, x));
+        const path = traoptimalRoute.path.map(([x, y]: [number, number]) => new window.naver.maps.LatLng(y, x));
 
         polyline = new window.naver.maps.Polyline({
           path: path,
@@ -143,44 +155,66 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
         console.log("Polyline removed");
       }
     };
-  }, [route, start, end]);
+  }, [traoptimalRoute, start, end]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!route) {
-    return <div>No route available</div>;
-  }
-
-  // 총 거리를 km로 변환
-  const totalDistanceKm = (route.summary.distance / 1000).toFixed(1);
-  // 예상 소요 시간을 분으로 변환
-  const totalDurationMin = Math.round(route.summary.duration / 60/1000);
-  // 택시비
-  const taxiFare = route.summary.taxiFare;
-  // 주유비
-  const fuelPrice = route.summary.fuelPrice;
-
   return (
     <DirectionComponentBox>
-      <div id="map" style={{ display:"flex",width: "99.8%", height: "300px", borderRadius:"20px 20px 0px 0px",border:"1px solid lightgray"}}></div>
-      <LocationDataBox>
-        <LocationDataBoxHeader>
-          <h3 style={{color: "blue"}}>최적의 경로</h3>
-        </LocationDataBoxHeader>
-        <LocationDataBoxBody>
-          <p style={{fontSize: "30px",fontWeight: "bold"}}>{totalDurationMin} </p>
-          <p style={{fontSize: "22px",fontWeight: "bold"}}>분</p>
-          <p style={{fontSize: "20px",fontWeight:"bold"}}>&nbsp;⊸ {totalDistanceKm}km</p>
-        </LocationDataBoxBody>
-        <LocationDataBoxFooter>
-          <p style={{fontSize: "15px",color:"gray"}}>택시비: {taxiFare}원 ⋯</p>
-          <p style={{fontSize: "15px",color:"gray"}}>&nbsp;주유비: {fuelPrice}원</p>
-        </LocationDataBoxFooter>
-      </LocationDataBox>
+      <div id="map" style={{ display:"flex", width: "99.8%", height: "300px", borderRadius:"20px 20px 0px 0px", border:"1px solid lightgray" }}></div>
+      {traoptimalRoute && (
+        <LocationDataBox>
+          <LocationDataBoxHeader>
+            <h3 style={{ color: "blue" }}>최적의 경로</h3>
+          </LocationDataBoxHeader>
+          <LocationDataBoxBody>
+            <p style={{ fontSize: "30px", fontWeight: "bold" }}>{Math.round(traoptimalRoute.summary.duration / 60 / 1000)}</p>
+            <p style={{ fontSize: "22px", fontWeight: "bold" }}>분</p>
+            <p style={{ fontSize: "20px", fontWeight: "bold" }}>&nbsp;⊸ {(traoptimalRoute.summary.distance / 1000).toFixed(1)}km</p>
+          </LocationDataBoxBody>
+          <LocationDataBoxFooter>
+            <p style={{ fontSize: "15px", color: "gray" }}>택시비: {traoptimalRoute.summary.taxiFare}원 ⋯</p>
+            <p style={{ fontSize: "15px", color: "gray" }}>&nbsp;주유비: {traoptimalRoute.summary.fuelPrice}원</p>
+          </LocationDataBoxFooter>
+        </LocationDataBox>
+      )}
+      {trafastRoute && (
+        <LocationDataBox>
+          <LocationDataBoxHeader>
+            <h3 style={{ color: "blue" }}>실시간 편한길</h3>
+          </LocationDataBoxHeader>
+          <LocationDataBoxBody>
+            <p style={{ fontSize: "30px", fontWeight: "bold" }}>{Math.round(trafastRoute.summary.duration / 60 / 1000)}</p>
+            <p style={{ fontSize: "22px", fontWeight: "bold" }}>분</p>
+            <p style={{ fontSize: "20px", fontWeight: "bold" }}>&nbsp;⊸ {(trafastRoute.summary.distance / 1000).toFixed(1)}km</p>
+          </LocationDataBoxBody>
+          <LocationDataBoxFooter>
+            <p style={{ fontSize: "15px", color: "gray" }}>택시비: {trafastRoute.summary.taxiFare}원 ⋯</p>
+            <p style={{ fontSize: "15px", color: "gray" }}>&nbsp;주유비: {trafastRoute.summary.fuelPrice}원</p>
+          </LocationDataBoxFooter>
+        </LocationDataBox>
+      )}
+      {tracomfortRoute && (
+        <LocationDataBox>
+          <LocationDataBoxHeader>
+            <h3 style={{ color: "blue" }}>실시간 빠른길</h3>
+          </LocationDataBoxHeader>
+          <LocationDataBoxBody>
+            <p style={{ fontSize: "30px", fontWeight: "bold" }}>{Math.round(tracomfortRoute.summary.duration / 60 / 1000)}</p>
+            <p style={{ fontSize: "22px", fontWeight: "bold" }}>분</p>
+            <p style={{ fontSize: "20px", fontWeight: "bold" }}>&nbsp;⊸ {(tracomfortRoute.summary.distance / 1000).toFixed(1)}km</p>
+          </LocationDataBoxBody>
+          <LocationDataBoxFooter>
+            <p style={{ fontSize: "15px", color: "gray" }}>택시비: {tracomfortRoute.summary.taxiFare}원 ⋯</p>
+            <p style={{ fontSize: "15px", color: "gray" }}>&nbsp;주유비: {tracomfortRoute.summary.fuelPrice}원</p>
+          </LocationDataBoxFooter>
+        </LocationDataBox>
+      )}
     </DirectionComponentBox>
   );
 };
 
 export default DirectionComponent;
+ 
