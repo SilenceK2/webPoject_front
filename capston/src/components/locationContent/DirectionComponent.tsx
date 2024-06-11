@@ -45,13 +45,13 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
           params: {
             start: `${formattedStart.mapx},${formattedStart.mapy}`,
             goal: `${formattedEnd.mapx},${formattedEnd.mapy}`,
-            option: selected === "car" ? "trafast" : "cpublicTransportationar"
+            option: selected === "car" ? "traoptimal" : "cpublicTransportationar"
           },
         });
         console.log("Route response data:", response.data);
         const routeData = response.data.route;
-        if (selected === "car" && routeData && routeData.trafast && routeData.trafast.length > 0) {
-          const route = routeData.trafast[0];
+        if (selected === "car" && routeData && routeData.traoptimal && routeData.traoptimal.length > 0) {
+          const route = routeData.traoptimal[0];
           setRoute(route);
         } else if (selected === "publicTransportation" && routeData && routeData.car) {
           const route = routeData.car;
@@ -164,7 +164,7 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
 
   return (
     <DirectionComponentBox>
-      <div id="map" style={{ width: "99.6%", height: "300px", borderRadius:"20px 20px 0px 0px",border:"1px solid lightgray"}}></div>
+      <div id="map" style={{ display:"flex",width: "99.8%", height: "300px", borderRadius:"20px 20px 0px 0px",border:"1px solid lightgray"}}></div>
       <LocationDataBox>
         <LocationDataBoxHeader>
           <h3 style={{color: "blue"}}>최적의 경로</h3>
