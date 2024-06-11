@@ -19,12 +19,15 @@ import {
 import { createTodoListApi } from "../../utils/apimodule/todolist";
 import { toast } from "react-toastify";
 import { searchSuccessSelector } from "../../utils/recoil/atom";
-import { RecoilValue, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
+
 interface ModalProps {
-  closeModal: any;
-  modalType: any;
+  closeModal: () => void;
+  modalType: string;
   todoData?: any;
-  createTodo?: any;
+  createTodo?: () => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -39,7 +42,7 @@ const Modal: React.FC<ModalProps> = ({
   const [sharedState, setSharedState] = useState(false);
   const [time, setTime] = useState("");
   const [comment, setComment] = useState("");
-  const searchData = useRecoilValue(searchSuccessSelector);
+  const searchData: any = useRecoilValue(searchSuccessSelector);
 
   const handleCreateTodo = async () => {
     try {
@@ -50,10 +53,6 @@ const Modal: React.FC<ModalProps> = ({
         time,
         memberId
       );
-
-      /**
-       * @todo 유효성검사 완성시켜야함 ( 글자수 제한, Date 시간만 입력혹은 min, max시간 설정 )
-       */
 
       if (response.success === "true") {
         toast.success("글 작성이 완료되었습니다.");
@@ -78,6 +77,8 @@ const Modal: React.FC<ModalProps> = ({
       <CommentContent>{comment.commentContent}</CommentContent>
     </CommentContainer>
   );
+
+  console.log(searchData.title);
 
   return (
     <ModalBackdrop
@@ -166,23 +167,32 @@ const Modal: React.FC<ModalProps> = ({
           </div>
           <SearchModalTopSection>
             <div>
-              asef
-              <p>12</p>
+              <h2>{searchData.title}</h2>
+              <p>
+                {searchData.likes}{" "}
+                <FontAwesomeIcon
+                  icon={searchData.liked ? faHeart : faHeartBroken}
+                />
+              </p>
             </div>
-
-            <div>asfe</div>
-            <div>seaf</div>
-            <div>asfe</div>
+            <div>
+              {searchData.categories
+                .split("#")
+                .filter((tag: any) => tag !== "")
+                .map((tag: any, index: any) => (
+                  <p key={index}>#{tag}</p>
+                ))}
+            </div>
+            <div>{searchData.content}</div>
           </SearchModalTopSection>
           <SearchModalBottomSection>
-            {/* <input
-              value={comment}
-              onChange={(e: any) => {
-                setComment(e.target.value);
-              }}
-              type="text"
-            /> */}
             <div>
+              <input
+                value={comment}
+                onChange={(e: any) => setComment(e.target.value)}
+                type="text"
+                placeholder="댓글을 입력하세요"
+              />
               <ModalButton>
                 <button onClick={handleCreateTodo}>추가</button>
               </ModalButton>

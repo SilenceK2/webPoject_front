@@ -38,7 +38,7 @@ const Layout = () => {
     setIsModalOpen(true);
     setModalType("searchResult");
   };
-  const setSearchSuccessData = useSetRecoilState(searchSuccessSelector);
+  const setSearchSuccessData: any = useSetRecoilState(searchSuccessSelector);
   const [searchListValue, setSearchListValue]: any =
     useRecoilState(searchListSelector);
 
@@ -57,7 +57,13 @@ const Layout = () => {
       showTodoModal();
 
       if (response.success) {
-        setSearchSuccessData(response.data);
+        // setSearchSuccessData(response.data);
+        setSearchSuccessData({
+          title: "asef",
+          categories: "#asef#seafsaf",
+          likes: 12,
+          content: "asefeas",
+        });
       } else {
         toast.warning("검색결과가 없습니다.");
       }

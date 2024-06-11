@@ -124,7 +124,7 @@ export const searchSuccessAtom = atom({
   key: "searchSuccessAtom",
   default: "",
 });
-export const searchSuccessSelector = selector({
+export const searchSuccessSelector: any = selector({
   key: "serachListSelector",
   get: ({ get }) => {
     const searchAtomSelector = get(searchSuccessAtom);

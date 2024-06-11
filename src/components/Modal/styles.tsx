@@ -194,64 +194,117 @@ export const ShowModalBottomSection = styled.div`
   }
 `;
 
+export const SearchModalContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  @media (min-width: 1200px) {
+    height: auto;
+    width: 30%;
+  }
+`;
+
+export const SearchModalTopSection = styled.div`
+  margin-top: 20px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  & > div:nth-child(1) {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    & > p {
+      font-size: 15px;
+      cursor: pointer;
+    }
+  }
+
+  & > div:nth-child(2) {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f1f1f1;
+
+    & > p {
+      background-color: #50bcdf;
+      color: white;
+      font-weight: bold;
+      margin-right: 8px;
+      padding: 1px 4px;
+      font-size: 13px;
+      border-radius: 5px;
+    }
+  }
+
+  & > div:nth-child(3) {
+    margin-top: 20px;
+
+    padding-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+  }
+`;
+
+export const SearchModalBottomSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > div:nth-child(1) {
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    & > input {
+      flex: 1;
+      padding: 20px;
+
+      width: 100%;
+
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      outline: none;
+      margin-right: 10px;
+      margin-bottom: 20px;
+    }
+  }
+`;
+
 export const CommentContainer = styled.div`
   margin-bottom: 20px;
-  padding-left: 10px;
-  background-color: #ffff;
+  padding: 10px;
+  background-color: #ffffff;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 `;
 
 export const CommentHeader = styled.div`
   font-weight: bold;
   margin-bottom: 5px;
-  font-size: 12px;
-  flex: 1;
-  font-weight: lighter;
+  font-size: 14px;
 `;
 
 export const CommentContent = styled.div`
   font-size: 16px;
-  flex: 1;
 `;
 
-export const SearchModalContainer = styled.section`
-display: flex;
-flex-direction: column;
-background-color: white;
-width: 80%;
-max-width: 500px;
-height:
-align-items: center;
-border-radius: 20px;
-
-padding: 20px;
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
-z-index: 1001; 
-@media (min-width: 1200px) {
-  height: auto;
-  width: 30%;
-}
-`;
-
-export const SearchModalTopSection = styled.div``;
-
-export const SearchModalBottomSection = styled.div`;`;
-
-function rgba(
-  arg0: number,
-  arg1: number,
-  arg2: number,
-  arg3: number
-): import("styled-components").Interpolation<
-  import("styled-components").FastOmit<
-    import("react").DetailedHTMLProps<
-      import("react").HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >,
-    never
-  >
-> {
-  throw new Error("Function not implemented.");
+function rgba(r: number, g: number, b: number, a: number): string {
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
