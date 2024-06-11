@@ -163,6 +163,7 @@ export const Overlay = styled.div`
   justify-content: center;
   align-items: flex-end;
   overflow: auto; /* 스크롤 가능하게 설정 */
+  z-index: 999;
 `;
 
 export const SearchBox = styled.div`
@@ -267,7 +268,7 @@ export const DirectionComponentBox = styled.div`
   display: flex;
     flex-direction: column;
     padding: 23px;
-    
+    z-index: 1;
 `
 export const LocationDataBox = styled.div`
 display: flex;
