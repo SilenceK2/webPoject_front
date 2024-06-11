@@ -6,9 +6,12 @@ import {
   ModalContainer,
   ModalInput,
   ModalTopSection,
+  ShowModalBottomSection,
+  ShowModalContainer,
+  ShowModalTopSection,
 } from "./styles";
 
-const Modal = ({ closeModal, modalType }: any) => {
+const Modal = ({ closeModal, modalType, todoData }: any) => {
   const [title, setTitle] = useState("");
   const [categories, setCategories] = useState("");
   const [content, setContent] = useState("");
@@ -18,17 +21,23 @@ const Modal = ({ closeModal, modalType }: any) => {
     closeModal();
   };
 
-  const updateTodoList = () => {
-    closeModal();
-  };
-
   const deleteTodoList = () => {
     closeModal();
   };
 
+  const handleBackdropClick: any = (e: any) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  };
+
+  console.log(todoData);
+
   return (
-    <>
-      <ModalBackdrop>
+    <ModalBackdrop
+      onClick={modalType === "showtodo" ? handleBackdropClick : null}
+    >
+      {modalType === "today" || modalType === "tomorrow" ? (
         <ModalContainer>
           <div>
             <p onClick={closeModal}>x</p>
@@ -75,13 +84,24 @@ const Modal = ({ closeModal, modalType }: any) => {
             </label>
             <ModalButton>
               <button onClick={createTodoList}>추가</button>
-              <button onClick={updateTodoList}>수정</button>
+              {/* <button onClick={updateTodoList}>수정</button> */}
               <button onClick={deleteTodoList}>삭제</button>
             </ModalButton>
           </ModalBottomSection>
         </ModalContainer>
-      </ModalBackdrop>
-    </>
+      ) : modalType === "showtodo" ? (
+        <ShowModalContainer>
+          <ShowModalTopSection>
+            <div>
+              <h2>{todoData.todoTitle}</h2>
+              <p>{todoData.todoCategory}</p>
+            </div>
+            <div>{todoData.todoContent}</div>
+          </ShowModalTopSection>
+          <ShowModalBottomSection>{/* 댓글 영역 */}</ShowModalBottomSection>
+        </ShowModalContainer>
+      ) : null}
+    </ModalBackdrop>
   );
 };
 

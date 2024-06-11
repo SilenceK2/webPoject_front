@@ -101,43 +101,19 @@ const TodoContentComponent = () => {
     }));
   };
 
-  // const sendKaKaoMessage = () => {
-  //   window.Kakao.Link.sendDefault({
-  //     objectType: "feed",
-  //     content: {
-  //       title: "title",
-  //       description: "#케익 #딸기 #삼평동 #카페 #분위기 #소개팅",
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [selectedTodo, setSelectedTodo] = useState<any>(null);
 
-  //       link: {
-  //         mobileWebUrl: document.location.href,
-  //         webUrl: document.location.href,
-  //       },
-  //     },
-  //     buttons: [
-  //       {
-  //         title: "웹으로 보기",
-  //         link: {
-  //           mobileWebUrl: document.location.href,
-  //           webUrl: document.location.href,
-  //         },
-  //       },
-  //       {
-  //         title: "앱으로 보기",
-  //         link: {
-  //           mobileWebUrl: document.location.href,
-  //           webUrl: document.location.href,
-  //         },
-  //       },
-  //     ],
-  //   });
-  // };
+  const showTodoModal = (todo: any) => {
+    setSelectedTodo(todo);
+    setIsModalOpen(true);
+    setModalType("showtodo");
+  };
 
   useEffect(() => {
     todoData();
   }, []);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState("");
 
   return (
     <Container>
@@ -152,7 +128,7 @@ const TodoContentComponent = () => {
               <TodoNumber>
                 <CustomCheckbox />
               </TodoNumber>
-              <TodoBodyTitle>
+              <TodoBodyTitle onClick={() => showTodoModal(todo)}>
                 <div>{todo.todoTitle}</div>
                 <div>
                   {todo.todoTag
@@ -191,7 +167,7 @@ const TodoContentComponent = () => {
               <TodoNumber>
                 <CustomCheckbox />
               </TodoNumber>
-              <TodoBodyTitle>
+              <TodoBodyTitle onClick={() => showTodoModal(todo)}>
                 <div>{todo.todoTitle}</div>
                 <div>
                   {todo.todoTag
@@ -204,10 +180,7 @@ const TodoContentComponent = () => {
               </TodoBodyTitle>
               <TodoBodyContent>
                 <div>
-                  <FontAwesomeIcon
-                    icon={faShareFromSquare}
-                    // onClick={sendKaKaoMessage}
-                  />
+                  <FontAwesomeIcon icon={faShareFromSquare} />
                 </div>
                 <div>
                   <FontAwesomeIcon
@@ -223,7 +196,11 @@ const TodoContentComponent = () => {
         </TodoContent>
       </ContentWrap>
       {isModalOpen && (
-        <Modal closeModal={() => setIsModalOpen(false)} modalType={modalType} />
+        <Modal
+          closeModal={() => setIsModalOpen(false)}
+          modalType={modalType}
+          todoData={selectedTodo}
+        />
       )}
     </Container>
   );

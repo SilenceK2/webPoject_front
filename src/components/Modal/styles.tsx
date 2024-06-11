@@ -3,17 +3,18 @@ import styled from "styled-components";
 export const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
-  bottom: 0;
+  // bottom: 70px; /* BottomNav의 높이만큼 공간을 남겨둠 */
   left: 0;
   right: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 70px);
+  // background-color: rgba(0, 0, 0, 0.4);
+  background-color: ${({ modalType }: any) =>
+    modalType === "showtodo" ? rgba(0, 0, 0, 0.4) : 999};
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5); /* Added background overlay */
-  z-index: 1000; /* Ensures modal is above other content */
-  overflow: hidden;
+  z-index: ${({ modalType }: any) => (modalType === "showtodo" ? 1000 : 999)};
 `;
 
 export const ModalContainer = styled.div`
@@ -118,7 +119,42 @@ export const ModalButton = styled.div`
     cursor: pointer;
     transition: background-color 0.3s;
     &:hover {
-      background-color: #0056b3; /* Darker blue on hover */
+      background-color: #0056b3;
     }
   }
 `;
+
+export const ShowModalContainer = styled.div`
+  position: fixed;
+  bottom: 70px;
+  width: 100%;
+
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+`;
+
+export const ShowModalTopSection = styled.div`
+  background-color: #ffffff;
+  padding: 20px;
+`;
+
+export const ShowModalBottomSection = styled.div`
+  background-color: #ffffff;
+  padding: 20px;
+`;
+function rgba(
+  arg0: number,
+  arg1: number,
+  arg2: number,
+  arg3: number
+): import("styled-components").Interpolation<
+  import("styled-components").FastOmit<
+    import("react").DetailedHTMLProps<
+      import("react").HTMLAttributes<HTMLDivElement>,
+      HTMLDivElement
+    >,
+    never
+  >
+> {
+  throw new Error("Function not implemented.");
+}

@@ -5,15 +5,14 @@ export const Container = styled.section`
   flex-direction: column;
   width: 90%;
   margin: 0 20px;
-
   margin-top: 20px;
 `;
 
 export const ContentWrap = styled.div`
+  margin-top: 10px;
   display: flex;
   width: 100%;
   flex-direction: column;
-  margin-bottom: 20px;
 `;
 
 export const TodoTitle = styled.div`
@@ -21,7 +20,7 @@ export const TodoTitle = styled.div`
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
-  font-weight: bold;
+  font-weight: bolder;
   margin-bottom: 20px;
   border-bottom: 1px solid #f1f1f1;
   padding-bottom: 10px;
@@ -69,6 +68,7 @@ export const TodoNumber = styled.div`
 
 export const TodoBodyTitle = styled.div`
   flex: 1;
+  font-weight: bold;
 
   justify-content: center;
   text-align: left;
@@ -78,6 +78,7 @@ export const TodoBodyTitle = styled.div`
   & > div:nth-child(1) {
     font-size: 15px;
     font-weight: extra-bold;
+    padding-bottom: 5px;
   }
 
   & > div:nth-child(2) {
