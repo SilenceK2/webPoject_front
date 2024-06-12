@@ -22,50 +22,69 @@ import {
   searchSuccessSelector,
   searchListSelector,
   searchBackDropSelector,
+  searchSuccessListSelector,
   navState,
 } from "../../../utils/recoil/atom";
-
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { sendSearchApi } from "../../../utils/apimodule/todolist";
+import {
+  sendSearchTitleApi,
+  sendSearchCaterogyApi,
+} from "../../../utils/apimodule/todolist";
 import { toast } from "react-toastify";
+import Select from "react-select";
 
-const Layout = () => {
+const Layout: React.FC = () => {
   const [activePage, setActivePage] = useRecoilState(navState);
   const [searchInput, setSearchInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [searchOption, setSearchOption] = useState("제목");
+  const [successResponseData, setSuccessResponseData] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   const showTodoModal = () => {
     setIsModalOpen(true);
     setModalType("searchResult");
   };
-  const setSearchSuccessData: any = useSetRecoilState(searchSuccessSelector);
+
+  const setSearchSuccessData = useSetRecoilState(searchSuccessSelector);
+
   const [searchListValue, setSearchListValue]: any =
     useRecoilState(searchListSelector);
+
+  const [searchSuccessList, setSearchSuccessList]: any = useRecoilState(
+    searchSuccessListSelector
+  );
 
   const [searchBackDropState, setSearchBackDropState] = useRecoilState(
     searchBackDropSelector
   );
 
-  const location = useLocation();
-  const navigate = useNavigate();
   const sendSearchData = async () => {
     updateRecentSearches(searchInput);
     console.log(searchListValue);
-    try {
-      const response: any = await sendSearchApi(searchInput);
-      console.log(response);
-      showTodoModal();
 
-      if (response.success) {
-        // setSearchSuccessData(response.data);
+    try {
+      let response: any;
+      if (searchOption === "제목") {
+        response = await sendSearchTitleApi(searchInput);
+      } else {
+        response = await sendSearchCaterogyApi(searchInput);
+      }
+
+      if (response.success === "true") {
+        toast.success("검색 성공");
+        setSuccessResponseData(true);
         setSearchSuccessData({
           title: "asef",
           categories: "#asef#seafsaf",
           likes: 12,
+          liked: 0,
           content: "asefeas",
         });
       } else {
         toast.warning("검색결과가 없습니다.");
+        setSearchSuccessList(response.title || []);
       }
     } catch (error) {
       console.error(error);
@@ -73,7 +92,7 @@ const Layout = () => {
   };
 
   const updateRecentSearches = (searchKeyword: any) => {
-    setSearchListValue((prevSearchList: any) => {
+    setSearchListValue((prevSearchList: any[]) => {
       if (!prevSearchList.includes(searchKeyword)) {
         return [...prevSearchList, searchKeyword];
       } else {
@@ -99,10 +118,39 @@ const Layout = () => {
       setActivePage(page);
     }
   }, [location.pathname]);
+
+  const customStyles = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      fontSize: "12px",
+      marginLeft: "-10px",
+      width: "80px",
+      marginRight: "20px",
+      borderRadius: "10px",
+      border: "none",
+      focus: "none",
+      outline: "none",
+      zIndex: "1000",
+    }),
+  };
+
+  const options = [
+    { value: "title", label: "제목" },
+    { value: "category", label: "카테고리" },
+  ];
+
   return (
     <>
       <Header>
         <SearchContainer>
+          <Select
+            options={options}
+            value={options.find((option) => option.value === searchOption)}
+            onChange={(selectedOption) =>
+              setSearchOption(selectedOption?.value || "제목")
+            }
+            styles={customStyles}
+          />
           <SearchInput
             type="text"
             placeholder="투두리스트 검색..."
@@ -115,20 +163,31 @@ const Layout = () => {
           </SearchButton>
         </SearchContainer>
 
-        {searchBackDropState && (
-          <RecentSearchList>
-            {searchListValue !== null &&
-            searchListValue !== undefined &&
-            searchListValue.length > 0 ? (
-              searchListValue.map((search: any, index: any) => (
-                <div key={index}>{search}</div>
-              ))
+        {searchBackDropState ? (
+          <>
+            {successResponseData ? (
+              <RecentSearchList>
+                {searchSuccessList.map((search: string, index: number) => (
+                  <div key={index}>{search}</div>
+                ))}
+              </RecentSearchList>
             ) : (
-              <>
-                <div>최근 검색어가 없습니다.</div>
-              </>
+              <RecentSearchList>
+                {searchListValue.map((search: string, index: number) => (
+                  <div key={index}>
+                    {search}
+                    <p>name</p>
+                  </div>
+                ))}
+              </RecentSearchList>
             )}
-          </RecentSearchList>
+          </>
+        ) : (
+          <>
+            <RecentSearchList>
+              <div>검색 결과가 없습니다.</div>
+            </RecentSearchList>
+          </>
         )}
       </Header>
       <Outlet />
@@ -138,7 +197,7 @@ const Layout = () => {
             setSearchBackDropState(false);
             setSearchInput("");
           }}
-        ></ModalBackdrop>
+        />
       )}
       <BottomNav>
         <ul>

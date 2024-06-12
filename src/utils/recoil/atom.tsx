@@ -174,3 +174,23 @@ export const searchBackDropSelector = selector({
     set(searchBackDropAtom, newValue);
   },
 });
+
+/**
+ * 검색 input창 클릭시 모달 backdrop생성 (home)
+ */
+
+export const searchSuccessListAtom = atom({
+  key: "searchSuccessListAtom",
+  default: false,
+});
+
+export const searchSuccessListSelector = selector({
+  key: "searchSuccessListSelector",
+  get: ({ get }) => {
+    const searchSuccessListAtomSelector = get(searchSuccessListAtom);
+    return searchSuccessListAtomSelector;
+  },
+  set: ({ set }, newValue) => {
+    set(searchSuccessListAtom, newValue);
+  },
+});

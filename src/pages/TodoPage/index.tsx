@@ -67,7 +67,7 @@ const TodoPage = () => {
         <TopSection>
           <RatingContainer>
             <UpdateListTitle>
-              <div>🏆</div>
+              <div></div>
               <UpdateListTitleContent>
                 실시간 인기 todoList
                 <div>인기 todolist를 확인하고 찜해보세요!</div>
@@ -103,7 +103,7 @@ const TodoPage = () => {
         <BottomSection>
           <TodoUpdateList>
             <UpdateListTitle>
-              <div>✅</div>
+              <div></div>
               <UpdateListTitleContent>
                 실시간 업데이트
                 <div>사람들이 공유한 todolist를 확인해보세요!</div>

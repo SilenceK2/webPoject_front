@@ -13,6 +13,14 @@ body {
   }
 }
 
+.Select {
+  z-index: 2000;
+}
+
+.RecentSearchList {
+  z-index: 100;
+}
+
 @font-face {
   font-family: "Noto Sans CJK KR";
   font-style: normal;

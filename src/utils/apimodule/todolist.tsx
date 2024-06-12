@@ -162,7 +162,7 @@ const updateTodoListApi = async (
  * @param input
  * @returns
  */
-const sendSearchApi = async (input: any) => {
+const sendSearchTitleApi = async (input: any) => {
   try {
     const response: any = await api.post(`/todo/searchTitle`, {
       todoTitle: input,
@@ -181,11 +181,53 @@ const sendSearchApi = async (input: any) => {
   }
 };
 
-const sendLocationApi = async (x: any, y: any) => {};
 /**
- * rating불러오기
+ * 투두리스트 검색
+ * @param input
  * @returns
  */
+const sendSearchCaterogyApi = async (input: any) => {
+  try {
+    const response: any = await api.post(`/todo/searchCategory`, {
+      todoTitle: input,
+    });
+    console.log(input);
+    const data = response.data;
+    console.log(data);
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "글찾기 불러오기 실패" };
+  }
+};
+
+/**
+ * 댓글
+ * @param comment
+ * @returns
+ */
+const createCommentApi = async (comment: any) => {
+  try {
+    const memberId = localStorage.getItem("memberId");
+    const response: any = await api.post(`/todo/comment`, {
+      todoTitle: comment,
+      memberId: memberId,
+    });
+
+    if (response.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "글찾기 불러오기 실패" };
+  }
+};
 export {
   createTodoListApi,
   deleteTodoListApi,
@@ -193,5 +235,7 @@ export {
   getTodoListAllTableApi,
   todoListApi,
   tomorrowTodoListApi,
-  sendSearchApi,
+  sendSearchTitleApi,
+  sendSearchCaterogyApi,
+  createCommentApi,
 };

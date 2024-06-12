@@ -11,11 +11,11 @@ export const ModalBackdrop = styled.div`
   height: calc(100% - 70px);
   background-color: rgba(0, 0, 0, 0.4);
   background-color: ${({ modalType }: any) =>
-    modalType === "showtodo" ? rgba(0, 0, 0, 0.4) : 999};
+    modalType === "showtodo" ? rgba(0, 0, 0, 0.4) : rgba(0, 0, 0, 0.4)};
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: ${({ modalType }: any) => (modalType === "showtodo" ? 1000 : 999)};
+  z-index: ${({ modalType }: any) => (modalType === "showtodo" ? 1000 : 1100)};
 `;
 
 export const ModalContainer = styled.div`
@@ -129,6 +129,7 @@ export const ShowModalContainer = styled.div`
   position: fixed;
   bottom: 70px;
   width: 100%;
+  // display: flex;
 
   border-radius: 20px 20px 0 0;
   overflow: hidden;
@@ -137,11 +138,8 @@ export const ShowModalContainer = styled.div`
 export const ShowModalTopSection = styled.div`
   background-color: #ffffff;
   padding: 20px;
-
-  & > div:nth-child(1) {
-    font-weight: lighter;
-    padding-top: 10px;
-  }
+  display: flex;
+  flex-direction: column;
 
   & > div:nth-child(2) {
     padding-top: 20px;
@@ -194,20 +192,36 @@ export const ShowModalBottomSection = styled.div`
   }
 `;
 
-export const SearchModalContainer = styled.section`
-  display: flex;
+export const ShowModalTitle = styled.div`
+  font-weight: lighter;
+  padding-top: 10px;
   flex-direction: column;
-  background-color: white;
-  width: 100%;
-  max-width: 500px;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1001;
-  @media (min-width: 1200px) {
-    height: auto;
-    width: 30%;
+  display: flex;
+  & > div:nth-child(1) {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    jutify-content: space-between;
   }
+`;
+
+export const SearchModalContainer = styled.section`
+display: flex;
+flex-direction: column;
+background-color: white;
+width: 80%;
+max-width: 500px;
+height:
+align-items: center;
+border-radius: 20px;
+
+padding: 20px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+z-index: 999; 
+@media (min-width: 1200px) {
+  height: auto;
+  width: 30%;
+}
 `;
 
 export const SearchModalTopSection = styled.div`
@@ -221,46 +235,64 @@ export const SearchModalTopSection = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-
-    & > p {
-      font-size: 15px;
-      cursor: pointer;
+    & > div:nth-child(1) {
+    }
+    & > div:nth-child(2) {
+      display: flex;
+      flex-direction: row;
+      
+      & > p {
+        margin-right: 5px;
+        font-weght:bolder;
+      }
     }
   }
-
   & > div:nth-child(2) {
+    flex: 1;
     display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 0px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #f1f1f1;
+    flex-direction: row;
+    
 
-    & > p {
-      background-color: #50bcdf;
-      color: white;
-      font-weight: bold;
-      margin-right: 8px;
-      padding: 1px 4px;
-      font-size: 13px;
-      border-radius: 5px;
-    }
+    align-items: center;
+    margin-top:10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 20px;
+    flex-wrap: wrap;
   }
 
-  & > div:nth-child(3) {
-    margin-top: 20px;
 
-    padding-top: 20px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
+
+    & > div:nth-child(2) p {
+      background-color: #50bcdf;
+      margin-right: 8px;
+      border-radius: 5px;
+      padding: 1px 6px;
+      text-align: center;
+      color: white;
+
+    }
+    & > div:nth-child(2) p:nth-child(2) {
+      background-color: #b9a7fc;
+    }
+    & > div:nth-child(2) p:nth-child(3) {
+      background-color: #0d9afc;
+    }
+    & > div:nth-child(3) {
+     
+      padding-bottom: 80px;
+      padding-top: 20px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+    }
   }
 `;
 
 export const SearchModalBottomSection = styled.div`
   width: 100%;
   display: flex;
+  margin-top: 10px;
   flex-direction: column;
   align-items: center;
   & > div:nth-child(1) {
@@ -270,12 +302,13 @@ export const SearchModalBottomSection = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
     & > input {
       flex: 1;
       padding: 20px;
-
-      width: 100%;
-
+      padding-bottom: 20px;
+      width: 87%;
+      margin-left: 10px;
       border: 1px solid #ddd;
       border-radius: 10px;
       outline: none;

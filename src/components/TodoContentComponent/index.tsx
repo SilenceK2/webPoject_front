@@ -22,6 +22,8 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../Modal";
+import { deleteTodoListApi } from "../../utils/apimodule/todolist";
+import { toast } from "react-toastify";
 
 const TodoContentComponent = () => {
   const dummyTodayTodo: any = [
@@ -118,20 +120,46 @@ const TodoContentComponent = () => {
     setIsModalOpen(true);
   };
 
-  const deleteTodayTodo = (todoId: any) => {
-    todoListSet((prev: any) => ({
-      ...prev,
-      todayTodo: prev.todayTodo.filter((today: any) => today.id !== todoId),
-    }));
+  const deleteTodayTodo = async (todoId: any) => {
+    try {
+      if (window.confirm("삭제하시겠습니까?")) {
+        const response: any = await deleteTodoListApi;
+        if (response.success) {
+          toast.success("투두가 삭제되었습니다.");
+          todoListSet((prev: any) => ({
+            ...prev,
+            todayTodo: prev.todayTodo.filter(
+              (today: any) => today.id !== todoId
+            ),
+          }));
+        } else {
+          toast.warning("투두 삭제 실패");
+        }
+      }
+    } catch (error) {
+      toast.error("오류" + error);
+    }
   };
 
-  const deleteTomorrowTodo = (todoId: any) => {
-    todoListSet((prev: any) => ({
-      ...prev,
-      tomorrowTodo: prev.tomorrowTodo.filter(
-        (tomorrow: any) => tomorrow.id !== todoId
-      ),
-    }));
+  const deleteTomorrowTodo = async (todoId: any) => {
+    try {
+      if (window.confirm("삭제하시겠습니까?")) {
+        const response: any = await deleteTodoListApi;
+        if (response.success) {
+          toast.success("투두가 삭제되었습니다.");
+          todoListSet((prev: any) => ({
+            ...prev,
+            tomorrowTodo: prev.tomorrowTodo.filter(
+              (tomorrow: any) => tomorrow.id !== todoId
+            ),
+          }));
+        } else {
+          toast.warning("투두 삭제 실패");
+        }
+      }
+    } catch (error) {
+      toast.error("오류" + error);
+    }
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);

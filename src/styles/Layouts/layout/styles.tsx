@@ -10,7 +10,7 @@ export const Header = styled.section`
   justify-content: space-between;
   box-sizing: border-box;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
-  z-index: 999;
+  z-index: 1001;
   background-color: #ffffff;
 `;
 
@@ -73,13 +73,15 @@ export const ModalBackdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  z-index: 1000;
   overflow: hidden;
   outline: none;
 `;
 
 export const RecentSearchList = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 100%;
   z-index: 999;
   left: 0;
@@ -90,14 +92,23 @@ export const RecentSearchList = styled.div`
   // border-radius: 0 0 10px 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  max-height: 150px;
+  max-height: 300px;
   overflow-y: auto;
 
   div {
     padding: 5px 10px;
+    display: flex;
+    width: 86%;
+    flex-direction: row;
+    justify-content: space-between;
     cursor: pointer;
     transition: background-color 0.3s;
     background-color: #ffffff;
+  }
+
+  p {
+    color: gray;
+    font-weight: ligter;
   }
 
   div:hover {

@@ -32,7 +32,7 @@ const LoginBox = () => {
       const response = result.data;
       console.log(response);
       if (result.success) {
-        navigate("/homepage");
+        navigate("/home");
 
         useremail(email);
         alert("로그인이 완료되었습니다.");
