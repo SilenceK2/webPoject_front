@@ -209,7 +209,7 @@ const DirectionComponentPublic: React.FC<DirectionComponentPublicProps> = ({ sta
                             width: '30px',
                             height: '30px',
                             borderRadius: '50%',
-                            zIndex: 2,
+                            zIndex: 1,
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
