@@ -153,6 +153,7 @@ export const ShowModalTopSection = styled.div`
     max-height: 24px;
     align-items: center;
     flex-direction: row;
+
     display: flex;
   }
   & > div:nth-child(2) p {
@@ -183,25 +184,36 @@ export const ShowModalTopSection = styled.div`
 export const ShowModalBottomSection = styled.div`
   background-color: #ffffff;
   padding: 20px;
+  height: calc(70px * 2);
+  overflow-y: auto;
   & > div:nth-child(1) {
     display: flex;
-
     flex-direction: column;
-    align-itemes: center;
-    justfy-content: left;
+    // align-items: center;
+    justify-content: flex-start;
   }
 `;
 
 export const ShowModalTitle = styled.div`
   font-weight: lighter;
   padding-top: 10px;
+  width: 100%;
   flex-direction: column;
   display: flex;
   & > div:nth-child(1) {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    jutify-content: space-between;
+    justify-content: space-between;
+    & > div {
+      display: flex;
+      flex-direction: row;
+      font-weight: bolder;
+    }
+  }
+  & > div:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 `;
 

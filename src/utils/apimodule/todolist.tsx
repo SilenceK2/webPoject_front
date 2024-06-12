@@ -77,16 +77,10 @@ const tomorrowTodoListApi = async (userEmail: any) => {
  * 투두리스트 생성 api
 
  */
-const createTodoListApi = async (
-  title: any,
-  content: any,
-  time: any,
-  memberId: any
-) => {
+const createTodoListApi = async (title: any, content: any, time: any) => {
   try {
     const response = await api.post("/todo/create", {
       todoListApi: title,
-      todosafe: memberId,
     });
     console.log(response);
     if (response.status === 200) {
@@ -127,25 +121,18 @@ const deleteTodoListApi = async (todoemail: any, selectedId: any) => {
  * 홈에서 날짜 선택후 투두리스트 수정(update)
  * @post
  * @param title
- * @param Content
- * @param member
- * @param selectedTodoId
- * @success
+ * @param content
+ * @param categories
+ * @param time
  */
 const updateTodoListApi = async (
   title: any,
   content: any,
-  todoemail: any,
-  selectedId: any,
+  time: any,
   categories: any
 ) => {
   try {
-    const response = await api.post(`/todo/update/${selectedId}`, {
-      todoTitle: title,
-      todoContent: content,
-      todoEmail: todoemail,
-      todoCategory: categories,
-    });
+    const response = await api.post(`/todo/update`, {});
     if (response.status === 200) {
       return { success: true };
     } else {

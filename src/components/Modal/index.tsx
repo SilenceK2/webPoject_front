@@ -17,7 +17,10 @@ import {
   SearchModalTopSection,
   ShowModalTitle,
 } from "./styles";
-import { createTodoListApi } from "../../utils/apimodule/todolist";
+import {
+  createTodoListApi,
+  updateTodoListApi,
+} from "../../utils/apimodule/todolist";
 import { toast } from "react-toastify";
 import { searchSuccessSelector } from "../../utils/recoil/atom";
 import { useRecoilValue } from "recoil";
@@ -44,17 +47,12 @@ const Modal: React.FC<ModalProps> = ({
   const [sharedState, setSharedState] = useState(false);
   const [time, setTime] = useState("");
   const [comment, setComment] = useState("");
+  const [editShowModalState, setEditShowModalState] = useState(false);
   const searchData: any = useRecoilValue(searchSuccessSelector);
 
   const handleCreateTodo = async () => {
     try {
-      const memberId = localStorage.getItem("memberId");
-      const response: any = await createTodoListApi(
-        title,
-        content,
-        time,
-        memberId
-      );
+      const response: any = await createTodoListApi(title, content, time);
 
       if (response.success === "true") {
         toast.success("글 작성이 완료되었습니다.");
@@ -78,6 +76,24 @@ const Modal: React.FC<ModalProps> = ({
       }
     } catch (error) {
       toast.error("서버가 연결되지 않았습니다.");
+    }
+  };
+
+  const sendEditTodo = async () => {
+    try {
+      const response: any = await updateTodoListApi(
+        title,
+        time,
+        content,
+        categories
+      );
+      if (response.success === "true") {
+        toast.success("수정이 완료되었습니다.");
+      } else {
+        toast.warning("수정이 실패하였습니다.");
+      }
+    } catch (error) {
+      console.log("오류" + error);
     }
   };
 
@@ -153,77 +169,193 @@ const Modal: React.FC<ModalProps> = ({
             </ModalContainer>
           ) : modalType === "showtodo" ? (
             <ShowModalContainer>
-              <ShowModalTopSection>
-                <ShowModalTitle>
-                  <div>
-                    <h2>{todoData.todoTitle}</h2>
-                    <p></p>
-                  </div>
-                  <div>{todoData.todoTime}</div>
-                </ShowModalTitle>
-                <div>
-                  {todoData.todoCategory
-                    .split("#")
-                    .filter((category: any) => category !== "")
-                    .map((category: any, index: any) => (
-                      <p key={index}>#{category}</p>
+              {!editShowModalState ? (
+                <>
+                  <ShowModalTopSection>
+                    <ShowModalTitle>
+                      <div>
+                        <h2>{todoData.todoTitle}</h2>
+
+                        <div>
+                          <p>{todoData.todoLikes}</p>
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            style={{ marginLeft: "10px", color: "red" }}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        {todoData.todoTime}{" "}
+                        <div
+                          onClick={() => {
+                            setEditShowModalState(true);
+                          }}
+                        >
+                          수정하기
+                        </div>
+                      </div>
+                    </ShowModalTitle>
+                    <div>
+                      {todoData.todoCategory
+                        .split("#")
+                        .filter((category: any) => category !== "")
+                        .map((category: any, index: any) => (
+                          <p key={index}>#{category}</p>
+                        ))}
+                    </div>
+                    <div>{todoData.todoContent}</div>
+                  </ShowModalTopSection>
+                  <ShowModalBottomSection>
+                    {todoData.comment.map((comment: any, index: any) => (
+                      <StyledComment
+                        key={index}
+                        comment={comment}
+                        index={index}
+                      />
                     ))}
-                </div>
-                <div>{todoData.todoContent}</div>
-              </ShowModalTopSection>
-              <ShowModalBottomSection>
-                {todoData.comment.map((comment: any, index: any) => (
-                  <StyledComment key={index} comment={comment} index={index} />
-                ))}
-              </ShowModalBottomSection>
+                  </ShowModalBottomSection>
+                </>
+              ) : (
+                <>
+                  {" 내 투두리스트 수정 모드 "}
+                  <ShowModalTopSection>
+                    <ShowModalTitle>
+                      <div>
+                        <input
+                          value={title}
+                          onChange={(e) => {
+                            setTitle(e.target.value);
+                          }}
+                          style={{
+                            width: "60%",
+                            paddingTop: "10px",
+                            outline: "none",
+                            border: "none",
+                            paddingLeft: "10px",
+                            fontSize: "20px",
+                          }}
+                          placeholder={
+                            title.length > 0 ? title : "제목을 입력해주세요"
+                          }
+                        />
+
+                        <div>
+                          <p>{todoData.todoLikes}</p>
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            style={{ marginLeft: "10px", color: "red" }}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <ModalInput
+                          type="time"
+                          style={{
+                            marginTop: "20px",
+                            width: "30%",
+                            paddingLeft: "20px",
+                            padding: "10px",
+                            outline: "none",
+                            border: "none",
+                          }}
+                          step={3600}
+                          value={time}
+                          onChange={(e) => setTime(e.target.value)}
+                          required
+                        />
+                        <div
+                          onClick={() => {
+                            sendEditTodo;
+                          }}
+                        >
+                          수정완료
+                        </div>
+                      </div>
+                    </ShowModalTitle>
+                    <input
+                      style={{
+                        border: "none",
+                        padding: "15px",
+                        outline: "none",
+                        fontSize: "15px",
+                        paddingBottom: "20px",
+                        paddingTop: "20px",
+                      }}
+                      placeholder="카테고리를 입력해주세요"
+                    />
+                    <input
+                      style={{
+                        border: "none",
+                        backgroundColor: " #f9f9f9",
+                        paddingTop: "30px",
+                        paddingBottom: "30px",
+                        paddingLeft: "20px",
+                        borderRadius: "10px",
+                        outline: "none",
+                        fontSize: "15px",
+                        marginTop: "10px",
+                      }}
+                      placeholder="본문을 입력해주세요"
+                    />
+                  </ShowModalTopSection>
+                  <ShowModalBottomSection>
+                    {todoData.comment.map((comment: any, index: any) => (
+                      <StyledComment
+                        key={index}
+                        comment={comment}
+                        index={index}
+                      />
+                    ))}
+                  </ShowModalBottomSection>
+                </>
+              )}
             </ShowModalContainer>
           ) : null}
         </ModalBackdrop>
       )}
       {modalType === "searchResult" && (
         <ModalBackdrop>
-          <SearchModalContainer>
-            <div>
-              <p onClick={closeModal}>x</p>
-            </div>
-            <SearchModalTopSection>
-              <div>
+          <ShowModalContainer>
+            <ShowModalTopSection>
+              <ShowModalTitle>
                 <div>
-                  <h2>{searchData.title}</h2>
-                </div>
-                <div>
-                  <p>{searchData.likes}</p>
+                  <h2>{searchData.todoTitle}</h2>
 
-                  <FontAwesomeIcon
-                    icon={searchData.liked ? faHeart : faHeart}
-                    style={{ color: "#ff0000" }}
-                  />
+                  <div>
+                    <p>{searchData.todoLikes}</p>
+                    <FontAwesomeIcon
+                      icon={faHeart}
+                      style={{ marginLeft: "10px", color: "red" }}
+                    />
+                  </div>
                 </div>
-              </div>
+                <div>
+                  {searchData.todoTime}
+                  <div
+                    onClick={() => {
+                      setEditShowModalState(true);
+                    }}
+                  >
+                    수정하기
+                  </div>
+                </div>
+              </ShowModalTitle>
               <div>
-                {searchData.categories
+                {searchData.todoCategory
                   .split("#")
-                  .filter((tag: any) => tag !== "")
-                  .map((tag: any, index: any) => (
-                    <p key={index}>#{tag}</p>
+                  .filter((category: any) => category !== "")
+                  .map((category: any, index: any) => (
+                    <p key={index}>#{category}</p>
                   ))}
               </div>
-              <div>{searchData.content}</div>
-            </SearchModalTopSection>
-            <SearchModalBottomSection>
-              <div>
-                <input
-                  value={comment}
-                  onChange={(e: any) => setComment(e.target.value)}
-                  type="text"
-                  placeholder="댓글을 입력하세요"
-                />
-                <ModalButton>
-                  <button onClick={sendCommentTodo}>추가</button>
-                </ModalButton>
-              </div>
-            </SearchModalBottomSection>
-          </SearchModalContainer>
+              <div>{searchData.todoContent}</div>
+            </ShowModalTopSection>
+            <ShowModalBottomSection>
+              {searchData.comment.map((comment: any, index: any) => (
+                <StyledComment key={index} comment={comment} index={index} />
+              ))}
+            </ShowModalBottomSection>
+          </ShowModalContainer>
         </ModalBackdrop>
       )}
     </>

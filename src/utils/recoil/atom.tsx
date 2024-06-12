@@ -176,12 +176,12 @@ export const searchBackDropSelector = selector({
 });
 
 /**
- * 검색 input창 클릭시 모달 backdrop생성 (home)
+ * 검색 성공데이터 담기
  */
 
 export const searchSuccessListAtom = atom({
   key: "searchSuccessListAtom",
-  default: false,
+  default: [],
 });
 
 export const searchSuccessListSelector = selector({

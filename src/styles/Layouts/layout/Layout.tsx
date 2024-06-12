@@ -6,7 +6,6 @@ import {
   SearchButton,
   SearchContainer,
   SearchInput,
-  MyPageMenuContainer,
   ModalBackdrop,
   RecentSearchList,
   BottomNav,
@@ -47,7 +46,7 @@ const Layout: React.FC = () => {
     setModalType("searchResult");
   };
 
-  const setSearchSuccessData = useSetRecoilState(searchSuccessSelector);
+  const setSearchSuccessData: any = useSetRecoilState(searchSuccessSelector);
 
   const [searchListValue, setSearchListValue]: any =
     useRecoilState(searchListSelector);
@@ -56,7 +55,7 @@ const Layout: React.FC = () => {
     searchSuccessListSelector
   );
 
-  const [searchBackDropState, setSearchBackDropState] = useRecoilState(
+  const [searchBackDropState, setSearchBackDropState]: any = useRecoilState(
     searchBackDropSelector
   );
 
@@ -73,18 +72,21 @@ const Layout: React.FC = () => {
       }
 
       if (response.success === "true") {
-        toast.success("검색 성공");
-        setSuccessResponseData(true);
-        setSearchSuccessData({
-          title: "asef",
-          categories: "#asef#seafsaf",
+        toast.warning("검색결과가 없습니다.");
+        setSuccessResponseData(false);
+      } else {
+        const searchResult = {
+          title: "안녕",
+          categories: "#ㄴㅁㄷㄹ#ㄴ#ㄴㅁㄷㄹ",
           likes: 12,
           liked: 0,
-          content: "asefeas",
-        });
-      } else {
-        toast.warning("검색결과가 없습니다.");
-        setSearchSuccessList(response.title || []);
+          content: "ㅁㄴㄷㄹㄴㅁㄹㄷ",
+          memberemail: "ktg5679@gmail.com",
+        };
+        setSearchSuccessList([searchResult]); // 배열로 설정
+        toast.success("검색 성공");
+        setSuccessResponseData(true);
+        setSearchSuccessData(searchResult);
       }
     } catch (error) {
       console.error(error);
@@ -167,28 +169,36 @@ const Layout: React.FC = () => {
           <>
             {successResponseData ? (
               <RecentSearchList>
-                {searchSuccessList.map((search: string, index: number) => (
-                  <div key={index}>{search}</div>
+                {(Array.isArray(searchSuccessList)
+                  ? searchSuccessList
+                  : []
+                ).map((search: any, index: number) => (
+                  <div key={index}>
+                    {search.title}
+                    <p>{search.memberEmail}</p>
+                  </div>
+                ))}
+              </RecentSearchList>
+            ) : searchListValue.length > 0 ? (
+              <RecentSearchList>
+                {searchListValue.map((search: string, index: number) => (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setSearchInput(search);
+                    }}
+                  >
+                    {search}
+                  </div>
                 ))}
               </RecentSearchList>
             ) : (
               <RecentSearchList>
-                {searchListValue.map((search: string, index: number) => (
-                  <div key={index}>
-                    {search}
-                    <p>name</p>
-                  </div>
-                ))}
+                <div>최근 검색어가 없습니다.</div>
               </RecentSearchList>
             )}
           </>
-        ) : (
-          <>
-            <RecentSearchList>
-              <div>검색 결과가 없습니다.</div>
-            </RecentSearchList>
-          </>
-        )}
+        ) : null}
       </Header>
       <Outlet />
       {searchBackDropState && (

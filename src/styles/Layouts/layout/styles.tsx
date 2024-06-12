@@ -108,7 +108,7 @@ export const RecentSearchList = styled.div`
 
   p {
     color: gray;
-    font-weight: ligter;
+    font-weight: ;
   }
 
   div:hover {
