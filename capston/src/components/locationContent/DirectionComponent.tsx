@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { DirectionComponentBox, LocationDataBox, LocationDataBoxBody, LocationDataBoxFooter, LocationDataBoxHeader } from "./styles";
+import { DirectionComponentBox, LocationDataBox, LocationDataBoxBody, LocationDataBoxFooter, LocationDataBoxHeader, Number } from "./styles";
 
 interface Route {
   summary: {
@@ -167,6 +167,7 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
       {traoptimalRoute && (
         <LocationDataBox>
           <LocationDataBoxHeader>
+            <Number>1</Number>
             <h3 style={{ color: "blue" }}>최적의 경로</h3>
           </LocationDataBoxHeader>
           <LocationDataBoxBody>
@@ -183,7 +184,8 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
       {trafastRoute && (
         <LocationDataBox>
           <LocationDataBoxHeader>
-            <h3 style={{ color: "blue" }}>실시간 편한길</h3>
+          <Number></Number>
+            <h3 style={{ color: "blue" }}>실시간 빠른길</h3>
           </LocationDataBoxHeader>
           <LocationDataBoxBody>
             <p style={{ fontSize: "30px", fontWeight: "bold" }}>{Math.round(trafastRoute.summary.duration / 60 / 1000)}</p>
@@ -197,9 +199,10 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
         </LocationDataBox>
       )}
       {tracomfortRoute && (
-        <LocationDataBox>
+        <LocationDataBox >
           <LocationDataBoxHeader>
-            <h3 style={{ color: "blue" }}>실시간 빠른길</h3>
+          <Number>1</Number>
+            <h3 style={{ color: "blue" }}>실시간 편한길</h3>
           </LocationDataBoxHeader>
           <LocationDataBoxBody>
             <p style={{ fontSize: "30px", fontWeight: "bold" }}>{Math.round(tracomfortRoute.summary.duration / 60 / 1000)}</p>

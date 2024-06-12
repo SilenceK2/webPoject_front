@@ -268,7 +268,6 @@ export const DirectionComponentBox = styled.div`
   display: flex;
     flex-direction: column;
    margin: 20px;
-   border-radius: 15px;
     z-index: 1;
 `
 export const LocationDataBox = styled.div`
@@ -289,4 +288,9 @@ align-items: baseline;
 export const LocationDataBoxFooter = styled.div`
 display: flex;
 align-items: baseline;
+`
+export const Number = styled.div`
+display: flex;
+border-radius: 15px;
+background-color: blue;
 `

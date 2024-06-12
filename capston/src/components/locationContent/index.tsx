@@ -104,7 +104,7 @@ const LocationContentBox: React.FC = () => {
         </Overlay>
       )}
 
-      {startPoint && endPoint && (
+      {startPoint && endPoint && selected === "car" && (
         <DirectionComponent start={startPoint} end={endPoint} selected={selected} />
       )}
     </>
