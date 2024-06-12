@@ -7,8 +7,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import React from "react";
 import "./index.css";
+import useApiInterceptor from "./utils/hook/useInterCeptor";
 
 const App = () => {
+  useApiInterceptor();
   return (
     <>
       {/* // <Suspense fallback={<LoadingPage />}> */}
