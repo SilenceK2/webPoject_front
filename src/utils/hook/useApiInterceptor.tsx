@@ -6,14 +6,11 @@ const useApiInterceptor = () => {
   useEffect(() => {
     const requestInterceptor = api.interceptors.request.use(
       (config) => {
-        if (
-          window.location.pathname === "/login" ||
-          window.location.pathname === "/signup"
-        ) {
+        if (window.location.pathname.startsWith("/user")) {
           return config;
         }
         if (!localStorage.getItem("memberIdNumber")) {
-          window.location.href = "/login";
+          window.location.href = "/user/login";
           alert("로그인을 진행해주세요");
           return Promise.reject(new Error("로그인 필요"));
         }

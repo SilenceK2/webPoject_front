@@ -1,19 +1,17 @@
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { RouterProvider } from "react-router-dom";
 import router from "./utils/router/router";
-import { lazy } from "react";
 import Loading from "./pages/RouterPages/Loading";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import React from "react";
 import "./index.css";
-import useApiInterceptor from "./utils/hook/useInterCeptor";
+import useApiInterceptor from "./utils/hook/useApiInterceptor";
 
 const App = () => {
   useApiInterceptor();
+
   return (
     <>
-      {/* // <Suspense fallback={<LoadingPage />}> */}
       <Suspense fallback={<Loading />}>
         <RouterProvider router={router} />
         <ToastContainer

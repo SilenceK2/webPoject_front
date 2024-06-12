@@ -7,12 +7,13 @@ import {
   SignupTopsection,
   BottomSection,
   SignupButton,
-} from "../../styles/stylecomponents/MemberStyle/style";
+} from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signupVerify, signupUser } from "../../utils/apimodule/member";
 import { useSetRecoilState } from "recoil";
 import { usernameState } from "../../utils/recoil/atom";
+import SignupInput from "../../components/StyleComponents/SignupInput";
 const SignupPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -62,56 +63,43 @@ const SignupPage = () => {
 
   return (
     <LoginBoxContainer>
-      <SignupTopsection></SignupTopsection>
+      <SignupTopsection>
+        <div>회원가입</div>
+      </SignupTopsection>
       <BottomSection>
         <TextBox>
           {successVerify ? (
             <>
-              <Input
-                type="text"
+              <SignupInput
+                type="verify"
                 placeholder="이메일을 입력하세요"
-                required
                 name="email"
-                onChange={(e) => setEmail(e.target.value)}
               />
-
-              <SignupButton
-                value="이메일 중복확인"
-                onClick={handleSignupVerify}
-              >
-                <p>이메일 중복확인</p>
-              </SignupButton>
             </>
           ) : (
             <>
-              <Input placeholder={email} required name="email" disabled />
+              <SignupInput placeholder={email} name="email" disabled />
               <div>
                 <p>✅이메일 인증이 완료되었습니다.</p>
               </div>
             </>
           )}
 
-          <Input
+          <SignupInput
             type="text"
             placeholder="이름을 입력하세요"
             name="name"
-            required
-            onChange={(e) => setName(e.target.value)}
           />
 
-          <Input
+          <SignupInput
             type="password"
             placeholder="패스워드를 입력하세요"
             name="password"
-            required
-            onChange={(e) => setPwd(e.target.value)}
           />
-          <Input
+          <SignupInput
             type="password"
             placeholder="패스워드 재확인"
             name="confirmpassword"
-            required
-            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           {successVerify ? (
             <SubmitButton type="submit" value="회원가입" bgColor="gray" />

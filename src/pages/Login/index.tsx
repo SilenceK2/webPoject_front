@@ -1,21 +1,20 @@
-import React from "react";
 import {
   LoginBoxContainer,
   Title,
   TextBox,
-  Input,
   SubmitButton,
   Topsection,
   BottomSection,
-  Paragraph,
-} from "../../styles/stylecomponents/MemberStyle/style";
+  LinkContainer,
+  Link,
+} from "./styles";
 import { useNavigate } from "react-router-dom";
-
-import { LinkContainer, Link } from "../../styles/stylecomponents/widget/Link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginUser } from "../../utils/apimodule/member";
 import { useremailState } from "../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
+import SignupInput from "../../components/StyleComponents/SignupInput";
+import { toast } from "react-toastify";
 const LoginBox = () => {
   const useremail: any = useSetRecoilState(useremailState);
   const navigate = useNavigate();
@@ -23,50 +22,53 @@ const LoginBox = () => {
   const [pwd, setPwd] = useState("");
 
   const handleSignUpClick = async () => {
-    navigate("/signup");
+    navigate("/user/signup");
   };
 
   const handelLoginClick = async () => {
+    console.log(email, pwd);
     try {
       const result: any = await loginUser(email, pwd);
       const response = result.data;
-      console.log(response);
       if (result.success) {
         navigate("/home");
-
         useremail(email);
-        alert("로그인이 완료되었습니다.");
+        toast.success("로그인이 완료되었습니다.");
       } else {
-        throw result;
+        toast.warning("다시 시도해주세요");
+        setEmail(""), setPwd("");
       }
     } catch (error) {
-      alert(`실패: ${error}`);
+      toast.error(`로그인 실패`);
+      setEmail(""), setPwd("");
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    setEmail(""), setPwd("");
+  }, []);
   return (
     <LoginBoxContainer>
       <Topsection>
-        <Title></Title>
+        <Title>
+          <div>Login</div>
+          <div>나의 투두리스트를 작성하고 공유해보세요</div>
+        </Title>
       </Topsection>
       <BottomSection>
         <TextBox>
-          <Input
-            type="text"
-            placeholder="이메일"
-            name="email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="off"
+          <SignupInput
+            placeholder="이메일을 입력해 주세요"
+            setValue={setEmail}
+            value={email}
+            type="loginInput"
           />
-          <Input
+          <SignupInput
             type="password"
             placeholder="패스워드"
-            name="password"
-            required
-            onChange={(e) => setPwd(e.target.value)}
-            autoComplete="off"
+            setValue={setPwd}
+            value={pwd}
           />
 
           <SubmitButton
@@ -74,12 +76,10 @@ const LoginBox = () => {
             value="로그인"
             onClick={handelLoginClick}
           />
-          <Paragraph onClick={handleSignUpClick}></Paragraph>
         </TextBox>
       </BottomSection>
       <LinkContainer>
-        <Link>아이디 찾기</Link>
-        <Link>비밀번호 찾기</Link>
+        아직 회원이 아니신가요?
         <Link onClick={handleSignUpClick}>회원가입</Link>
       </LinkContainer>
     </LoginBoxContainer>

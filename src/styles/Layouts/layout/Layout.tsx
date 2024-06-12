@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../../../components/Modal";
 import {
@@ -32,7 +32,11 @@ import {
 import { toast } from "react-toastify";
 import Select from "react-select";
 
-const Layout: React.FC = () => {
+interface Props {
+  type?: boolean;
+}
+
+const Layout: FC<Props> = ({ type }) => {
   const [activePage, setActivePage] = useRecoilState(navState);
   const [searchInput, setSearchInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -143,63 +147,67 @@ const Layout: React.FC = () => {
 
   return (
     <>
-      <Header>
-        <SearchContainer>
-          <Select
-            options={options}
-            value={options.find((option) => option.value === searchOption)}
-            onChange={(selectedOption) =>
-              setSearchOption(selectedOption?.value || "제목")
-            }
-            styles={customStyles}
-          />
-          <SearchInput
-            type="text"
-            placeholder="투두리스트 검색..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onClick={handleBackdropClick}
-          />
-          <SearchButton onClick={sendSearchData}>
-            <FontAwesomeIcon icon={faSearch} />
-          </SearchButton>
-        </SearchContainer>
+      {type ? (
+        <Header>
+          <SearchContainer>
+            <Select
+              options={options}
+              value={options.find((option) => option.value === searchOption)}
+              onChange={(selectedOption) =>
+                setSearchOption(selectedOption?.value || "제목")
+              }
+              styles={customStyles}
+            />
+            <SearchInput
+              type="text"
+              placeholder="투두리스트 검색..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onClick={handleBackdropClick}
+            />
+            <SearchButton onClick={sendSearchData}>
+              <FontAwesomeIcon icon={faSearch} />
+            </SearchButton>
+          </SearchContainer>
 
-        {searchBackDropState ? (
-          <>
-            {successResponseData ? (
-              <RecentSearchList>
-                {(Array.isArray(searchSuccessList)
-                  ? searchSuccessList
-                  : []
-                ).map((search: any, index: number) => (
-                  <div key={index}>
-                    {search.title}
-                    <p>{search.memberEmail}</p>
-                  </div>
-                ))}
-              </RecentSearchList>
-            ) : searchListValue.length > 0 ? (
-              <RecentSearchList>
-                {searchListValue.map((search: string, index: number) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setSearchInput(search);
-                    }}
-                  >
-                    {search}
-                  </div>
-                ))}
-              </RecentSearchList>
-            ) : (
-              <RecentSearchList>
-                <div>최근 검색어가 없습니다.</div>
-              </RecentSearchList>
-            )}
-          </>
-        ) : null}
-      </Header>
+          {searchBackDropState ? (
+            <>
+              {successResponseData ? (
+                <RecentSearchList>
+                  {(Array.isArray(searchSuccessList)
+                    ? searchSuccessList
+                    : []
+                  ).map((search: any, index: number) => (
+                    <div key={index}>
+                      {search.title}
+                      <p>{search.memberEmail}</p>
+                    </div>
+                  ))}
+                </RecentSearchList>
+              ) : searchListValue.length > 0 ? (
+                <RecentSearchList>
+                  {searchListValue.map((search: string, index: number) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setSearchInput(search);
+                      }}
+                    >
+                      {search}
+                    </div>
+                  ))}
+                </RecentSearchList>
+              ) : (
+                <RecentSearchList>
+                  <div>최근 검색어가 없습니다.</div>
+                </RecentSearchList>
+              )}
+            </>
+          ) : null}
+        </Header>
+      ) : (
+        <></>
+      )}
       <Outlet />
       {searchBackDropState && (
         <ModalBackdrop
@@ -209,28 +217,30 @@ const Layout: React.FC = () => {
           }}
         />
       )}
-      <BottomNav>
-        <ul>
-          <li
-            className={activePage === "home" ? "activePage" : ""}
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            <FontAwesomeIcon icon={faHome} />
-            <div>홈</div>
-          </li>
-          <li
-            className={activePage === "todopage" ? "activePage" : ""}
-            onClick={() => {
-              navigate("/todopage");
-            }}
-          >
-            <FontAwesomeIcon icon={faStar} />
-            <div>투두 순위/업데이트</div>
-          </li>
-        </ul>
-      </BottomNav>
+      {type ? (
+        <BottomNav>
+          <ul>
+            <li
+              className={activePage === "home" ? "activePage" : ""}
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              <FontAwesomeIcon icon={faHome} />
+              <div>홈</div>
+            </li>
+            <li
+              className={activePage === "todopage" ? "activePage" : ""}
+              onClick={() => {
+                navigate("/todopage");
+              }}
+            >
+              <FontAwesomeIcon icon={faStar} />
+              <div>투두 순위/업데이트</div>
+            </li>
+          </ul>
+        </BottomNav>
+      ) : null}
       {isModalOpen && (
         <Modal closeModal={() => setIsModalOpen(false)} modalType={modalType} />
       )}
