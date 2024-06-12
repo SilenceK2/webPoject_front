@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { InputSearch, InputContainer, ResultContainer, ResultItem, SearchBoxBody } from './styles';
+import { InputSearch, InputContainer, ResultContainer, ResultItem, SearchBoxBody } from '../styles';
 
 interface Place {
   title: string;

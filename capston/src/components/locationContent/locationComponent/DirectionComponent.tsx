@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { DirectionComponentBox, LocationDataBox, LocationDataBoxBody, LocationDataBoxFooter, LocationDataBoxHeader, Number } from "./styles";
+import { DirectionComponentBox, LocationDataBox, LocationDataBoxBody, LocationDataBoxFooter, LocationDataBoxHeader, Number } from "../styles";
 
 interface Route {
   summary: {
@@ -184,7 +184,7 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
       {trafastRoute && (
         <LocationDataBox>
           <LocationDataBoxHeader>
-          <Number></Number>
+          <Number>2</Number>
             <h3 style={{ color: "blue" }}>실시간 빠른길</h3>
           </LocationDataBoxHeader>
           <LocationDataBoxBody>
@@ -201,7 +201,7 @@ const DirectionComponent: React.FC<DirectionProps> = ({ start, end, selected }) 
       {tracomfortRoute && (
         <LocationDataBox >
           <LocationDataBoxHeader>
-          <Number>1</Number>
+          <Number>3</Number>
             <h3 style={{ color: "blue" }}>실시간 편한길</h3>
           </LocationDataBoxHeader>
           <LocationDataBoxBody>

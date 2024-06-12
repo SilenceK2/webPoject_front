@@ -130,5 +130,16 @@ const getNaverDirectionMap = async (w: any, h: any, center: any, level: any) => 
   }
 };
 
+const getOdsayRoute = async (SX: any, SY: any, EX: any, EY: any) => {
+  try {
+    const url = `https://api.odsay.com/v1/api/searchPubTransPathT?SX=${SX}&SY=${SY}&EX=${EX}&EY=${EY}&OPT=1&apiKey=ROqhJXXjx3uvKLQ5iNtT7rdI1ilUdJD%2BmWOtlnPs%2Fag`;
+    const response = await api.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data from ODSAY API:', error);
+    throw new Error('Internal server error');
+  }
+};
+
 
 export { mappingLocation, locationResultResponse,searchNaverPlaces,getNaverMapDirection,getNaverDirectionMap};

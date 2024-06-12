@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRoad, faArrowRightArrowLeft, faLocationDot, faMagnifyingGlass, faBus, faX, faCar } from "@fortawesome/free-solid-svg-icons";
 import { LocationTitle, LocationTitleContent, LocationBoard, Topsection, BottomSection, StartPointInput, EndPointInput, Input, Change, Select, Overlay, SearchBox, SearchBoxHeader, SelectPublicTransportation, SelectCar } from "./styles";
-import PlacePickerComponent from "./PlacePickerComponent";
-import DirectionComponent from "./DirectionComponent";
+import PlacePickerComponent from "./locationComponent/PlacePickerComponent";
+import DirectionComponent from "./locationComponent/DirectionComponent";
+import DirectionComponentPublic from "./locationComponent/DirectionComponentPublic";
 
 interface Place {
   title: string;
@@ -107,6 +108,10 @@ const LocationContentBox: React.FC = () => {
       {startPoint && endPoint && selected === "car" && (
         <DirectionComponent start={startPoint} end={endPoint} selected={selected} />
       )}
+
+{startPoint && endPoint && selected === "publicTransportation" && (
+        <DirectionComponentPublic start={startPoint} end={endPoint} selected={selected} />
+)}
     </>
   );
 };

@@ -163,7 +163,7 @@ export const Overlay = styled.div`
   justify-content: center;
   align-items: flex-end;
   overflow: auto; /* 스크롤 가능하게 설정 */
-  z-index: 999;
+  z-index: 2;
 `;
 
 export const SearchBox = styled.div`
@@ -275,7 +275,6 @@ display: flex;
 padding: 20px;
 flex-direction: column;
 border: 1px solid lightgray;
-
 `
 export const LocationDataBoxHeader = styled.div`
 display: flex;
@@ -291,6 +290,67 @@ align-items: baseline;
 `
 export const Number = styled.div`
 display: flex;
-border-radius: 15px;
-background-color: blue;
+width: 25px;
+height: 25px;
+border-radius: 50%;
+background-color: #3a3aaf;
+color: white;
+justify-content: center;
+    align-items: center;
+    margin-right: 10px;
 `
+
+//DirectionComponentPublic.tsx
+export const DirectionComponentPublicSection = styled.div`
+  display: flex;
+  border: 1px solid lightgray;
+  border-radius: 15px;
+  flex-direction: column;
+  margin: 20px;
+`;
+
+export const DirectionComponentPublicBox = styled.div`
+  display: flex;
+  border-bottom: 1px solid lightgray;
+  margin: 0px 10px 0 10px;
+  flex-direction: column;
+`;
+
+export const DirectionComponentPublicBoxHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+export const DirectionWay = styled.div`
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 5px;
+  color: blue;
+`;
+
+export const DirectionComponentPublicBoxBox = styled.div`
+  display: flex;
+  align-items: baseline;
+`;
+
+export const DirectionComponentBar = styled.div`
+  display: flex;
+  height: 15px;
+  align-items: baseline;
+  margin-top: 20px;
+  margin-bottom:30px;
+  margin-left: 10px;
+`;
+
+export const DirectionComponentPublicBar = styled.div`
+  display: flex;
+  height: 20px;
+  align-items: baseline;
+  flex-grow: 1;
+`;
+
+export const Circle = styled.div`
+z-index: 1;
+`;
