@@ -1,24 +1,13 @@
 import styled from "styled-components";
 
-export const LoginBoxContainer = styled.div`
+export const LoginBoxContainer = styled.section`
   max-width: 500px;
-  padding: 28px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 90%;
   box-sizing: none;
-`;
-
-export const Topsection = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  height: 20%;
-  justify-content: center;
+  margin: 0 30px;
+  height: 100%;
 `;
 
 export const BottomSection = styled.div`
@@ -28,11 +17,6 @@ export const BottomSection = styled.div`
   width: 100%;
   height: 50%;
   justify-content: center;
-`;
-
-export const Title = styled.h2`
-  text-align: center;
-  font-size: 30px;
 `;
 
 export const TextBox = styled.div`
@@ -54,47 +38,32 @@ export const TextBox = styled.div`
   }
 `;
 
-export const Input = styled.input`
-  width: 93%;
-  height: 50px;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-`;
-
-export const SubmitButton = styled.input<{ bgColor?: any }>`
-  height: 13%;
-  max-height: 70px;
-  background-color: ${(props) => props.bgColor || "#0056b3"};
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  color: #ffffff;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 20px;
-  font-weight: bolder;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  // &:hover {
-  //   background: #0056b3;
-  // }
-  &:focus {
-    outline: none;
+export const SignupTopsection = styled.section`
+  width: 100%;
+  display: flex;
+  flex:0.6;
+  flex-direction: column;
+  justify-content:space-between;
+  margin-top:30px;
+  margin-bottom:40px;
+  & > div:nth-child(1) {
+    display:flex;
+    flex-direciton:row;
+    justify-content:flex-start;
+    align-itesm:flex-start;
+    width:100%;
+    font-size:20px;
+    align-items:center;
+  }
+  & >  div:nth-child(2) {
+    display:flex;
+    flex-direciton:row;
+    justify-content:flex-start;
+    width:100%;
+    align-items:center;
+  }
   }
 `;
-
-export const Paragraph = styled.p`
-  display: flex;
-  justify-content: right;
-  font-weight: 300;
-  font-size: 15px;
-  position: relative;
-`;
-
 export const SignupButton = styled.button`
   width: 100%;
   height: 50px;
@@ -111,8 +80,22 @@ export const SignupButton = styled.button`
     font-weight: bold;
   }
 `;
-
-export const SignupTopsection = styled.section`
+export const SubmitButton = styled.input<{ bgColor?: any }>`
+  height: 10%;
+  max-height: 70px;
+  background-color: ${(props) => props.bgColor || "#4287ff"};
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  color: #ffffff;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 18px;
   width: 100%;
-  height: 120px;
+  font-weight: bolder;
+  outline: none;
+  &:focus {
+    outline: none;
+  }
 `;

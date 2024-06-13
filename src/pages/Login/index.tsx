@@ -58,19 +58,22 @@ const LoginBox = () => {
       </Topsection>
       <BottomSection>
         <TextBox>
-          <SignupInput
-            placeholder="이메일을 입력해 주세요"
-            setValue={setEmail}
-            value={email}
-            type="loginInput"
-          />
-          <SignupInput
-            type="password"
-            placeholder="패스워드"
-            setValue={setPwd}
-            value={pwd}
-          />
-
+          <div style={{ marginBottom: "0px" }}>
+            <SignupInput
+              placeholder="이메일을 입력해 주세요"
+              setValue={setEmail}
+              value={email}
+              type="loginInput"
+            />
+          </div>
+          <div style={{ marginBottom: "0px" }}>
+            <SignupInput
+              type="password"
+              placeholder="패스워드"
+              setValue={setPwd}
+              value={pwd}
+            />
+          </div>
           <SubmitButton
             type="submit"
             value="로그인"

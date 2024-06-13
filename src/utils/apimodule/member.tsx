@@ -68,19 +68,13 @@ export const signupVerify = async (email: any) => {
  * @param {*} signupPwd
  * @returns success
  */
-export const signupUser = async (
-  email: any,
-  pwd: any,
-  name: string | undefined
-) => {
+export const signupUser = async (signupValue: any) => {
   try {
     const response = await api.post("/member/save", {
-      memberEmail: email,
-      memberPassword: pwd,
-      memberName: name,
+      memberEmail: signupValue.userEmail,
+      memberPassword: signupValue.userPwd,
+      memberName: signupValue.userName,
     });
-
-    console.log(email, pwd);
 
     if (response.status === 200) {
       return { success: true, message: "회원가입 성공" };

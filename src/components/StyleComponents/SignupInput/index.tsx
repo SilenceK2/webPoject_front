@@ -2,10 +2,11 @@ import { FC, ChangeEvent } from "react";
 import { StyledInput, StyledInputContainer, IconContainer } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
 
 interface Props {
   placeholder?: string;
-  type?: string;
+  type?: any;
   name?: string;
   onChange?: any;
   value?: string;
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const SignupInput: FC<Props> = ({
-  type = "text",
+  type = "",
   placeholder,
   name,
   disabled,
@@ -30,6 +31,12 @@ const SignupInput: FC<Props> = ({
       setValue(e.target.value);
     }
   };
+
+  useEffect(() => {
+    if (type) {
+      type = "text";
+    }
+  }, []);
 
   return (
     <StyledInputContainer>
@@ -49,9 +56,11 @@ const SignupInput: FC<Props> = ({
         autoComplete="off"
       />
       {type === "verify" && (
-        <button onClick={onClick} disabled={disabled}>
-          중복확인
-        </button>
+        <>
+          <button onClick={onClick} disabled={disabled}>
+            중복확인
+          </button>
+        </>
       )}
       {type === "verifyloading" && (
         <button onClick={onClick} color={color} disabled={disabled}>

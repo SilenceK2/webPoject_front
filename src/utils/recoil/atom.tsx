@@ -13,6 +13,25 @@ const { persistAtom } = recoilPersist({
   storage: sessionStorage,
 });
 
+/**
+ * 유저 회원가입 이메일, 이름, 패스워드 담아두기
+ */
+export const userSignupValueAtom = atom({
+  key: "userSignupValueAtom",
+  default: "",
+});
+
+export const userSignupValueSelector = selector({
+  key: "userSignupValueSelector",
+  get: ({ get }) => {
+    const signupValue = get(userSignupValueAtom);
+    return signupValue;
+  },
+  set: ({ set }, newValue) => {
+    set(userSignupValueAtom, newValue);
+  },
+});
+
 export const usernameState = atom({
   key: "usernameState",
   default: "",

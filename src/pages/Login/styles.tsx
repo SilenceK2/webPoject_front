@@ -52,29 +52,21 @@ export const TextBox = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  & > div:nth-child(2) {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    text-align: left;
-    justify-content: left;
-    margin-top: -23px;
-    font-size: 15px;
-    color: gray;
-  }
+  margin-top: 30px;
 `;
 
 export const SubmitButton = styled.input<{ bgColor?: any }>`
   height: 13%;
   max-height: 70px;
-  background-color: #3e37f8;
+  background-color: #4287ff;
   border: none;
+
   padding: 10px;
   font-size: 16px;
   color: #ffffff;
   border-radius: 12px;
   cursor: pointer;
-  margin-top: -20px;
+  margin-top: 0px;
   font-size: 18px;
   width: 100%;
   font-weight: bolder;
@@ -130,7 +122,7 @@ export const LinkContainer = styled.div`
 
 export const Link = styled.p`
   text-decoration: none;
-  color: #3e37f8;
+  color: #4287ff;
   padding-left: 6px;
   font-weight: bold;
   cursor: pointer;
