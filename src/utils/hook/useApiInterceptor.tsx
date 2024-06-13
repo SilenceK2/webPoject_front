@@ -4,22 +4,22 @@ import axios from "axios";
 
 const useApiInterceptor = () => {
   useEffect(() => {
-    const requestInterceptor = api.interceptors.request.use(
-      (config) => {
-        if (window.location.pathname.startsWith("/user")) {
-          return config;
-        }
-        if (!localStorage.getItem("memberIdNumber")) {
-          window.location.href = "/user/login";
-          alert("로그인을 진행해주세요");
-          return Promise.reject(new Error("로그인 필요"));
-        }
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+    // const requestInterceptor = api.interceptors.request.use(
+    //   (config) => {
+    //     if (window.location.pathname.startsWith("/user")) {
+    //       return config;
+    //     }
+    //     if (!localStorage.getItem("memberIdNumber")) {
+    //       window.location.href = "/user/login";
+    //       alert("로그인을 진행해주세요");
+    //       return Promise.reject(new Error("로그인 필요"));
+    //     }
+    //     return config;
+    //   },
+    //   (error) => {
+    //     return Promise.reject(error);
+    //   }
+    // );
 
     const responseInterceptor = api.interceptors.response.use(
       (response) => {
@@ -43,7 +43,7 @@ const useApiInterceptor = () => {
       }
     );
     return () => {
-      api.interceptors.request.eject(requestInterceptor);
+      // api.interceptors.request.eject(requestInterceptor);
       api.interceptors.response.eject(responseInterceptor);
     };
   }, []);

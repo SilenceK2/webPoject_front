@@ -36,7 +36,7 @@ interface Props {
   type?: boolean;
 }
 
-const Layout: FC<Props> = ({ type }) => {
+const Layout: FC<Props> = () => {
   const [activePage, setActivePage] = useRecoilState(navState);
   const [searchInput, setSearchInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,7 +65,6 @@ const Layout: FC<Props> = ({ type }) => {
 
   const sendSearchData = async () => {
     updateRecentSearches(searchInput);
-    console.log(searchListValue);
 
     try {
       let response: any;
@@ -75,12 +74,9 @@ const Layout: FC<Props> = ({ type }) => {
         response = await sendSearchCaterogyApi(searchInput);
       }
 
-      if (response.success === "true") {
-        toast.warning("검색결과가 없습니다.");
-        setSuccessResponseData(false);
-      } else {
+      if (true) {
         const searchResult = {
-          title: "안녕",
+          title: "안녕하세요",
           categories: "#ㄴㅁㄷㄹ#ㄴ#ㄴㅁㄷㄹ",
           likes: 12,
           liked: 0,
@@ -91,6 +87,9 @@ const Layout: FC<Props> = ({ type }) => {
         toast.success("검색 성공");
         setSuccessResponseData(true);
         setSearchSuccessData(searchResult);
+      } else {
+        toast.warning("검색결과가 없습니다.");
+        setSuccessResponseData(false);
       }
     } catch (error) {
       console.error(error);
@@ -145,9 +144,11 @@ const Layout: FC<Props> = ({ type }) => {
     { value: "category", label: "카테고리" },
   ];
 
+  const showHeaderAndNav = location.pathname.startsWith("/home");
+
   return (
     <>
-      {type ? (
+      {showHeaderAndNav && (
         <Header>
           <SearchContainer>
             <Select
@@ -177,12 +178,28 @@ const Layout: FC<Props> = ({ type }) => {
                   {(Array.isArray(searchSuccessList)
                     ? searchSuccessList
                     : []
-                  ).map((search: any, index: number) => (
-                    <div key={index}>
-                      {search.title}
-                      <p>{search.memberEmail}</p>
-                    </div>
-                  ))}
+                  ).map((search: any, index: number) => {
+                    const highlightedTitle = search.title.replace(
+                      new RegExp(`(${searchInput})`, "gi"),
+                      (match: string) =>
+                        `<span style="color: orange">${match}</span>`
+                    );
+
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => {
+                          setIsModalOpen(true);
+                          setModalType("searchResult");
+                        }}
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{ __html: highlightedTitle }}
+                        />
+                        <p>{search.memberemail}</p>
+                      </div>
+                    );
+                  })}
                 </RecentSearchList>
               ) : searchListValue.length > 0 ? (
                 <RecentSearchList>
@@ -205,8 +222,6 @@ const Layout: FC<Props> = ({ type }) => {
             </>
           ) : null}
         </Header>
-      ) : (
-        <></>
       )}
       <Outlet />
       {searchBackDropState && (
@@ -217,7 +232,7 @@ const Layout: FC<Props> = ({ type }) => {
           }}
         />
       )}
-      {type ? (
+      {showHeaderAndNav && (
         <BottomNav>
           <ul>
             <li
@@ -232,7 +247,7 @@ const Layout: FC<Props> = ({ type }) => {
             <li
               className={activePage === "todopage" ? "activePage" : ""}
               onClick={() => {
-                navigate("/todopage");
+                navigate("/home/todopage");
               }}
             >
               <FontAwesomeIcon icon={faStar} />
@@ -240,7 +255,7 @@ const Layout: FC<Props> = ({ type }) => {
             </li>
           </ul>
         </BottomNav>
-      ) : null}
+      )}
       {isModalOpen && (
         <Modal closeModal={() => setIsModalOpen(false)} modalType={modalType} />
       )}

@@ -217,7 +217,6 @@ const Modal: React.FC<ModalProps> = ({
                 </>
               ) : (
                 <>
-                  {" 내 투두리스트 수정 모드 "}
                   <ShowModalTopSection>
                     <ShowModalTitle>
                       <div>

@@ -100,7 +100,7 @@ export const RecentSearchList = styled.div`
     display: flex;
     width: 86%;
     flex-direction: row;
-    justify-content: space-between;
+    // justify-content: space-between;
     cursor: pointer;
     transition: background-color 0.3s;
     background-color: #ffffff;
