@@ -18,32 +18,44 @@ import {
 import SignupInput from "../../components/StyleComponents/SignupInput";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  validateSignupCompare,
+  validateSignupEmail,
+} from "../../utils/validation/validation";
+import { toast } from "react-toastify";
 const SignupPage = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
-  const [userPwd, setUserPwd] = useState("");
-  const [userName, setUserName] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userPwd, setUserPwd]: any = useState("");
+  const [userName, setUserName]: any = useState("");
+  const [confirmPassword, setConfirmPassword]: any = useState("");
   const [successVerify, setSuccessVerify] = useState(true);
   const username = useSetRecoilState(usernameState);
   const [signupValue, setSignupValue] = useRecoilState(userSignupValueSelector);
-  const handelSignupClick = async () => {
-    if (!userEmail || !userPwd || !confirmPassword || !userName) {
-      alert("아이디와 비밀번호를 입력해주세요.");
-      return;
-    }
 
-    if (userPwd !== confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
+  /**
+   * 회원가입 요청 시도
+   * @returns
+   */
+  const handelSignupClick = async () => {
+    const { isValid, message }: any = validateSignupCompare(
+      userEmail,
+      userName,
+
+      userPwd,
+      confirmPassword
+    );
+    if (!isValid) {
+      toast.warning(message);
       return;
     }
 
     try {
-      const result = await signupUser(signupValue);
+      const result: any = await signupUser(signupValue);
       if (result.success) {
-        navigate("/login");
+        navigate("/user/login");
         username(userName);
-        alert("회원가입이 완료되었습니다.");
+        toast.success("회원가입이 완료되었습니다.");
       } else {
         throw new Error("회원가입에 실패했습니다.");
       }
@@ -53,6 +65,14 @@ const SignupPage = () => {
   };
 
   const handleSignupVerify = async () => {
+    /**
+     * 중복확인 시 이메일 유효성 검사
+     */
+    const { isValid, message }: any = validateSignupEmail(userEmail);
+    if (!isValid) {
+      toast.warning(message);
+      return;
+    }
     try {
       const result = await signupVerify(userEmail);
       if (result.success) {

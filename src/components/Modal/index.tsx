@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ModalBackdrop,
   ModalBottomSection,
@@ -25,7 +25,7 @@ import { toast } from "react-toastify";
 import { searchSuccessSelector } from "../../utils/recoil/atom";
 import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { createCommentApi } from "../../utils/apimodule/todolist";
 
 interface ModalProps {
@@ -48,7 +48,15 @@ const Modal: React.FC<ModalProps> = ({
   const [time, setTime] = useState("");
   const [comment, setComment] = useState("");
   const [editShowModalState, setEditShowModalState] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 메시지 상태 관리
   const searchData: any = useRecoilValue(searchSuccessSelector);
+
+  useEffect(() => {
+    // 모달이 열릴 때 댓글 개수 검사
+    if (modalType === "showtodo" && todoData.comment.length >= 3) {
+      setShowOnboarding(true);
+    }
+  }, [modalType, todoData]);
 
   const handleCreateTodo = async () => {
     try {
@@ -101,6 +109,10 @@ const Modal: React.FC<ModalProps> = ({
     if (e.target === e.currentTarget) {
       closeModal();
     }
+  };
+
+  const handleOnboardingClick: any = () => {
+    setShowOnboarding(false);
   };
 
   const StyledComment: any = ({ comment, index }: any) => (
@@ -206,6 +218,27 @@ const Modal: React.FC<ModalProps> = ({
                     <div>{todoData.todoContent}</div>
                   </ShowModalTopSection>
                   <ShowModalBottomSection>
+                    {showOnboarding && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "0",
+                          left: "0",
+                          width: "100%",
+                          height: "100%",
+                          backgroundColor: "rgba(0, 0, 0, 0.5)",
+                          color: "#fff",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          zIndex: 10,
+                        }}
+                        onClick={handleOnboardingClick}
+                      >
+                        아래로 스크롤을 내려 댓글을 확인하세요!
+                      </div>
+                    )}
                     {todoData.comment.map((comment: any, index: any) => (
                       <StyledComment
                         key={index}
@@ -264,7 +297,7 @@ const Modal: React.FC<ModalProps> = ({
                         />
                         <div
                           onClick={() => {
-                            sendEditTodo;
+                            sendEditTodo();
                           }}
                         >
                           수정완료
@@ -281,6 +314,8 @@ const Modal: React.FC<ModalProps> = ({
                         paddingTop: "20px",
                       }}
                       placeholder="카테고리를 입력해주세요"
+                      value={categories}
+                      onChange={(e) => setCategories(e.target.value)}
                     />
                     <input
                       style={{
@@ -295,6 +330,8 @@ const Modal: React.FC<ModalProps> = ({
                         marginTop: "10px",
                       }}
                       placeholder="본문을 입력해주세요"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
                     />
                   </ShowModalTopSection>
                   <ShowModalBottomSection>
@@ -349,11 +386,37 @@ const Modal: React.FC<ModalProps> = ({
               </div>
               <div>{searchData.todoContent}</div>
             </ShowModalTopSection>
-            <ShowModalBottomSection>
-              {searchData.comment.map((comment: any, index: any) => (
-                <StyledComment key={index} comment={comment} index={index} />
-              ))}
-            </ShowModalBottomSection>
+            {showOnboarding ? (
+              <ShowModalBottomSection>
+                <div
+                  style={{
+                    top: "0",
+                    left: "0",
+                    bottom: "0",
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(255, 255, 255, 0.8)",
+                    color: "#000",
+                    fontSize: "24px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "absolute",
+                    zIndex: 10,
+                  }}
+                  onClick={() => setShowOnboarding(false)}
+                >
+                  아래로 스크롤을 내려 댓글을 확인하세요!
+                </div>
+              </ShowModalBottomSection>
+            ) : (
+              <ShowModalBottomSection>
+                {searchData.comment.map((comment: any, index: any) => (
+                  <StyledComment key={index} comment={comment} index={index} />
+                ))}
+              </ShowModalBottomSection>
+            )}
           </ShowModalContainer>
         </ModalBackdrop>
       )}

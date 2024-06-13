@@ -63,9 +63,9 @@ export const LocationContent = styled.div`
   margin-bottom: 100px;
 
   width: 100%;
-  min-height: 220px;
+  // min-height: 220px;
   flex-shrink: 0; /* 내용이 넘칠 때 축소되지 않도록 */
-  max-height: 220px;
+  // max-height: 220px;
 `;
 
 export const LocationTitle = styled.div`

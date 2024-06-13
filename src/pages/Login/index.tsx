@@ -15,6 +15,7 @@ import { useremailState } from "../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
 import SignupInput from "../../components/StyleComponents/SignupInput";
 import { toast } from "react-toastify";
+
 const LoginBox = () => {
   const useremail: any = useSetRecoilState(useremailState);
   const navigate = useNavigate();

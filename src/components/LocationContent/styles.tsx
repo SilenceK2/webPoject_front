@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+export const LocationBoxContainer = styled.section`
+  width: 100%;
+  height: 100%;
+`;
+
 export const LocationTitle = styled.div`
   width: 100%;
   height: 10%;
