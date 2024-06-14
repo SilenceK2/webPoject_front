@@ -47,6 +47,15 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
   const searchData: any = useRecoilValue(searchSuccessSelector);
   const todoValue: any = useRecoilValue(showModalDataSelector);
 
+  /**
+   * 날짜 가져오기
+   */
+  const date = new Date(Date.now());
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const currentDate = `${year}-${month}-${day}`;
+
   useEffect(() => {
     if (modalType === "showtodo" && todoValue.comment.length >= 2) {
       setShowOnboarding(true);
@@ -55,9 +64,15 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
 
   const handleCreateTodo = async () => {
     try {
-      const response: any = await createTodoListApi(title, content, time);
-
-      if (response.success === "true") {
+      const response: any = await createTodoListApi(
+        title,
+        content,
+        categories,
+        time,
+        currentDate,
+        sharedState
+      );
+      if (response.success) {
         toast.success("글 작성이 완료되었습니다.");
       } else {
         toast.error("글 작성이 실패하였습니다.");
@@ -82,13 +97,14 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
     }
   };
 
-  const sendEditTodo = async () => {
+  const sendEditTodo = async (todoId: any) => {
     try {
       const response: any = await updateTodoListApi(
         title,
-        time,
         content,
-        categories
+        time,
+        categories,
+        todoId
       );
       if (response.success) {
         toast.success("수정이 완료되었습니다.");
@@ -193,7 +209,16 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
                           />
                         </div>
                       </div>
-                      <div>{todoValue.todoTime} </div>
+                      <div>
+                        {todoValue.todoTime}{" "}
+                        <div
+                          onClick={() => {
+                            setEditShowModalState(true);
+                          }}
+                        >
+                          수정하기
+                        </div>
+                      </div>
                     </ShowModalTitle>
                     <div>
                       {todoValue.todoCategory
@@ -242,9 +267,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
                     <ShowModalTitle>
                       <div>
                         <input
-                          value={
-                            todoValue.title.length > 0 ? todoValue.title : title
-                          }
+                          value={title}
                           onChange={(e) => {
                             setTitle(e.target.value);
                           }}
@@ -257,7 +280,9 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
                             fontSize: "20px",
                           }}
                           placeholder={
-                            title.length > 0 ? title : "제목을 입력해주세요"
+                            todoValue.todoTitle.length > 0
+                              ? todoValue.todoTitle
+                              : "제목을 입력해주세요"
                           }
                         />
 
@@ -281,13 +306,17 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
                             border: "none",
                           }}
                           step={3600}
-                          value={
-                            todoValue.time.length > 0 ? todoValue.time : time
-                          }
+                          value={time}
                           onChange={(e) => setTime(e.target.value)}
                           required
                         />
-                        <div onClick={sendEditTodo}>수정완료</div>
+                        <div
+                          onClick={() => {
+                            sendEditTodo(todoValue.todoId);
+                          }}
+                        >
+                          수정완료
+                        </div>
                       </div>
                     </ShowModalTitle>
                     <input
@@ -299,12 +328,12 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
                         paddingBottom: "20px",
                         paddingTop: "20px",
                       }}
-                      placeholder="카테고리를 입력해주세요"
-                      value={
-                        todoValue.categories.length > 0
-                          ? todoValue.categories
-                          : categories
+                      placeholder={
+                        todoValue.todoCategory.length > 0
+                          ? todoValue.todoCategory
+                          : content
                       }
+                      value={categories}
                       onChange={(e) => setCategories(e.target.value)}
                     />
                     <input
@@ -319,12 +348,12 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
                         fontSize: "15px",
                         marginTop: "10px",
                       }}
-                      placeholder="본문을 입력해주세요"
-                      value={
-                        todoValue.content.length > 0
-                          ? todoValue.content
+                      placeholder={
+                        todoValue.todoContent.length > 0
+                          ? todoValue.todoContent
                           : content
                       }
+                      value={content}
                       onChange={(e) => setContent(e.target.value)}
                     />
                   </ShowModalTopSection>
@@ -359,16 +388,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
                     />
                   </div>
                 </div>
-                <div>
-                  {searchData.todoTime}
-                  <div
-                    onClick={() => {
-                      setEditShowModalState(true);
-                    }}
-                  >
-                    수정하기
-                  </div>
-                </div>
+                <div>{searchData.todoTime}</div>
               </ShowModalTitle>
               <div>
                 {searchData.todoCategory

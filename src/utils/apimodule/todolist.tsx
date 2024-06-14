@@ -74,11 +74,25 @@ export const readTodoListApi = async (userEmail: any) => {
  * 투두리스트 생성 api
 
  */
-const createTodoListApi = async (title: any, content: any, time: any) => {
-  console.log(title, content, time);
+const createTodoListApi = async (
+  title: any,
+  content: any,
+  time: any,
+  categories: any,
+  currendDate: any,
+
+  sharedState: any
+) => {
   try {
+    const memberId = localStorage.getItem("memberId");
     const response = await api.post("/todo/create", {
-      todoListApi: title,
+      todoTitle: title,
+      todoContent: content,
+      todoCategory: categories,
+      todoDate: currendDate,
+      todoTime: time,
+      todoCheck: sharedState,
+      memberId: memberId,
     });
 
     if (response.status === 200) {
@@ -99,10 +113,12 @@ const createTodoListApi = async (title: any, content: any, time: any) => {
  * @param selectedTodoId
  * @success
  */
-const deleteTodoListApi = async (todoemail: any, selectedId: any) => {
+const deleteTodoListApi = async (todoId: any) => {
   try {
-    const response = await api.post(`/todo/delete/${selectedId}`, {
-      todoEmail: todoemail,
+    const memberId = localStorage.getItem("memberId");
+    const response = await api.post(`/todo/delete`, {
+      memberId: memberId,
+      todoId: todoId,
     });
 
     if (response.status === 200) {
@@ -127,10 +143,20 @@ const updateTodoListApi = async (
   title: any,
   content: any,
   time: any,
-  categories: any
+  categories: any,
+  todoId: any
 ) => {
   try {
-    const response = await api.post(`/todo/update`, {});
+    const memberId = localStorage.getItem("memberId");
+    const response = await api.post(`/todo/update`, {
+      memberId: memberId,
+      todoId: todoId,
+      todoTitle: title,
+      todoCategory: categories,
+      todoContent: content,
+      todoTime: time,
+      todoCheck: "TRUE",
+    });
     if (response.status === 200) {
       return { success: true };
     } else {
@@ -174,7 +200,6 @@ const sendSearchCaterogyApi = async (input: any) => {
     const response: any = await api.post(`/todo/searchCategory`, {
       todoTitle: input,
     });
-    console.log(input);
     const data = response.data;
     console.log(data);
     if (response.status === 200) {

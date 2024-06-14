@@ -79,18 +79,18 @@ const Layout: FC<Props> = () => {
 
       if (response.success) {
         const searchResult = { data };
-
         toast.success("검색 성공");
+
         setSuccessResponseData(true);
         setSearchSuccessData([searchResult.data]);
         setSearchSuccessList(searchResult.data);
-
         console.log(searchSuccessList);
       } else {
         toast.warning("검색결과가 없습니다.");
         setSuccessResponseData(false);
       }
     } catch (error) {
+      toast.warning("검색결과가 없습니다.");
       console.error(error);
     }
   };
@@ -141,7 +141,7 @@ const Layout: FC<Props> = () => {
       border: "none",
       focus: "none",
       outline: "none",
-      zIndex: "1000",
+      zIndex: "3000",
     }),
   };
 
@@ -216,7 +216,7 @@ const Layout: FC<Props> = () => {
                       style={{ borderBottom: "1px solid black;" }}
                     >
                       <div>{highlightText(search.todoTitle, searchInput)}</div>
-                      {/* // <div>{search.todoTitle}</div> */}
+
                       <div>{search.todoEmail}</div>
                     </div>
                   ))}

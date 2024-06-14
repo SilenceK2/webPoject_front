@@ -30,7 +30,7 @@ const LoginBox = () => {
     console.log(email, pwd);
     try {
       const result: any = await loginUser(email, pwd);
-      const response = result.data;
+
       if (result.success) {
         navigate("/home");
         useremail(email);

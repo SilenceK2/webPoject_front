@@ -106,23 +106,23 @@ const TodoContentComponent = () => {
   };
 
   const todoData = async () => {
-    // try {
-    //   const result: any = await readTodoListApi;
+    try {
+      const result: any = await readTodoListApi;
+      todoListSet({
+        todayTodo: sortByTime(dummyTodayTodo),
+        tomorrowTodo: sortByTime(dummyTomorrowTodo),
+      });
 
-    //   if (result.success) {
-    todoListSet({
-      todayTodo: sortByTime(dummyTodayTodo),
-      tomorrowTodo: sortByTime(dummyTomorrowTodo),
-    });
-    //       todayTodo: sortByTime(result.todayList),
-    //       tomorrowTodo: sortByTime(result.tomorrowList),
-    //     });
-    //   } else {
-    //     console.log("투두리스트 불러오기 실패");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+      if (result.success) {
+        //   todayTodo: sortByTime(result.todayList),
+        //   tomorrowTodo: sortByTime(result.tomorrowList),
+        // });
+      } else {
+        console.log("투두리스트 불러오기 실패");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -142,7 +142,7 @@ const TodoContentComponent = () => {
   const deleteTodayTodo = async (todoId: any) => {
     try {
       if (window.confirm("삭제하시겠습니까?")) {
-        const response: any = await deleteTodoListApi;
+        const response: any = await deleteTodoListApi(todoId);
         if (response.success) {
           toast.success("투두가 삭제되었습니다.");
           todoListSet((prev: any) => ({

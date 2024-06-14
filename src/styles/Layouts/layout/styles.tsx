@@ -83,7 +83,7 @@ export const RecentSearchList = styled.div`
   display: flex;
   flex-direction: column;
   top: 100%;
-  z-index: 999;
+  z-index: 90;
   left: 0;
   width: 100%;
   background-color: #ffffff;
