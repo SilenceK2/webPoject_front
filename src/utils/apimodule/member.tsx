@@ -7,20 +7,6 @@ import api from "../api/Instance";
  * @returns
  */
 
-// export const loginGetMemberId = async () => {
-//   try {
-//     const response = await api.get("/member/login");
-//     const result = response.data;
-//     const memberId = response.data.id;
-//     console.log(result);
-//     localStorage.setItem("memberIdNumber", memberId);
-//     console.log(response.data);
-//     return { success: true, result };
-//   } catch (error) {
-//     console.error("error:", error);
-//     return { success: false, error: "실패" };
-//   }
-// };
 export const loginUser = async (email: any, pwd: any) => {
   try {
     const response = await api.post("/member/login", {
@@ -64,11 +50,32 @@ export const signupVerify = async (email: any) => {
 
 /**
  * 유저 회원가입 axios
- * @param {*} signupEmail
- * @param {*} signupPwd
  * @returns success
  */
-export const signupUser = async (signupValue: any) => {
+export const signupUser = async (
+  userEmail: any,
+  userName: any,
+  userPwd: any
+) => {
+  try {
+    const response = await api.post("/member/save", {
+      memberEmail: userEmail,
+      memberPassword: userPwd,
+      memberName: userName,
+    });
+
+    if (response.status === 200) {
+      return { success: true, message: "회원가입 성공" };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "요청 실패" };
+  }
+};
+
+export const logoutUser = async (signupValue: any) => {
   try {
     const response = await api.post("/member/save", {
       memberEmail: signupValue.userEmail,

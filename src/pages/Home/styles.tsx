@@ -5,8 +5,8 @@ export const PageContainer = styled.section`
   flex-direction: column;
   min-height: 100vh;
   margin: 0 24px;
-  margin-top: 20px;
-
+  margin-top: 40px;
+  margin-bottom: 100px;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -57,7 +57,7 @@ export const TodoListContent = styled.div`
 export const LocationContent = styled.div`
   display: flex;
   flex-direction: column;
-
+  margin-top: 10px;
   border-radius: 20px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
   margin-bottom: 100px;
@@ -168,20 +168,9 @@ export const ModalBackdrop = styled.div`
 
 export const LogoutDiv = styled.div`
   display: flex;
-  width: 100%;
+  width: 80%;
   text-align: right;
-  color: #fff;
+  flex-direction: row;
+  justify-content: flex-end;
+  color: gray;
 `;
-
-// export const ScrollBoxContainer = styled.section`
-//   flex: 1;
-//   margin-top: 20px;
-//   display: flex;
-//   margin-left: 20px;
-//   margin-bottom: 20px;
-//   width: 100%;
-//   max-height: 300px;
-//   flex-direction: row;
-//   overflow-x: auto;
-//   align-items: center;
-// `;

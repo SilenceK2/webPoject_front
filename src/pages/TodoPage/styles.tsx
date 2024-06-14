@@ -8,7 +8,7 @@ export const TodoContainer = styled.section`
   height: 100%;
   letter-spacing: -1px;
   @media (max-width: 575px) {
-    margin-top: 30vw;
+    margin-top: 20vw;
   }
 `;
 
@@ -22,8 +22,9 @@ export const TopSection = styled.section`
 export const BottomSection = styled.section`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex: 1;
   width: 100%;
+  margin-top: -40px;
 `;
 export const RatingContainer = styled.div`
   width: 100%;
@@ -67,6 +68,7 @@ export const RatingContent = styled.div`
   flex: 1;
   align-items: center;
   display: flex;
+  margin-top: 20px;
   flex-direction: column;
 `;
 export const RatingBody = styled.div`
@@ -124,6 +126,7 @@ export const RatingBodyTitle = styled.section`
 export const RatingNumber = styled.div`
   width: 20px;
   display: flex;
+  padding-left: 10px;
   flex: 0.2;
   flex-direction: column;
   & > div:nth-child(2) {
@@ -141,26 +144,31 @@ export const RatingNumber = styled.div`
 
 export const RatingBodyContent = styled.div`
   display: flex;
-  flex-grow: 0.3;
-  flex-basis: 20px;
-  width: 100%;
+  flex: 1;
+  flex-basis: 30px;
   flex-direction: column;
   border-left: 0.2px solid lightgray;
-  padding-left: 10px;
-  padding-right: 10px;
-  align-items: flex-start;
+  overflow: hidden;
 
+  padding-left: 5px;
   & > div:nth-child(1) {
     flex: 1;
     font-size: 14px;
-    text-align: center;
-    width: 100%;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    padding-right: 10px;
+    justify-content: center;
   }
 
   & > div:nth-child(2) {
     flex: 1;
     text-align: center;
-    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     font-size: 10px;
     color: gray;
   }
@@ -173,7 +181,7 @@ export const TodoUpdateList = styled.section`
 export const UpdateListTitle = styled.div`
   width: 100%;
   display: flex;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   flex-direction: row;
   & > div:nth-child(1) {
     flex: 0.1;
@@ -277,8 +285,6 @@ export const UpdateContent = styled.div`
 `;
 
 export const UpdateContentContent = styled.div`
-  width: 95%;
-  margin-top: -2px;
   flex-grow: 1;
   text-align: left;
   white-space: pre-wrap;
@@ -289,6 +295,7 @@ export const UpdateContentContent = styled.div`
   & > div:nth-child(1) {
     display: flex;
     flex-direction: row;
+    margin-top: 50px;
     justify-content: space-between;
     margin: 0 20px;
   }

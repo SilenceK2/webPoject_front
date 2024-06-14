@@ -27,20 +27,15 @@ import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { createCommentApi } from "../../utils/apimodule/todolist";
+import { showModalDataSelector } from "../../utils/recoil/atom";
 
 interface ModalProps {
   closeModal: () => void;
   modalType: string;
   todoData?: any;
-  createTodo?: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({
-  closeModal,
-  modalType,
-  todoData,
-  createTodo,
-}) => {
+const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
   const [title, setTitle] = useState("");
   const [categories, setCategories] = useState("");
   const [content, setContent] = useState("");
@@ -48,12 +43,12 @@ const Modal: React.FC<ModalProps> = ({
   const [time, setTime] = useState("");
   const [comment, setComment] = useState("");
   const [editShowModalState, setEditShowModalState] = useState(false);
-  const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 메시지 상태 관리
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const searchData: any = useRecoilValue(searchSuccessSelector);
+  const todoValue: any = useRecoilValue(showModalDataSelector);
 
   useEffect(() => {
-    // 모달이 열릴 때 댓글 개수 검사
-    if (modalType === "showtodo" && todoData.comment.length >= 3) {
+    if (modalType === "showtodo" && todoValue.comment.length >= 2) {
       setShowOnboarding(true);
     }
   }, [modalType, todoData]);
@@ -95,7 +90,7 @@ const Modal: React.FC<ModalProps> = ({
         content,
         categories
       );
-      if (response.success === "true") {
+      if (response.success) {
         toast.success("수정이 완료되었습니다.");
       } else {
         toast.warning("수정이 실패하였습니다.");
@@ -121,6 +116,8 @@ const Modal: React.FC<ModalProps> = ({
       <CommentContent>{comment.commentContent}</CommentContent>
     </CommentContainer>
   );
+
+  console.log(todoValue);
 
   return (
     <>
@@ -186,36 +183,27 @@ const Modal: React.FC<ModalProps> = ({
                   <ShowModalTopSection>
                     <ShowModalTitle>
                       <div>
-                        <h2>{todoData.todoTitle}</h2>
+                        <h2>{todoValue.todoTitle}</h2>
 
                         <div>
-                          <p>{todoData.todoLikes}</p>
+                          <p>{todoValue.todoLikes}</p>
                           <FontAwesomeIcon
                             icon={faHeart}
                             style={{ marginLeft: "10px", color: "red" }}
                           />
                         </div>
                       </div>
-                      <div>
-                        {todoData.todoTime}{" "}
-                        <div
-                          onClick={() => {
-                            setEditShowModalState(true);
-                          }}
-                        >
-                          수정하기
-                        </div>
-                      </div>
+                      <div>{todoValue.todoTime} </div>
                     </ShowModalTitle>
                     <div>
-                      {todoData.todoCategory
+                      {todoValue.todoCategory
                         .split("#")
                         .filter((category: any) => category !== "")
                         .map((category: any, index: any) => (
                           <p key={index}>#{category}</p>
                         ))}
                     </div>
-                    <div>{todoData.todoContent}</div>
+                    <div>{todoValue.todoContent}</div>
                   </ShowModalTopSection>
                   <ShowModalBottomSection>
                     {showOnboarding && (
@@ -239,7 +227,7 @@ const Modal: React.FC<ModalProps> = ({
                         아래로 스크롤을 내려 댓글을 확인하세요!
                       </div>
                     )}
-                    {todoData.comment.map((comment: any, index: any) => (
+                    {todoValue.comment.map((comment: any, index: any) => (
                       <StyledComment
                         key={index}
                         comment={comment}
@@ -254,7 +242,9 @@ const Modal: React.FC<ModalProps> = ({
                     <ShowModalTitle>
                       <div>
                         <input
-                          value={title}
+                          value={
+                            todoValue.title.length > 0 ? todoValue.title : title
+                          }
                           onChange={(e) => {
                             setTitle(e.target.value);
                           }}
@@ -272,7 +262,7 @@ const Modal: React.FC<ModalProps> = ({
                         />
 
                         <div>
-                          <p>{todoData.todoLikes}</p>
+                          <p>{todoValue.todoLikes}</p>
                           <FontAwesomeIcon
                             icon={faHeart}
                             style={{ marginLeft: "10px", color: "red" }}
@@ -291,17 +281,13 @@ const Modal: React.FC<ModalProps> = ({
                             border: "none",
                           }}
                           step={3600}
-                          value={time}
+                          value={
+                            todoValue.time.length > 0 ? todoValue.time : time
+                          }
                           onChange={(e) => setTime(e.target.value)}
                           required
                         />
-                        <div
-                          onClick={() => {
-                            sendEditTodo();
-                          }}
-                        >
-                          수정완료
-                        </div>
+                        <div onClick={sendEditTodo}>수정완료</div>
                       </div>
                     </ShowModalTitle>
                     <input
@@ -314,7 +300,11 @@ const Modal: React.FC<ModalProps> = ({
                         paddingTop: "20px",
                       }}
                       placeholder="카테고리를 입력해주세요"
-                      value={categories}
+                      value={
+                        todoValue.categories.length > 0
+                          ? todoValue.categories
+                          : categories
+                      }
                       onChange={(e) => setCategories(e.target.value)}
                     />
                     <input
@@ -330,12 +320,16 @@ const Modal: React.FC<ModalProps> = ({
                         marginTop: "10px",
                       }}
                       placeholder="본문을 입력해주세요"
-                      value={content}
+                      value={
+                        todoValue.content.length > 0
+                          ? todoValue.content
+                          : content
+                      }
                       onChange={(e) => setContent(e.target.value)}
                     />
                   </ShowModalTopSection>
                   <ShowModalBottomSection>
-                    {todoData.comment.map((comment: any, index: any) => (
+                    {todoValue.comment.map((comment: any, index: any) => (
                       <StyledComment
                         key={index}
                         comment={comment}
@@ -417,6 +411,41 @@ const Modal: React.FC<ModalProps> = ({
                 ))}
               </ShowModalBottomSection>
             )}
+          </ShowModalContainer>
+        </ModalBackdrop>
+      )}
+      {modalType === "showAllList" && (
+        <ModalBackdrop onClick={handleBackdropClick}>
+          <ShowModalContainer>
+            <ShowModalTopSection>
+              <ShowModalTitle>
+                <div style={{ paddingBottom: "10px" }}>
+                  <h2>{todoValue.todoTitle}</h2>
+
+                  <div style={{ paddingBottom: "10px" }}>
+                    <p>{todoValue.todoLike}</p>
+                    <FontAwesomeIcon
+                      icon={faHeart}
+                      style={{ marginLeft: "10px", color: "red" }}
+                    />
+                  </div>
+                </div>
+                <div style={{ color: "gray" }}>
+                  <h4>{todoValue.todoDate}</h4>
+                </div>
+                <div>{todoValue.todoEmail}</div>
+              </ShowModalTitle>
+              <div>
+                {todoValue.todoCategory
+                  .split("#")
+                  .filter((category: any) => category !== "")
+                  .map((category: any, index: any) => (
+                    <p key={index}>#{category}</p>
+                  ))}
+              </div>
+              <div>{todoValue.todoContent}</div>
+            </ShowModalTopSection>
+            <ShowModalBottomSection></ShowModalBottomSection>
           </ShowModalContainer>
         </ModalBackdrop>
       )}

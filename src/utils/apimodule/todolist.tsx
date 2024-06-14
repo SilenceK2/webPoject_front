@@ -7,7 +7,7 @@ import api from "../api/Instance";
  */
 const getTodoListAllTableApi = async () => {
   try {
-    const response = await api.get(`/todo/alllist`);
+    const response = await api.get(`/todo/allList`);
     const result = response.data;
     console.log(result);
     if (result.success) {
@@ -21,46 +21,43 @@ const getTodoListAllTableApi = async () => {
   }
 };
 
+// /**
+//  * 홈화면 마운트될때 멤버이메일에 맞는 오늘의 todolist불러오기
+//  * @post
+//  * @param title
+//  * @param content
+//  * @param member
+//  * @param selectedTodoId
+//  * @success
+//  */
+
+// const todoListApi = async (userEmail: any) => {
+//   try {
+//     const response = await api.post(`/todo/today`, {
+//       todoEmail: userEmail,
+//     });
+//     if (response.data.success) {
+//       return { success: true, data: response.data.data };
+//     } else {
+//       return { success: false };
+//     }
+//   } catch (error) {
+//     console.error("error:", error);
+//     return { success: false, error: "불러오기 실패" };
+//   }
+// };
+
 /**
- * 홈화면 마운트될때 멤버이메일에 맞는 오늘의 todolist불러오기
+ * 홈화면 마운트될때 멤버아이디에 맞는 todolist불러오기
  * @post
- * @param title
- * @param content
- * @param member
- * @param selectedTodoId
  * @success
  */
 
-const todoListApi = async (userEmail: any) => {
+export const readTodoListApi = async (userEmail: any) => {
   try {
-    const response = await api.post(`/todo/today`, {
-      todoEmail: userEmail,
-    });
-    if (response.data.success) {
-      return { success: true, data: response.data.data };
-    } else {
-      return { success: false };
-    }
-  } catch (error) {
-    console.error("error:", error);
-    return { success: false, error: "불러오기 실패" };
-  }
-};
-
-/**
- * 홈화면 마운트될때 멤버이메일에 맞는 내일의 todolist불러오기
- * @post
- * @param title
- * @param content
- * @param member
- * @param selectedTodoId
- * @success
- */
-
-const tomorrowTodoListApi = async (userEmail: any) => {
-  try {
-    const response = await api.post(`/todo/tomorrow`, {
-      todoEmail: userEmail,
+    const memberId = localStorage.getItem("memberId");
+    const response = await api.post(`/todo/mylist`, {
+      id: memberId,
     });
     if (response.data.success) {
       return { success: true, data: response.data.data };
@@ -78,11 +75,12 @@ const tomorrowTodoListApi = async (userEmail: any) => {
 
  */
 const createTodoListApi = async (title: any, content: any, time: any) => {
+  console.log(title, content, time);
   try {
     const response = await api.post("/todo/create", {
       todoListApi: title,
     });
-    console.log(response);
+
     if (response.status === 200) {
       console.log(response.data);
       return { success: true };
@@ -154,9 +152,7 @@ const sendSearchTitleApi = async (input: any) => {
     const response: any = await api.post(`/todo/searchTitle`, {
       todoTitle: input,
     });
-    console.log(input);
     const data = response.data;
-    console.log(data);
     if (response.status === 200) {
       return { success: true, data };
     } else {
@@ -220,8 +216,6 @@ export {
   deleteTodoListApi,
   updateTodoListApi,
   getTodoListAllTableApi,
-  todoListApi,
-  tomorrowTodoListApi,
   sendSearchTitleApi,
   sendSearchCaterogyApi,
   createCommentApi,

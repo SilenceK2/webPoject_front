@@ -24,7 +24,7 @@ import {
   searchSuccessListSelector,
   navState,
 } from "../../../utils/recoil/atom";
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import {
   sendSearchTitleApi,
   sendSearchCaterogyApi,
@@ -45,10 +45,11 @@ const Layout: FC<Props> = () => {
   const [successResponseData, setSuccessResponseData] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const showTodoModal = () => {
-    setIsModalOpen(true);
-    setModalType("searchResult");
-  };
+
+  // const showTodoModal = () => {
+  //   setIsModalOpen(true);
+  //   setModalType("searchResult");
+  // };
 
   const setSearchSuccessData: any = useSetRecoilState(searchSuccessSelector);
 
@@ -74,19 +75,17 @@ const Layout: FC<Props> = () => {
         response = await sendSearchCaterogyApi(searchInput);
       }
 
-      if (true) {
-        const searchResult = {
-          title: "안녕하세요",
-          categories: "#ㄴㅁㄷㄹ#ㄴ#ㄴㅁㄷㄹ",
-          likes: 12,
-          liked: 0,
-          content: "ㅁㄴㄷㄹㄴㅁㄹㄷ",
-          memberemail: "ktg5679@gmail.com",
-        };
-        setSearchSuccessList([searchResult]); // 배열로 설정
+      const data = response.data.data;
+
+      if (response.success) {
+        const searchResult = { data };
+
         toast.success("검색 성공");
         setSuccessResponseData(true);
-        setSearchSuccessData(searchResult);
+        setSearchSuccessData([searchResult.data]);
+        setSearchSuccessList(searchResult.data);
+
+        console.log(searchSuccessList);
       } else {
         toast.warning("검색결과가 없습니다.");
         setSuccessResponseData(false);
@@ -107,6 +106,13 @@ const Layout: FC<Props> = () => {
   };
 
   const handleBackdropClick = () => {
+    setSearchBackDropState(false);
+    setSearchInput("");
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    setSuccessResponseData(false); // 검색창에 입력할 때 검색 결과가 아닌 최근 검색어를 보이게 설정
     setSearchBackDropState(true);
   };
 
@@ -144,7 +150,27 @@ const Layout: FC<Props> = () => {
     { value: "category", label: "카테고리" },
   ];
 
-  const showHeaderAndNav = location.pathname.startsWith("/home");
+  const showHeaderAndNav =
+    location.pathname.startsWith("/home") ||
+    location.pathname.startsWith("/todopage");
+
+  const highlightText = (text: string, highlight: string) => {
+    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+
+    return (
+      <>
+        {parts.map((part, index) =>
+          part.toLowerCase() === highlight.toLowerCase() ? (
+            <span key={index} style={{ color: "orange" }}>
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -163,8 +189,10 @@ const Layout: FC<Props> = () => {
               type="text"
               placeholder="투두리스트 검색..."
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onClick={handleBackdropClick}
+              onChange={handleInputChange}
+              onClick={() => {
+                handleBackdropClick(), setIsModalOpen(true);
+              }}
             />
             <SearchButton onClick={sendSearchData}>
               <FontAwesomeIcon icon={faSearch} />
@@ -178,28 +206,20 @@ const Layout: FC<Props> = () => {
                   {(Array.isArray(searchSuccessList)
                     ? searchSuccessList
                     : []
-                  ).map((search: any, index: number) => {
-                    const highlightedTitle = search.title.replace(
-                      new RegExp(`(${searchInput})`, "gi"),
-                      (match: string) =>
-                        `<span style="color: orange">${match}</span>`
-                    );
-
-                    return (
-                      <div
-                        key={index}
-                        onClick={() => {
-                          setIsModalOpen(true);
-                          setModalType("searchResult");
-                        }}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: highlightedTitle }}
-                        />
-                        <p>{search.memberemail}</p>
-                      </div>
-                    );
-                  })}
+                  ).map((search: any, index: number) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setIsModalOpen(true);
+                        setModalType("searchResult");
+                      }}
+                      style={{ borderBottom: "1px solid black;" }}
+                    >
+                      <div>{highlightText(search.todoTitle, searchInput)}</div>
+                      {/* // <div>{search.todoTitle}</div> */}
+                      <div>{search.todoEmail}</div>
+                    </div>
+                  ))}
                 </RecentSearchList>
               ) : searchListValue.length > 0 ? (
                 <RecentSearchList>
@@ -208,6 +228,7 @@ const Layout: FC<Props> = () => {
                       key={index}
                       onClick={() => {
                         setSearchInput(search);
+                        sendSearchData(); // 최근 검색어를 클릭하면 검색 실행
                       }}
                     >
                       {search}
@@ -224,14 +245,7 @@ const Layout: FC<Props> = () => {
         </Header>
       )}
       <Outlet />
-      {searchBackDropState && (
-        <ModalBackdrop
-          onClick={() => {
-            setSearchBackDropState(false);
-            setSearchInput("");
-          }}
-        />
-      )}
+      {searchBackDropState && <ModalBackdrop onClick={handleBackdropClick} />}
       {showHeaderAndNav && (
         <BottomNav>
           <ul>
@@ -247,7 +261,7 @@ const Layout: FC<Props> = () => {
             <li
               className={activePage === "todopage" ? "activePage" : ""}
               onClick={() => {
-                navigate("/home/todopage");
+                navigate("todopage");
               }}
             >
               <FontAwesomeIcon icon={faStar} />

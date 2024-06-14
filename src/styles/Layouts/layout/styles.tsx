@@ -95,15 +95,23 @@ export const RecentSearchList = styled.div`
   max-height: 300px;
   overflow-y: auto;
 
-  div {
+  & > div {
     padding: 5px 10px;
     display: flex;
-    width: 86%;
+    width: 100%;
     flex-direction: row;
     // justify-content: space-between;
     cursor: pointer;
     transition: background-color 0.3s;
     background-color: #ffffff;
+    & > div:nth-child(1) {
+      flex: 1;
+      justify-self: left;
+    }
+    & > div:nth-child(2) {
+      flex: 1;
+      justify-self: right;
+    }
   }
 
   p {

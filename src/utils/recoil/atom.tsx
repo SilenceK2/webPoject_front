@@ -213,3 +213,23 @@ export const searchSuccessListSelector = selector({
     set(searchSuccessListAtom, newValue);
   },
 });
+
+/**
+ * 투두페이지에서 랭킹이나 최신 업데이트 클릭시 상세페이지로 넘어가기
+ */
+
+export const showModalDataAtom = atom({
+  key: "showModalDataAtom",
+  default: [],
+});
+
+export const showModalDataSelector = selector({
+  key: "showModalDataSelector ",
+  get: ({ get }) => {
+    const showModalDataAtomValue = get(showModalDataAtom);
+    return showModalDataAtomValue;
+  },
+  set: ({ set }, newValue) => {
+    set(showModalDataAtom, newValue);
+  },
+});

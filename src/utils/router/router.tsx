@@ -31,10 +31,6 @@ const router = createBrowserRouter([
                 path: "mypage",
                 element: <MyInfo />,
               },
-              {
-                path: "todopage",
-                element: <TodoPage />,
-              },
             ],
           },
           {
@@ -50,6 +46,10 @@ const router = createBrowserRouter([
                 element: <SignupPage />,
               },
             ],
+          },
+          {
+            path: "todopage",
+            element: <TodoPage />,
           },
         ],
       },

@@ -18,10 +18,23 @@ import {
 } from "./styles";
 import { useEffect, useState } from "react";
 import { getTodoListAllTableApi } from "../../utils/apimodule/todolist";
-import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import Modal from "../../components/Modal";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  showModalDataAtom,
+  showModalDataSelector,
+} from "../../utils/recoil/atom";
 const TodoPage = () => {
+  const [modalType, setModalType] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [topThreeTodos, setTopThreeTodos] = useState([]);
   const [latestUpdates, setLatestUpdates] = useState([]);
+  const modalData = useSetRecoilState(showModalDataSelector);
+  const dataValue = useRecoilValue(showModalDataSelector);
+
+  console.log(dataValue);
 
   useEffect(() => {
     const fetchTopThreeTodos = async () => {
@@ -61,6 +74,12 @@ const TodoPage = () => {
     fetchLatestUpdates();
   }, []);
 
+  const showTodoModal = () => {
+    console.log(dataValue);
+    setIsModalOpen(true);
+    setModalType("showSearch");
+  };
+
   return (
     <>
       <TodoContainer>
@@ -75,7 +94,13 @@ const TodoPage = () => {
             </UpdateListTitle>
             <RatingContent>
               {topThreeTodos.map((todo: any, index) => (
-                <RatingBody key={todo.id}>
+                <RatingBody
+                  key={todo.id}
+                  onClick={() => {
+                    modalData(todo);
+                    showTodoModal();
+                  }}
+                >
                   <RatingNumber>
                     <div>{index + 1}</div>
                     <div></div>
@@ -92,8 +117,11 @@ const TodoPage = () => {
                     </div>
                   </RatingBodyTitle>
                   <RatingBodyContent>
-                    <div>⭐️&nbsp;&nbsp;{todo.todoLikes}</div>
-                    <div>@{todo.todoEmail}</div>
+                    <div>
+                      <FontAwesomeIcon icon={faHeart} color="red" />
+                      &nbsp;&nbsp;{todo.todoLike}
+                    </div>
+                    <div>{todo.todoEmail}</div>
                   </RatingBodyContent>
                 </RatingBody>
               ))}
@@ -130,6 +158,12 @@ const TodoPage = () => {
           </TodoUpdateList>
         </BottomSection>
       </TodoContainer>
+      {isModalOpen && (
+        <Modal
+          closeModal={() => setIsModalOpen(false)}
+          modalType={"showAllList"}
+        />
+      )}
     </>
   );
 };

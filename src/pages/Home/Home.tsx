@@ -16,6 +16,8 @@ import MainContentBox from "../../components/MainContent";
 import LocationContentBox from "../../components/LocationContent";
 import { weatherSelector, loadingStateSelector } from "../../utils/recoil/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { toast } from "react-toastify";
+import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
   const setLoadingPage: any = useSetRecoilState(loadingStateSelector);
@@ -65,6 +67,16 @@ function Home() {
     fetchWeatherData();
   }, []);
 
+  const logoutEvent = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      localStorage.removeItem("memberId");
+      toast.success("로그아웃 되었습니다.");
+      window.location.href = "http://localhost:3000/user/login";
+    } else {
+      return;
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setMainContentVisible(true);
@@ -91,9 +103,11 @@ function Home() {
               <LocationContentBox />
             </LocationContent>
           </Content>
-          <LogoutDiv>
-            <p>로그아웃</p>
-          </LogoutDiv>
+          <Content style={{ maxHeight: "5px" }}>
+            <LogoutDiv>
+              <p onClick={logoutEvent}>로그아웃</p>
+            </LogoutDiv>
+          </Content>
         </PageContainer>
       </>
     </>

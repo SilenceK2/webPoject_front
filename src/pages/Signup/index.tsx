@@ -31,7 +31,6 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword]: any = useState("");
   const [successVerify, setSuccessVerify] = useState(true);
   const username = useSetRecoilState(usernameState);
-  const [signupValue, setSignupValue] = useRecoilState(userSignupValueSelector);
 
   /**
    * 회원가입 요청 시도
@@ -51,7 +50,7 @@ const SignupPage = () => {
     }
 
     try {
-      const result: any = await signupUser(signupValue);
+      const result: any = await signupUser(userEmail, userName, userPwd);
       if (result.success) {
         navigate("/user/login");
         username(userName);

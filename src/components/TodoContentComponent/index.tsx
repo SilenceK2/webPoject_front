@@ -11,10 +11,10 @@ import {
   CustomCheckbox,
   TimeSeparator,
 } from "./styles";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import {
   todoMainContentListSelector,
-  useremailState,
+  showModalDataSelector,
 } from "../../utils/recoil/atom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -22,7 +22,10 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../Modal";
-import { deleteTodoListApi } from "../../utils/apimodule/todolist";
+import {
+  deleteTodoListApi,
+  readTodoListApi,
+} from "../../utils/apimodule/todolist";
 import { toast } from "react-toastify";
 
 const TodoContentComponent = () => {
@@ -84,10 +87,13 @@ const TodoContentComponent = () => {
     },
   ];
 
-  const todoListSet: any = useSetRecoilState(todoMainContentListSelector);
+  const [todoListValue, todoListSet]: any = useRecoilState(
+    todoMainContentListSelector
+  );
   const { todayTodo = [], tomorrowTodo = [] }: any = useRecoilValue(
     todoMainContentListSelector
   );
+  const modalData = useSetRecoilState(showModalDataSelector);
 
   const sortByTime = (todos: any) => {
     // 배열을 복제하여 정렬
@@ -99,11 +105,24 @@ const TodoContentComponent = () => {
     return sortedTodos;
   };
 
-  const todoData = () => {
+  const todoData = async () => {
+    // try {
+    //   const result: any = await readTodoListApi;
+
+    //   if (result.success) {
     todoListSet({
       todayTodo: sortByTime(dummyTodayTodo),
       tomorrowTodo: sortByTime(dummyTomorrowTodo),
     });
+    //       todayTodo: sortByTime(result.todayList),
+    //       tomorrowTodo: sortByTime(result.tomorrowList),
+    //     });
+    //   } else {
+    //     console.log("투두리스트 불러오기 실패");
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   useEffect(() => {
@@ -164,10 +183,8 @@ const TodoContentComponent = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [selectedTodo, setSelectedTodo] = useState(null);
 
-  const showTodoModal = (todo: any) => {
-    setSelectedTodo(todo);
+  const showTodoModal = () => {
     setIsModalOpen(true);
     setModalType("showtodo");
   };
@@ -190,7 +207,12 @@ const TodoContentComponent = () => {
                 <TodoNumber>
                   <CustomCheckbox />
                 </TodoNumber>
-                <TodoBodyTitle onClick={() => showTodoModal(todo)}>
+                <TodoBodyTitle
+                  onClick={() => {
+                    modalData(todo);
+                    showTodoModal();
+                  }}
+                >
                   <div>{todo.todoTitle}</div>
                   <div>
                     {todo.todoTag
@@ -233,7 +255,12 @@ const TodoContentComponent = () => {
                 <TodoNumber>
                   <CustomCheckbox />
                 </TodoNumber>
-                <TodoBodyTitle onClick={() => showTodoModal(todo)}>
+                <TodoBodyTitle
+                  onClick={() => {
+                    modalData(todo);
+                    showTodoModal();
+                  }}
+                >
                   <div>{todo.todoTitle}</div>
                   <div>
                     {todo.todoTag
@@ -261,11 +288,7 @@ const TodoContentComponent = () => {
         </TodoContent>
       </ContentWrap>
       {isModalOpen && (
-        <Modal
-          closeModal={() => setIsModalOpen(false)}
-          modalType={modalType}
-          todoData={selectedTodo}
-        />
+        <Modal closeModal={() => setIsModalOpen(false)} modalType={modalType} />
       )}
     </Container>
   );
