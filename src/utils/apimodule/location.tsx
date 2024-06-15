@@ -1,5 +1,5 @@
 import api from "../api/Instance";
-import dfs_xy_conv from "../math/grid";
+// import dfs_xy_conv from "../math/grid";
 
 /**
  * 기상청 api를 활용하기 위한 gridX, gridY변환값 post axios
@@ -7,26 +7,26 @@ import dfs_xy_conv from "../math/grid";
  * @param {*} longitude
  * @returns success
  */
-const mappingLocation = async (latitude: any, longitude: any) => {
-  try {
-    let rs = dfs_xy_conv("toXY", latitude, longitude);
-    const x = rs.x;
-    const y = rs.y;
-    const response = await api.post("/location", {
-      currentLocationX: x,
-      currentLocationY: y,
-    });
-    console.log(`gridX: ${x}, gridY: ${y}`);
-    if (response.status === 200) {
-      return { success: true, x, y };
-    } else {
-      return { success: false };
-    }
-  } catch (error) {
-    console.error("error:", error);
-    return { success: false, error: "error" };
-  }
-};
+// const mappingLocation = async (latitude: any, longitude: any) => {
+//   try {
+//     // let rs = dfs_xy_conv("toXY", latitude, longitude);
+//     // const x = rs.x;
+//     // const y = rs.y;
+//     const response = await api.post("/location", {
+//       currentLocationX: x,
+//       currentLocationY: y,
+//     });
+//     console.log(`gridX: ${x}, gridY: ${y}`);
+//     if (response.status === 200) {
+//       return { success: true, x, y };
+//     } else {
+//       return { success: false };
+//     }
+//   } catch (error) {
+//     console.error("error:", error);
+//     return { success: false, error: "error" };
+//   }
+// };
 
 /**
  * 길찾기 결과값을 보여주기 위한 get요청
@@ -138,7 +138,7 @@ const getOdsayRoute = async (SX: any, SY: any, EX: any, EY: any) => {
 };
 
 export {
-  mappingLocation,
+  // mappingLocation,
   locationResultResponse,
   searchNaverPlaces,
   getNaverDirectionMap,

@@ -29,70 +29,15 @@ import {
 import { toast } from "react-toastify";
 
 const TodoContentComponent = () => {
-  const dummyTodayTodo: any = [
-    {
-      id: 1,
-      todoTitle: "자기전에 양치하기",
-      todoTag: "#tag1#origin#oracle",
-      todoContent: "This is a dummy todo content 1.",
-      todoCheck: false,
-      todoCategory: "#work#personal",
-      todoLikes: 10,
-      todoEmail: "dummy1@example.com",
-      todoTime: "08:00",
-      comment: [
-        {
-          id: 1,
-          commentContent: "sae1afe",
-          memberEmail: "ktg5679",
-        },
-        {
-          id: 2,
-          commentContent: "sa2afe",
-          memberEmail: "qkrfogusqudtls",
-        },
-        {
-          id: 3,
-          commentContent: "saefs3e",
-          memberEmail: "qkrcksalskEHdrh",
-        },
-      ],
-    },
-    {
-      id: 2,
-      todoTitle: "일어나서 코딩하기",
-      todoTag: "#tag2",
-      todoContent: "This is a dummy todo content 2.",
-      todoCheck: false,
-      todoCategory: "#work",
-      todoLikes: 5,
-      todoEmail: "dummy2@example.com",
-      todoTime: "09:00",
-      comment: [],
-    },
-  ];
-
-  const dummyTomorrowTodo: any = [
-    {
-      id: 1,
-      todoTitle: "오늘은 무엇을 해볼까",
-      todoTag: "#tag1",
-      todoContent: "This is a dummy todo content 1.",
-      todoCheck: false,
-      todoCategory: "#personal",
-      todoLikes: 3,
-      todoEmail: "dummy1@example.com",
-      todoTime: "10:00",
-      comment: [],
-    },
-  ];
-
   const [todoListValue, todoListSet]: any = useRecoilState(
     todoMainContentListSelector
   );
   const { todayTodo = [], tomorrowTodo = [] }: any = useRecoilValue(
     todoMainContentListSelector
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
   const modalData = useSetRecoilState(showModalDataSelector);
 
   const sortByTime = (todos: any) => {
@@ -107,16 +52,23 @@ const TodoContentComponent = () => {
 
   const todoData = async () => {
     try {
-      const result: any = await readTodoListApi;
-      todoListSet({
-        todayTodo: sortByTime(dummyTodayTodo),
-        tomorrowTodo: sortByTime(dummyTomorrowTodo),
-      });
+      const response: any = await readTodoListApi();
+      console.log(response.data.today);
+      if (response.success) {
+        const todayList = Array.isArray(response.data.today)
+          ? response.data.today
+          : [];
+        const tomorrowList = Array.isArray(response.data.tomorrow)
+          ? response.data.tomorrow
+          : [];
 
-      if (result.success) {
-        //   todayTodo: sortByTime(result.todayList),
-        //   tomorrowTodo: sortByTime(result.tomorrowList),
-        // });
+        todoListSet({
+          // todayTodo: sortByTime(todayList),
+          // tomorrowTodo: sortByTime(tomorrowList),
+          todayTodo: todayList,
+          tomorrowTodo: tomorrowList,
+        });
+        console.log(todayList);
       } else {
         console.log("투두리스트 불러오기 실패");
       }
@@ -124,10 +76,6 @@ const TodoContentComponent = () => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    todoData();
-  }, []);
 
   const addTodayTodo = () => {
     setModalType("today");
@@ -181,19 +129,20 @@ const TodoContentComponent = () => {
     }
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState("");
-
   const showTodoModal = () => {
     setIsModalOpen(true);
     setModalType("showtodo");
   };
 
+  useEffect(() => {
+    todoData();
+  }, []);
+
   return (
     <Container>
       <ContentWrap>
         <TodoTitle>
-          <div>Today</div>
+          <div onClick={todoData}>Today</div>
           <div onClick={addTodayTodo}>+</div>
         </TodoTitle>
         <TodoContent>
@@ -215,7 +164,7 @@ const TodoContentComponent = () => {
                 >
                   <div>{todo.todoTitle}</div>
                   <div>
-                    {todo.todoTag
+                    {todo.todoCategory
                       .split("#")
                       .filter((tag: any) => tag !== "")
                       .map((tag: any, index: any) => (
@@ -263,7 +212,7 @@ const TodoContentComponent = () => {
                 >
                   <div>{todo.todoTitle}</div>
                   <div>
-                    {todo.todoTag
+                    {todo.todoCategory
                       .split("#")
                       .filter((tag: any) => tag !== "")
                       .map((tag: any, index: any) => (

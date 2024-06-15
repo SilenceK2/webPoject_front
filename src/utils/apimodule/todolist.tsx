@@ -53,20 +53,20 @@ const getTodoListAllTableApi = async () => {
  * @success
  */
 
-export const readTodoListApi = async (userEmail: any) => {
+export const readTodoListApi = async () => {
   try {
-    const memberId = localStorage.getItem("memberId");
-    const response = await api.post(`/todo/mylist`, {
-      id: memberId,
-    });
-    if (response.data.success) {
-      return { success: true, data: response.data.data };
+    const response = await api.get(`/todo/list`);
+    const data = response.data.data;
+    console.log(data);
+
+    if (response.status === 200) {
+      return { success: true, data };
     } else {
       return { success: false };
     }
   } catch (error) {
     console.error("error:", error);
-    return { success: false, error: "불러오기 실패" };
+    return { success: false, error };
   }
 };
 
@@ -77,10 +77,10 @@ export const readTodoListApi = async (userEmail: any) => {
 const createTodoListApi = async (
   title: any,
   content: any,
-  time: any,
   categories: any,
-  currendDate: any,
+  time: any,
 
+  currendDate: any,
   sharedState: any
 ) => {
   try {

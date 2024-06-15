@@ -24,7 +24,7 @@ import {
   searchSuccessListSelector,
   navState,
 } from "../../../utils/recoil/atom";
-import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilState } from "recoil";
 import {
   sendSearchTitleApi,
   sendSearchCaterogyApi,
@@ -41,15 +41,10 @@ const Layout: FC<Props> = () => {
   const [searchInput, setSearchInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [searchOption, setSearchOption] = useState("제목");
+  const [searchOption, setSearchOption] = useState("title");
   const [successResponseData, setSuccessResponseData] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
-  // const showTodoModal = () => {
-  //   setIsModalOpen(true);
-  //   setModalType("searchResult");
-  // };
 
   const setSearchSuccessData: any = useSetRecoilState(searchSuccessSelector);
 
@@ -69,9 +64,9 @@ const Layout: FC<Props> = () => {
 
     try {
       let response: any;
-      if (searchOption === "제목") {
+      if (searchOption === "title") {
         response = await sendSearchTitleApi(searchInput);
-      } else {
+      } else if (searchOption === "category") {
         response = await sendSearchCaterogyApi(searchInput);
       }
 
@@ -82,7 +77,6 @@ const Layout: FC<Props> = () => {
         toast.success("검색 성공");
 
         setSuccessResponseData(true);
-        setSearchSuccessData([searchResult.data]);
         setSearchSuccessList(searchResult.data);
         console.log(searchSuccessList);
       } else {
@@ -112,7 +106,7 @@ const Layout: FC<Props> = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
-    setSuccessResponseData(false); // 검색창에 입력할 때 검색 결과가 아닌 최근 검색어를 보이게 설정
+    setSuccessResponseData(false);
     setSearchBackDropState(true);
   };
 
@@ -191,7 +185,7 @@ const Layout: FC<Props> = () => {
               value={searchInput}
               onChange={handleInputChange}
               onClick={() => {
-                handleBackdropClick(), setIsModalOpen(true);
+                handleBackdropClick();
               }}
             />
             <SearchButton onClick={sendSearchData}>
@@ -211,7 +205,9 @@ const Layout: FC<Props> = () => {
                       key={index}
                       onClick={() => {
                         setIsModalOpen(true);
+                        setSearchSuccessData(search);
                         setModalType("searchResult");
+                        setSearchBackDropState(false);
                       }}
                       style={{ borderBottom: "1px solid black;" }}
                     >

@@ -29,7 +29,7 @@ export const TodoTitle = styled.div`
 export const TodoContent = styled.div`
   display: flex;
   width: 93%;
-
+  margin-top: -10px;
   flex-direction: column;
 `;
 

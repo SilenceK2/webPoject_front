@@ -12,9 +12,7 @@ import {
   CommentContainer,
   CommentContent,
   CommentHeader,
-  SearchModalContainer,
-  SearchModalBottomSection,
-  SearchModalTopSection,
+  CommentStyledInput,
   ShowModalTitle,
 } from "./styles";
 import {
@@ -28,14 +26,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { createCommentApi } from "../../utils/apimodule/todolist";
 import { showModalDataSelector } from "../../utils/recoil/atom";
+import { getCurrentDate, getTomorrowDate } from "../../utils/math/date";
 
 interface ModalProps {
   closeModal: () => void;
   modalType: string;
-  todoData?: any;
 }
 
-const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
+const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
   const [title, setTitle] = useState("");
   const [categories, setCategories] = useState("");
   const [content, setContent] = useState("");
@@ -45,23 +43,38 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
   const [editShowModalState, setEditShowModalState] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const searchData: any = useRecoilValue(searchSuccessSelector);
+
   const todoValue: any = useRecoilValue(showModalDataSelector);
 
   /**
-   * 날짜 가져오기
+   * tomorrow면 오늘 날짜에 하루를 더하고, 아니면 오늘 날짜를 "yyyy-mm-dd"형식으로 바꾸기
    */
-  const date = new Date(Date.now());
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const currentDate = `${year}-${month}-${day}`;
+  let currentDate =
+    modalType === "tomorrow" ? getTomorrowDate() : getCurrentDate();
 
+  /**
+   * 댓글 갯수가 2가 이상이면 댓글 스크롤 온보딩을 띄우기
+   */
   useEffect(() => {
-    if (modalType === "showtodo" && todoValue.comment.length >= 2) {
+    if (
+      modalType === "showtodo" &&
+      todoValue.comment &&
+      todoValue.comment.length >= 2
+    ) {
       setShowOnboarding(true);
     }
-  }, [modalType, todoData]);
+    if (
+      modalType === "searchResult" &&
+      searchData.comment &&
+      searchData.comment.length >= 2
+    ) {
+      setShowOnboarding(true);
+    }
+  }, [modalType, todoValue.comment, searchData.comment]);
 
+  /**
+   * 투두 작성하기
+   */
   const handleCreateTodo = async () => {
     try {
       const response: any = await createTodoListApi(
@@ -74,6 +87,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
       );
       if (response.success) {
         toast.success("글 작성이 완료되었습니다.");
+        window.location.reload();
       } else {
         toast.error("글 작성이 실패하였습니다.");
       }
@@ -134,6 +148,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
   );
 
   console.log(todoValue);
+  console.log(searchData);
 
   return (
     <>
@@ -373,7 +388,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
         </ModalBackdrop>
       )}
       {modalType === "searchResult" && (
-        <ModalBackdrop>
+        <ModalBackdrop onClick={handleBackdropClick}>
           <ShowModalContainer>
             <ShowModalTopSection>
               <ShowModalTitle>
@@ -426,9 +441,11 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType, todoData }) => {
               </ShowModalBottomSection>
             ) : (
               <ShowModalBottomSection>
-                {searchData.comment.map((comment: any, index: any) => (
+                {(searchData.comment || []).map((comment: any, index: any) => (
                   <StyledComment key={index} comment={comment} index={index} />
                 ))}
+                {/** 내가 작성한 게시글이면 숨기기 ??*/}
+                <CommentStyledInput placeholder="댓글을 입력하세요" />
               </ShowModalBottomSection>
             )}
           </ShowModalContainer>

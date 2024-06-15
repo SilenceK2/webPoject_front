@@ -350,6 +350,23 @@ export const CommentContent = styled.div`
   font-size: 16px;
 `;
 
+export const CommentStyledInput = styled.input`
+  width: 100%;
+  padding: 30px;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  border: 1px solid #dddddd;
+  align-self: flex-end;
+  justify-content: flex-end;
+  max-height: 50px;
+  border-radius: 12px;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 function rgba(r: number, g: number, b: number, a: number): string {
   return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
