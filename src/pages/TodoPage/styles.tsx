@@ -73,9 +73,8 @@ export const RatingContent = styled.div`
 `;
 export const RatingBody = styled.div`
   width: 100%;
-  max-height: 22%;
+  max-height: 18%;
   flex: 1;
-
   border-radius: 10px;
   display: flex;
   flex-direction: row;
@@ -290,12 +289,15 @@ export const UpdateContentContent = styled.div`
   white-space: pre-wrap;
   margin-left: 2px;
   overflow: hidden;
+
+  margin-top: 10px;
   padding-left: 5px;
   font-size: 13px;
   & > div:nth-child(1) {
     display: flex;
+
     flex-direction: row;
-    margin-top: 50px;
+
     justify-content: space-between;
     margin: 0 20px;
   }
@@ -309,6 +311,9 @@ export const UpdateContentContent = styled.div`
     text-align: center;
     font-weight: bold;
     background-color: #b9a7fc;
+  }
+  & > div:nth-child(2) {
+    flex: 0.2;
   }
 `;
 

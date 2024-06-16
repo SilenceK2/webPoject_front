@@ -115,9 +115,7 @@ const createTodoListApi = async (
  */
 const deleteTodoListApi = async (todoId: any) => {
   try {
-    const memberId = localStorage.getItem("memberId");
     const response = await api.post(`/todo/delete`, {
-      memberId: memberId,
       todoId: todoId,
     });
 
@@ -147,15 +145,14 @@ const updateTodoListApi = async (
   todoId: any
 ) => {
   try {
-    const memberId = localStorage.getItem("memberId");
-    const response = await api.post(`/todo/update`, {
-      memberId: memberId,
+    console.log(todoId);
+    const response: any = await api.post(`/todo/update`, {
       todoId: todoId,
       todoTitle: title,
       todoCategory: categories,
       todoContent: content,
       todoTime: time,
-      todoCheck: "TRUE",
+      todoCheck: "true",
     });
     if (response.status === 200) {
       return { success: true };
@@ -175,11 +172,14 @@ const updateTodoListApi = async (
  */
 const sendSearchTitleApi = async (input: any) => {
   try {
-    const response: any = await api.post(`/todo/searchTitle`, {
-      todoTitle: input,
+    const response: any = await api.get(`/todo/searchTitle`, {
+      params: {
+        todoTitle: input,
+      },
     });
     const data = response.data;
-    if (response.status === 200) {
+    console.log(data);
+    if (response.status === 200 && response.data.length != 0) {
       return { success: true, data };
     } else {
       return { success: false };
@@ -197,8 +197,10 @@ const sendSearchTitleApi = async (input: any) => {
  */
 const sendSearchCaterogyApi = async (input: any) => {
   try {
-    const response: any = await api.post(`/todo/searchCategory`, {
-      todoTitle: input,
+    const response: any = await api.get(`/todo/searchCategory`, {
+      params: {
+        todoTitle: input,
+      },
     });
     const data = response.data;
     console.log(data);
@@ -218,12 +220,33 @@ const sendSearchCaterogyApi = async (input: any) => {
  * @param comment
  * @returns
  */
-const createCommentApi = async (comment: any) => {
+const createCommentApi = async (comment: any, id: string) => {
   try {
-    const memberId = localStorage.getItem("memberId");
-    const response: any = await api.post(`/todo/comment`, {
-      todoTitle: comment,
-      memberId: memberId,
+    const response = await api.post(`/comment/add`, {
+      commentTodoId: id,
+      comment: comment,
+    });
+
+    if (response.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "글찾기 불러오기 실패" };
+  }
+};
+
+/**
+ * 좋아요 클릭
+ * @param todoId
+ * @returns
+ */
+const sendLikeApi = async (id: any) => {
+  try {
+    const response = await api.post(`/like/action`, {
+      likeTodoId: id,
     });
 
     if (response.status === 200) {
@@ -244,4 +267,5 @@ export {
   sendSearchTitleApi,
   sendSearchCaterogyApi,
   createCommentApi,
+  sendLikeApi,
 };

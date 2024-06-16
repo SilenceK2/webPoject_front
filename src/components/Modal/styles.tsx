@@ -367,6 +367,14 @@ export const CommentStyledInput = styled.input`
   }
 `;
 
+export const HeartIcon = styled.span`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url("/images/flatHeart.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
 function rgba(r: number, g: number, b: number, a: number): string {
   return `rgba(${r}, ${g}, ${b}, ${a})`;
 }

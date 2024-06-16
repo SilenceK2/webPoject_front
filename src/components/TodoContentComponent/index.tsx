@@ -41,7 +41,6 @@ const TodoContentComponent = () => {
   const modalData = useSetRecoilState(showModalDataSelector);
 
   const sortByTime = (todos: any) => {
-    // 배열을 복제하여 정렬
     const sortedTodos = [...todos].sort((a: any, b: any) => {
       const timeA = parseInt(a.todoTime.replace(":", ""));
       const timeB = parseInt(b.todoTime.replace(":", ""));
@@ -63,10 +62,8 @@ const TodoContentComponent = () => {
           : [];
 
         todoListSet({
-          // todayTodo: sortByTime(todayList),
-          // tomorrowTodo: sortByTime(tomorrowList),
-          todayTodo: todayList,
-          tomorrowTodo: tomorrowList,
+          todayTodo: sortByTime(todayList),
+          tomorrowTodo: sortByTime(tomorrowList),
         });
         console.log(todayList);
       } else {
@@ -198,7 +195,7 @@ const TodoContentComponent = () => {
             <React.Fragment key={todo.id}>
               {index === 0 ||
               tomorrowTodo[index - 1].todoTime !== todo.todoTime ? (
-                <TimeSeparator>{todo.todoTime}</TimeSeparator> // 변경: 구분선으로 사용할 컴포넌트 사용
+                <TimeSeparator>{todo.todoTime}</TimeSeparator>
               ) : null}
               <TodoBody>
                 <TodoNumber>

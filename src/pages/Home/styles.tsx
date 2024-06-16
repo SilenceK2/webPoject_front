@@ -173,4 +173,5 @@ export const LogoutDiv = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   color: gray;
+  font-weight: ligther;
 `;

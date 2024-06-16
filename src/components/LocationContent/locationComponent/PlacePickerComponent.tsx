@@ -32,7 +32,7 @@ const PlacePickerComponent: React.FC<PlacePickerComponentProps> = ({
 
   const fetchSuggestions = async (text: string) => {
     try {
-      const response = await axios.get("http://localhost:8000/naver/search", {
+      const response = await axios.get("https:naveropenapi/naver/search", {
         params: { text },
         headers: {
           "X-Naver-Client-Id": "nfiMlVtIR8DmtDMqhvpO",

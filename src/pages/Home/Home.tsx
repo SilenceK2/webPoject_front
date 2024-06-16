@@ -9,8 +9,6 @@ import {
   TodoListContent,
   MainContent,
   LogoutDiv,
-
-  // ScrollBoxContainer,
 } from "./styles";
 import MainContentBox from "../../components/MainContent";
 import LocationContentBox from "../../components/LocationContent";
@@ -24,7 +22,7 @@ function Home() {
 
   const weatherValue: any = useSetRecoilState(weatherSelector);
 
-  const [mainContentVisible, setMainContentVisible]: any = useState(false); // mainContent 보여지는 여부 추가
+  const [mainContentVisible, setMainContentVisible]: any = useState(false);
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
@@ -93,12 +91,9 @@ function Home() {
             <MainContent show={mainContentVisible}>
               <MainContentBox />
             </MainContent>
-
             <TodoListContent>
-              {/* <TodoContentBox /> */}
               <TodoContentComponent />
             </TodoListContent>
-
             <LocationContent>
               <LocationContentBox />
             </LocationContent>

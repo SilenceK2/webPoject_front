@@ -1,33 +1,5 @@
 import api from "../api/Instance";
-// import dfs_xy_conv from "../math/grid";
-
-/**
- * 기상청 api를 활용하기 위한 gridX, gridY변환값 post axios
- * @param {*} latitude
- * @param {*} longitude
- * @returns success
- */
-// const mappingLocation = async (latitude: any, longitude: any) => {
-//   try {
-//     // let rs = dfs_xy_conv("toXY", latitude, longitude);
-//     // const x = rs.x;
-//     // const y = rs.y;
-//     const response = await api.post("/location", {
-//       currentLocationX: x,
-//       currentLocationY: y,
-//     });
-//     console.log(`gridX: ${x}, gridY: ${y}`);
-//     if (response.status === 200) {
-//       return { success: true, x, y };
-//     } else {
-//       return { success: false };
-//     }
-//   } catch (error) {
-//     console.error("error:", error);
-//     return { success: false, error: "error" };
-//   }
-// };
-
+import axios from "axios";
 /**
  * 길찾기 결과값을 보여주기 위한 get요청
  * @param locationTransport
@@ -48,7 +20,7 @@ const locationResultResponse = async () => {
 
 const searchNaverPlaces = async (text: any) => {
   try {
-    const response = await api.get(
+    const response = await axios.get(
       "https://openapi.naver.com/v1/search/local.json",
       {
         params: {
@@ -79,7 +51,7 @@ const searchNaverPlaces = async (text: any) => {
 // 네이버 지도 경로 API 호출 함수
 const getNaverMapDirection = async (start: any, goal: any, option: any) => {
   try {
-    const response = await api.get(
+    const response = await axios.get(
       `https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=${start}&goal=${goal}&option=${option}`,
       {
         headers: {
@@ -103,7 +75,7 @@ const getNaverDirectionMap = async (
   level: any
 ) => {
   try {
-    const response = await api.get(
+    const response = await axios.get(
       "https://naveropenapi.apigw.ntruss.com/map-static/v3/raster",
       {
         params: {
@@ -129,7 +101,7 @@ const getNaverDirectionMap = async (
 const getOdsayRoute = async (SX: any, SY: any, EX: any, EY: any) => {
   try {
     const url = `https://api.odsay.com/v1/api/searchPubTransPathT?SX=${SX}&SY=${SY}&EX=${EX}&EY=${EY}&OPT=1&apiKey=ROqhJXXjx3uvKLQ5iNtT7rdI1ilUdJD%2BmWOtlnPs%2Fag`;
-    const response = await api.get(url);
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     console.error("Error fetching data from ODSAY API:", error);
