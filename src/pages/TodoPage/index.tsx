@@ -34,8 +34,6 @@ const TodoPage = () => {
   const modalData = useSetRecoilState(showModalDataSelector);
   const dataValue = useRecoilValue(showModalDataSelector);
 
-  console.log(dataValue);
-
   useEffect(() => {
     const fetchTopThreeTodos = async () => {
       try {
@@ -49,11 +47,11 @@ const TodoPage = () => {
           return topThree;
         } else {
           console.log("상위 3개 가져오기 실패");
-          return []; // 실패 시 빈 배열 반환
+          return [];
         }
       } catch (error) {
         console.error("fetching error:", error);
-        return []; // 에러 발생 시 빈 배열 반환
+        return [];
       }
     };
     const fetchLatestUpdates = async () => {
@@ -75,7 +73,6 @@ const TodoPage = () => {
   }, []);
 
   const showTodoModal = () => {
-    console.log(dataValue);
     setIsModalOpen(true);
     setModalType("showSearch");
   };
@@ -121,7 +118,7 @@ const TodoPage = () => {
                       <FontAwesomeIcon icon={faHeart} color="red" />
                       &nbsp;&nbsp;{todo.todoLike}
                     </div>
-                    <div>{todo.todoEmail}</div>
+                    {/* <div>{todo.todoEmail}</div> */}
                   </RatingBodyContent>
                 </RatingBody>
               ))}
@@ -129,33 +126,7 @@ const TodoPage = () => {
           </RatingContainer>
         </TopSection>
         <BottomSection>
-          <TodoUpdateList>
-            <UpdateListTitle>
-              <div></div>
-              <UpdateListTitleContent>
-                실시간 업데이트
-                <div>사람들이 공유한 todolist를 확인해보세요!</div>
-              </UpdateListTitleContent>
-            </UpdateListTitle>
-            <UpdateListContent>
-              {latestUpdates.map((update: any, index) => (
-                <UpdateContent key={update.id}>
-                  <UpdateContentTitle>{update.todoTitle}</UpdateContentTitle>
-                  <UpdateContentContent>
-                    <div>
-                      {update.todoCategory
-                        .split("#")
-                        .filter((category: any) => category !== "")
-                        .map((category: any, index: any) => (
-                          <p key={index}>#{category}</p>
-                        ))}
-                    </div>
-                    <div>{update.todoContent}</div>
-                  </UpdateContentContent>
-                </UpdateContent>
-              ))}
-            </UpdateListContent>
-          </TodoUpdateList>
+          <TodoUpdateListComponents />
         </BottomSection>
       </TodoContainer>
       {isModalOpen && (

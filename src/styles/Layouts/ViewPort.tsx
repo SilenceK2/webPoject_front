@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
-import React from "react";
-import { Header } from "./layout/styles";
 
 const Container = styled.div`
   display: flex;
@@ -17,6 +15,7 @@ const MainContainer = styled.div`
   height: 100vh;
   background-color: #fff;
   overflow-x: hidden;
+
   @media (max-width: 575px) {
     width: 100vw;
   }

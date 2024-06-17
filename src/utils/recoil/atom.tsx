@@ -233,3 +233,23 @@ export const showModalDataSelector = selector({
     set(showModalDataAtom, newValue);
   },
 });
+
+/**
+ * 투두페이지 실시간 업데이트 리스트들
+ */
+
+export const LastestUpdateAtom = atom({
+  key: "LastestUpdateAtom",
+  default: [],
+});
+
+export const LastestUpdateSelectorSelector = selector({
+  key: "LastestUpdateSelector",
+  get: ({ get }) => {
+    const LastestUpdateValue = get(LastestUpdateAtom);
+    return LastestUpdateValue;
+  },
+  set: ({ set }, newValue) => {
+    set(LastestUpdateAtom, newValue);
+  },
+});

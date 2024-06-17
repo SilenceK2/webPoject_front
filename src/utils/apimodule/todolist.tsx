@@ -9,7 +9,7 @@ const getTodoListAllTableApi = async () => {
   try {
     const response = await api.get(`/todo/allList`);
     const result = response.data;
-    console.log(result);
+
     if (result.success) {
       return { success: true, data: result };
     } else {
@@ -57,7 +57,6 @@ export const readTodoListApi = async () => {
   try {
     const response = await api.get(`/todo/list`);
     const data = response.data.data;
-    console.log(data);
 
     if (response.status === 200) {
       return { success: true, data };
@@ -96,7 +95,6 @@ const createTodoListApi = async (
     });
 
     if (response.status === 200) {
-      console.log(response.data);
       return { success: true };
     } else {
       return { success: false };
@@ -145,7 +143,6 @@ const updateTodoListApi = async (
   todoId: any
 ) => {
   try {
-    console.log(todoId);
     const response: any = await api.post(`/todo/update`, {
       todoId: todoId,
       todoTitle: title,
@@ -178,7 +175,7 @@ const sendSearchTitleApi = async (input: any) => {
       },
     });
     const data = response.data;
-    console.log(data);
+
     if (response.status === 200 && response.data.length != 0) {
       return { success: true, data };
     } else {
@@ -203,7 +200,7 @@ const sendSearchCaterogyApi = async (input: any) => {
       },
     });
     const data = response.data;
-    console.log(data);
+
     if (response.status === 200) {
       return { success: true, data };
     } else {
@@ -220,7 +217,7 @@ const sendSearchCaterogyApi = async (input: any) => {
  * @param comment
  * @returns
  */
-const createCommentApi = async (comment: any, id: string) => {
+const createCommentApi = async (comment: any, id: any) => {
   try {
     const response = await api.post(`/comment/add`, {
       commentTodoId: id,
@@ -234,6 +231,7 @@ const createCommentApi = async (comment: any, id: string) => {
     }
   } catch (error) {
     console.error("error:", error);
+    console.log("saef");
     return { success: false, error: "글찾기 불러오기 실패" };
   }
 };

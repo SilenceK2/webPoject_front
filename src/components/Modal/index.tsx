@@ -15,6 +15,7 @@ import {
   CommentStyledInput,
   ShowModalTitle,
   HeartIcon,
+  CommentBottomSection,
 } from "./styles";
 import {
   createTodoListApi,
@@ -48,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
     searchSuccessSelector
   );
 
-  const todoValue: any = useRecoilValue(showModalDataSelector);
+  const [todoValue, setTodoValue]: any = useRecoilState(showModalDataSelector);
 
   /**
    * tomorrow면 오늘 날짜에 하루를 더하고, 아니면 오늘 날짜를 "yyyy-mm-dd"형식으로 바꾸기
@@ -61,16 +62,16 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
    */
   useEffect(() => {
     if (
-      modalType === "showtodo" &&
+      (modalType === "showtodo" || modalType === "showAllList") &&
       todoValue.comment &&
-      todoValue.comment.length >= 2
+      todoValue.comment.length >= 3
     ) {
       setShowOnboarding(true);
     }
     if (
       modalType === "searchResult" &&
       searchData.comment &&
-      searchData.comment.length >= 2
+      searchData.comment.length >= 3
     ) {
       setShowOnboarding(true);
     }
@@ -104,18 +105,17 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
   /**
    * 댓글달기
    */
-  const sendCommentTodo = async () => {
+  const sendCommentTodo = async (id: any) => {
     try {
-      const id = searchData.id;
-      const response = await createCommentApi(comment, id);
+      const response: any = await createCommentApi(comment, id);
       if (response.success) {
-        handleBackdropClick();
         toast.success("댓글 작성이 완료되었습니다.");
       } else {
         toast.warning("댓글 작성이 실패하였습니다.");
       }
     } catch (error) {
       toast.error("서버가 연결되지 않았습니다.");
+      console.log(error);
     }
   };
 
@@ -142,8 +142,9 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
     }
   };
 
-  const handleBackdropClick: any = (e: any) => {
-    if (e.target === e.currentTarget) {
+  const handleBackdropClick = (e: any) => {
+    if (!e || e.target === e.currentTarget) {
+      window.location.reload();
       closeModal();
     }
   };
@@ -156,15 +157,28 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
    * 좋아요
    * @param id
    */
-  const onClickLike = async (id: any) => {
+  const onClickLike = async (id: any, type: any) => {
     try {
       const response: any = await sendLikeApi(id);
       if (response.success) {
-        setSearchData((prevSearchData: any) => ({
-          ...prevSearchData,
-          todoLikeCheck: !prevSearchData.todoLikeCheck,
-          todoLikes: response.data.todoLikes,
-        }));
+        {
+          type === "search"
+            ? setSearchData((prevValue: any) => ({
+                ...prevValue,
+                todoLikeCheck: !prevValue.todoLikeCheck,
+                todoLike: prevValue.todoLikeCheck
+                  ? prevValue.todoLike - 1
+                  : prevValue.todoLike + 1,
+              }))
+            : setTodoValue((prevValue: any) => ({
+                ...prevValue,
+                todoLikeCheck: !prevValue.todoLikeCheck,
+                todoLike: prevValue.todoLikeCheck
+                  ? prevValue.todoLike - 1
+                  : prevValue.todoLike + 1,
+              }));
+        }
+        console.log(todoValue.todoLikeCheck);
       } else {
         toast.warning("다시 시도해주세요");
       }
@@ -175,14 +189,8 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
 
   const StyledComment: any = ({ comment, index }: any) => (
     <CommentContainer key={index}>
-      <CommentHeader>
-        @{comment.memberEmail}
-        {comment.commentMemberEmail}
-      </CommentHeader>
-      <CommentContent>
-        {comment.commentContent}
-        {comment.comment}
-      </CommentContent>
+      <CommentHeader>@{comment.commentMemberEmail}</CommentHeader>
+      <CommentContent>{comment.comment}</CommentContent>
     </CommentContainer>
   );
 
@@ -427,26 +435,35 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
           <ShowModalContainer>
             <ShowModalTopSection>
               <ShowModalTitle>
-                <div>
+                <div style={{ paddingBottom: "10px" }}>
                   <h2>{searchData.todoTitle}</h2>
 
-                  <div>
-                    <p>{searchData.todoLikes}</p>
+                  <div style={{ paddingBottom: "10px" }}>
+                    <p>{searchData.todoLike}</p>
                     {searchData.todoLikeCheck === true ? (
                       <FontAwesomeIcon
                         icon={faHeart}
                         style={{ marginLeft: "10px", color: "red" }}
+                        onClick={() => {
+                          onClickLike(searchData.id, "search");
+                        }}
                       />
                     ) : (
                       <HeartIcon
                         onClick={() => {
-                          onClickLike(searchData.todoId);
+                          onClickLike(searchData.id, "search");
                         }}
+                        style={{ marginLeft: "10px" }}
                       />
                     )}
                   </div>
                 </div>
-                <div>{searchData.todoTime}</div>
+                <div style={{ color: "gray" }}>
+                  <h4>{searchData.todoDate}</h4>
+                </div>
+                <div style={{ fontWeight: "bold", paddingTop: "10px" }}>
+                  {searchData.todoEmail}
+                </div>
               </ShowModalTitle>
               <div>
                 {searchData.todoCategory
@@ -469,7 +486,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                     height: "100%",
                     backgroundColor: "rgba(255, 255, 255, 0.8)",
                     color: "#000",
-                    fontSize: "24px",
+                    fontSize: "18px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -487,26 +504,30 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                 {(searchData.comment || []).map((comment: any, index: any) => (
                   <StyledComment key={index} comment={comment} index={index} />
                 ))}
-
-                <section
-                  style={{
-                    width: "100%",
-                    alignSelf: "flex-end",
-                    marginTop: "50px",
-                    overflowY: "unset",
-                    overflow: "hidden",
-                  }}
-                >
-                  <CommentStyledInput
-                    placeholder="댓글을 입력하세요"
-                    onChange={(e: any) => setComment(e.target.value)}
-                  />
-                  <ModalButton>
-                    <button onClick={sendCommentTodo}>추가</button>
-                  </ModalButton>
-                </section>
               </ShowModalBottomSection>
             )}
+            <CommentBottomSection>
+              <CommentStyledInput
+                placeholder="댓글을 입력하세요"
+                onChange={(e: any) => setComment(e.target.value)}
+              />
+              <ModalButton
+                style={{
+                  padding: "20px",
+                  justifyContent: "flex-end",
+                  display: "flex",
+                  alignSelf: "center",
+                }}
+              >
+                <button
+                  onClick={() => {
+                    sendCommentTodo(searchData.id);
+                  }}
+                >
+                  추가
+                </button>
+              </ModalButton>
+            </CommentBottomSection>
           </ShowModalContainer>
         </ModalBackdrop>
       )}
@@ -520,10 +541,22 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
 
                   <div style={{ paddingBottom: "10px" }}>
                     <p>{todoValue.todoLike}</p>
-                    <FontAwesomeIcon
-                      icon={faHeart}
-                      style={{ marginLeft: "10px", color: "red" }}
-                    />
+                    {todoValue.todoLikeCheck === true ? (
+                      <FontAwesomeIcon
+                        icon={faHeart}
+                        style={{ marginLeft: "10px", color: "red" }}
+                        onClick={() => {
+                          onClickLike(todoValue.id, "search");
+                        }}
+                      />
+                    ) : (
+                      <HeartIcon
+                        onClick={() => {
+                          onClickLike(todoValue.id, "search");
+                        }}
+                        style={{ marginLeft: "10px" }}
+                      />
+                    )}
                   </div>
                 </div>
                 <div style={{ color: "gray" }}>
@@ -554,7 +587,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                     height: "100%",
                     backgroundColor: "rgba(255, 255, 255, 0.8)",
                     color: "#000",
-                    fontSize: "24px",
+                    fontSize: "18px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -572,17 +605,30 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                 {(todoValue.comment || []).map((comment: any, index: any) => (
                   <StyledComment key={index} comment={comment} index={index} />
                 ))}
-                <section
-                  style={{
-                    width: "100%",
-                    alignSelf: "flex-end",
-                    marginTop: "50px",
-                    overflowY: "unset",
-                    overflow: "hidden",
-                  }}
-                ></section>
               </ShowModalBottomSection>
             )}
+            <CommentBottomSection>
+              <CommentStyledInput
+                placeholder="댓글을 입력하세요"
+                onChange={(e: any) => setComment(e.target.value)}
+              />
+              <ModalButton
+                style={{
+                  padding: "20px",
+                  justifyContent: "flex-end",
+                  display: "flex",
+                  alignSelf: "center",
+                }}
+              >
+                <button
+                  onClick={() => {
+                    sendCommentTodo(todoValue.id);
+                  }}
+                >
+                  추가
+                </button>
+              </ModalButton>
+            </CommentBottomSection>
           </ShowModalContainer>
         </ModalBackdrop>
       )}

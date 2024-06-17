@@ -4,6 +4,7 @@ export const Container = styled.section`
   display: flex;
   flex-direction: column;
   width: 90%;
+
   margin: 0 20px;
   margin-top: 20px;
 `;
@@ -11,6 +12,7 @@ export const Container = styled.section`
 export const ContentWrap = styled.div`
   margin-top: 10px;
   display: flex;
+
   width: 100%;
   flex-direction: column;
 `;
@@ -128,19 +130,18 @@ export const CustomCheckbox = styled.input.attrs({ type: "checkbox" })`
   appearance: none;
   width: 20px;
   height: 20px;
-  border: 0.4px solid black;
-  border-radius: 3px;
+  border: 0.4px solid purple;
+  border-radius: 50px;
   outline: none;
   cursor: pointer;
   position: relative;
   margin-right: 10px;
-
   &:checked {
-    background-color: gray;
+    background-color: purple;
   }
 
   &:checked::after {
-    border: 1px solid black;
+    border: 2px solid purple;
     content: "\\2713"; /* 체크 표시 유니코드 */
     position: absolute;
     top: 0;
@@ -152,6 +153,7 @@ export const CustomCheckbox = styled.input.attrs({ type: "checkbox" })`
     justify-content: center;
     color: white;
     font-size: 16px;
+    border-radius: 30px;
   }
 `;
 export const TimeSeparator = styled.div`

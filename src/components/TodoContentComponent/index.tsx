@@ -52,7 +52,7 @@ const TodoContentComponent = () => {
   const todoData = async () => {
     try {
       const response: any = await readTodoListApi();
-      console.log(response.data.today);
+
       if (response.success) {
         const todayList = Array.isArray(response.data.today)
           ? response.data.today
@@ -65,7 +65,6 @@ const TodoContentComponent = () => {
           todayTodo: sortByTime(todayList),
           tomorrowTodo: sortByTime(tomorrowList),
         });
-        console.log(todayList);
       } else {
         console.log("투두리스트 불러오기 실패");
       }

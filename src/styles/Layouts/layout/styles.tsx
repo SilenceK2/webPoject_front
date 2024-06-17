@@ -127,7 +127,7 @@ export const RecentSearchList = styled.div`
 export const BottomNav = styled.nav`
   position: fixed;
   // position: relative;
-  width: 100%;
+  width: 375vw;
   bottom: 0;
   margin-top: auto;
   height: 70px;
@@ -137,6 +137,9 @@ export const BottomNav = styled.nav`
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   z-index: 999;
   background-color: #fff;
+  @media (max-width: 575px) {
+    width: 100vw;
+  }
   > ul {
     width: 100%;
     padding: 0 100px;
