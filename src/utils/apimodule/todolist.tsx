@@ -9,7 +9,7 @@ const getTodoListAllTableApi = async () => {
   try {
     const response = await api.get(`/todo/allList`);
     const result = response.data;
-    console.log(result);
+
     if (result.success) {
       return { success: true, data: result };
     } else {
@@ -57,7 +57,6 @@ export const readTodoListApi = async () => {
   try {
     const response = await api.get(`/todo/list`);
     const data = response.data.data;
-    console.log(data);
 
     if (response.status === 200) {
       return { success: true, data };
@@ -96,7 +95,6 @@ const createTodoListApi = async (
     });
 
     if (response.status === 200) {
-      console.log(response.data);
       return { success: true };
     } else {
       return { success: false };
@@ -115,9 +113,7 @@ const createTodoListApi = async (
  */
 const deleteTodoListApi = async (todoId: any) => {
   try {
-    const memberId = localStorage.getItem("memberId");
     const response = await api.post(`/todo/delete`, {
-      memberId: memberId,
       todoId: todoId,
     });
 
@@ -139,23 +135,15 @@ const deleteTodoListApi = async (todoId: any) => {
  * @param categories
  * @param time
  */
-const updateTodoListApi = async (
-  title: any,
-  content: any,
-  time: any,
-  categories: any,
-  todoId: any
-) => {
+const updateTodoListApi = async (todoId: any, todoValue: any) => {
   try {
-    const memberId = localStorage.getItem("memberId");
-    const response = await api.post(`/todo/update`, {
-      memberId: memberId,
+    const response: any = await api.post(`/todo/update`, {
       todoId: todoId,
-      todoTitle: title,
-      todoCategory: categories,
-      todoContent: content,
-      todoTime: time,
-      todoCheck: "TRUE",
+      todoTitle: todoValue.todoTitle,
+      todoCategory: todoValue.todoCategory,
+      todoContent: todoValue.todoContent,
+      todoTime: todoValue.todoTime,
+      todoCheck: "true",
     });
     if (response.status === 200) {
       return { success: true };
@@ -175,11 +163,14 @@ const updateTodoListApi = async (
  */
 const sendSearchTitleApi = async (input: any) => {
   try {
-    const response: any = await api.post(`/todo/searchTitle`, {
-      todoTitle: input,
+    const response: any = await api.get(`/todo/searchTitle`, {
+      params: {
+        todoTitle: input,
+      },
     });
     const data = response.data;
-    if (response.status === 200) {
+
+    if (response.status === 200 && response.data.length != 0) {
       return { success: true, data };
     } else {
       return { success: false };
@@ -197,11 +188,13 @@ const sendSearchTitleApi = async (input: any) => {
  */
 const sendSearchCaterogyApi = async (input: any) => {
   try {
-    const response: any = await api.post(`/todo/searchCategory`, {
-      todoTitle: input,
+    const response: any = await api.get(`/todo/searchCategory`, {
+      params: {
+        todoTitle: input,
+      },
     });
     const data = response.data;
-    console.log(data);
+
     if (response.status === 200) {
       return { success: true, data };
     } else {
@@ -218,12 +211,36 @@ const sendSearchCaterogyApi = async (input: any) => {
  * @param comment
  * @returns
  */
-const createCommentApi = async (comment: any) => {
+const createCommentApi = async (comment: any, id: any) => {
   try {
-    const memberId = localStorage.getItem("memberId");
-    const response: any = await api.post(`/todo/comment`, {
-      todoTitle: comment,
-      memberId: memberId,
+    const response = await api.post(`/comment/add`, {
+      commentTodoId: id,
+      comment: comment,
+    });
+    const data = response.data;
+    console.log(data);
+
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    console.log("saef");
+    return { success: false, error: "글찾기 불러오기 실패" };
+  }
+};
+
+/**
+ * 좋아요 클릭
+ * @param todoId
+ * @returns
+ */
+const sendLikeApi = async (id: any) => {
+  try {
+    const response = await api.post(`/like/action`, {
+      likeTodoId: id,
     });
 
     if (response.status === 200) {
@@ -244,4 +261,5 @@ export {
   sendSearchTitleApi,
   sendSearchCaterogyApi,
   createCommentApi,
+  sendLikeApi,
 };

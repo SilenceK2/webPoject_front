@@ -4,7 +4,9 @@ export const PageContainer = styled.section`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  margin: 0 24px;
+  margin: 0 20px;
+  width: 100%;
+  height: 100%;
   margin-top: 40px;
   margin-bottom: 100px;
   &::-webkit-scrollbar {
@@ -13,9 +15,10 @@ export const PageContainer = styled.section`
 `;
 
 export const Content = styled.section`
-  flex: 1;
-  width: 100%;
-  height: 100%;
+  flex-grow: 1;
+  width: 90%;
+  height: auto;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,25 +35,21 @@ export const WheaterContent = styled.div`
   border-radius: 20px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
 
-  width: 100%;
-
   padding-bottom: 40px;
   overflow: hidden;
   max-height: 220px;
 `;
 export const TodoListContent = styled.div`
-  flex: 0.3;
+  flex: 1;
   flex-shrink: 0;
   display: flex;
-
   border-radius: 20px;
+  overflow: hidden;
   flex-direction: column;
-  box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
+  box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-
   width: 100%;
-
-  flex-shrink: 0; /* 내용이 넘칠 때 축소되지 않도록 */
+  flex-shrink: 0;
   min-height: 200px;
 `;
 
@@ -169,8 +168,10 @@ export const ModalBackdrop = styled.div`
 export const LogoutDiv = styled.div`
   display: flex;
   width: 80%;
+  min-height: 110px;
   text-align: right;
   flex-direction: row;
   justify-content: flex-end;
   color: gray;
+  font-weight: ligther;
 `;

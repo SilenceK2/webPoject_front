@@ -7,7 +7,7 @@ export const ModalBackdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
+
   height: calc(100% - 70px);
   background-color: rgba(0, 0, 0, 0.4);
   background-color: ${({ modalType }: any) =>
@@ -24,13 +24,13 @@ export const ModalContainer = styled.div`
   background-color: white;
   width: 80%;
   max-width: 500px;
-  height:
+  height: auto;
   align-items: center;
   border-radius: 20px;
-  
+
   padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
-  z-index: 1001; 
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
   @media (min-width: 1200px) {
     height: auto;
     width: 30%;
@@ -39,7 +39,7 @@ export const ModalContainer = styled.div`
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin-bottom:20px;
+    margin-bottom: 20px;
     & > p {
       cursor: pointer;
       font-size: 1.5rem;
@@ -107,13 +107,11 @@ export const ModalButton = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   width: 100%;
-
   & > button {
     background-color: #007bff;
     border: none;
-
     border-radius: 10px;
-    padding: 7px 20px;
+    padding: 10px 25px;
     color: white;
     font-weight: bold;
     margin-left: 10px;
@@ -129,6 +127,7 @@ export const ShowModalContainer = styled.div`
   position: fixed;
   bottom: 70px;
   width: 100%;
+  background-color: white;
   // display: flex;
 
   border-radius: 20px 20px 0 0;
@@ -184,7 +183,8 @@ export const ShowModalTopSection = styled.div`
 export const ShowModalBottomSection = styled.div`
   background-color: #ffffff;
   padding: 20px;
-  height: calc(70px * 2);
+  padding-bottom: 80px;
+  height: calc(30px * 3);
   overflow-y: auto;
   & > div:nth-child(1) {
     display: flex;
@@ -331,13 +331,13 @@ export const SearchModalBottomSection = styled.div`
 `;
 
 export const CommentContainer = styled.div`
-  margin-bottom: 20px;
-  padding: 10px;
+  padding: 15px;
   background-color: #ffffff;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 `;
 
 export const CommentHeader = styled.div`
@@ -347,17 +347,16 @@ export const CommentHeader = styled.div`
 `;
 
 export const CommentContent = styled.div`
+  margin-top: 5px;
   font-size: 16px;
 `;
 
 export const CommentStyledInput = styled.input`
   width: 100%;
   padding: 30px;
-  margin-bottom: 5px;
+
   font-size: 1rem;
   border: 1px solid #dddddd;
-  align-self: flex-end;
-  justify-content: flex-end;
   max-height: 50px;
   border-radius: 12px;
   box-sizing: border-box;
@@ -367,6 +366,22 @@ export const CommentStyledInput = styled.input`
   }
 `;
 
+export const HeartIcon = styled.span`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url("/images/flatHeart.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
+
+export const CommentBottomSection = styled.section`
+  margin-top: 20px;
+  width: 90%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+`;
 function rgba(r: number, g: number, b: number, a: number): string {
   return `rgba(${r}, ${g}, ${b}, ${a})`;
 }

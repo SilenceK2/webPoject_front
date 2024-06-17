@@ -14,14 +14,17 @@ import {
   CommentHeader,
   CommentStyledInput,
   ShowModalTitle,
+  HeartIcon,
+  CommentBottomSection,
 } from "./styles";
 import {
   createTodoListApi,
+  sendLikeApi,
   updateTodoListApi,
 } from "../../utils/apimodule/todolist";
 import { toast } from "react-toastify";
 import { searchSuccessSelector } from "../../utils/recoil/atom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { createCommentApi } from "../../utils/apimodule/todolist";
@@ -42,9 +45,11 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
   const [comment, setComment] = useState("");
   const [editShowModalState, setEditShowModalState] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const searchData: any = useRecoilValue(searchSuccessSelector);
+  const [searchData, setSearchData]: any = useRecoilState(
+    searchSuccessSelector
+  );
 
-  const todoValue: any = useRecoilValue(showModalDataSelector);
+  const [todoValue, setTodoValue]: any = useRecoilState(showModalDataSelector);
 
   /**
    * tomorrow면 오늘 날짜에 하루를 더하고, 아니면 오늘 날짜를 "yyyy-mm-dd"형식으로 바꾸기
@@ -57,16 +62,16 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
    */
   useEffect(() => {
     if (
-      modalType === "showtodo" &&
+      (modalType === "showtodo" || modalType === "showAllList") &&
       todoValue.comment &&
-      todoValue.comment.length >= 2
+      todoValue.comment.length >= 3
     ) {
       setShowOnboarding(true);
     }
     if (
       modalType === "searchResult" &&
       searchData.comment &&
-      searchData.comment.length >= 2
+      searchData.comment.length >= 3
     ) {
       setShowOnboarding(true);
     }
@@ -81,7 +86,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
         title,
         content,
         categories,
-        time,
+        time.substring(0, 5),
         currentDate,
         sharedState
       );
@@ -97,29 +102,78 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
     closeModal();
   };
 
-  const sendCommentTodo = async () => {
+  /**
+   * 댓글달기
+   */
+  const sendCommentTodo = async (id: any, type: string) => {
     try {
-      const response = await createCommentApi(comment);
+      const response: any = await createCommentApi(comment, id);
+
       if (response.success) {
-        handleBackdropClick();
+        const commentMemberEmail = response.data.data;
+
+        if (type === "show") {
+          setTodoValue((prevValue: any) => ({
+            ...prevValue,
+            comment: Array.isArray(prevValue.comment)
+              ? [
+                  ...prevValue.comment,
+                  {
+                    commentMemberEmail,
+                    comment,
+                    commentTodoId: id,
+                  },
+                ]
+              : [
+                  {
+                    commentMemberEmail,
+                    comment,
+                    commentTodoId: id,
+                  },
+                ],
+          }));
+          setComment("");
+        } else {
+          setSearchData((prevValue: any) => ({
+            ...prevValue,
+            comment: Array.isArray(prevValue.comment)
+              ? [
+                  ...prevValue.comment,
+                  {
+                    commentMemberEmail,
+                    comment,
+                    commentTodoId: id,
+                  },
+                ]
+              : [
+                  {
+                    commentMemberEmail,
+                    comment,
+                    commentTodoId: id,
+                  },
+                ],
+          }));
+        }
+        setComment("");
+        setShowOnboarding(false);
         toast.success("댓글 작성이 완료되었습니다.");
       } else {
         toast.warning("댓글 작성이 실패하였습니다.");
       }
     } catch (error) {
       toast.error("서버가 연결되지 않았습니다.");
+      console.log(error);
     }
   };
 
+  /**
+   * 수정하기 (showtodo)
+   * @param todoId
+   */
   const sendEditTodo = async (todoId: any) => {
     try {
-      const response: any = await updateTodoListApi(
-        title,
-        content,
-        time,
-        categories,
-        todoId
-      );
+      console.log(todoValue);
+      const response: any = await updateTodoListApi(todoId, todoValue);
       if (response.success) {
         toast.success("수정이 완료되었습니다.");
       } else {
@@ -130,8 +184,9 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
     }
   };
 
-  const handleBackdropClick: any = (e: any) => {
-    if (e.target === e.currentTarget) {
+  const handleBackdropClick = (e: any) => {
+    if (!e || e.target === e.currentTarget) {
+      window.location.reload();
       closeModal();
     }
   };
@@ -140,15 +195,46 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
     setShowOnboarding(false);
   };
 
+  /**
+   * 좋아요
+   * @param id
+   */
+  const onClickLike = async (id: any, type: any) => {
+    try {
+      const response: any = await sendLikeApi(id);
+      if (response.success) {
+        {
+          type === "search"
+            ? setSearchData((prevValue: any) => ({
+                ...prevValue,
+                todoLikeCheck: !prevValue.todoLikeCheck,
+                todoLike: prevValue.todoLikeCheck
+                  ? prevValue.todoLike - 1
+                  : prevValue.todoLike + 1,
+              }))
+            : setTodoValue((prevValue: any) => ({
+                ...prevValue,
+                todoLikeCheck: !prevValue.todoLikeCheck,
+                todoLike: prevValue.todoLikeCheck
+                  ? prevValue.todoLike - 1
+                  : prevValue.todoLike + 1,
+              }));
+        }
+        console.log(todoValue.todoLikeCheck);
+      } else {
+        toast.warning("다시 시도해주세요");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const StyledComment: any = ({ comment, index }: any) => (
     <CommentContainer key={index}>
-      <CommentHeader>@{comment.memberEmail}</CommentHeader>
-      <CommentContent>{comment.commentContent}</CommentContent>
+      <CommentHeader>@{comment.commentMemberEmail}</CommentHeader>
+      <CommentContent>{comment.comment}</CommentContent>
     </CommentContainer>
   );
-
-  console.log(todoValue);
-  console.log(searchData);
 
   return (
     <>
@@ -217,15 +303,25 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                         <h2>{todoValue.todoTitle}</h2>
 
                         <div>
-                          <p>{todoValue.todoLikes}</p>
-                          <FontAwesomeIcon
-                            icon={faHeart}
-                            style={{ marginLeft: "10px", color: "red" }}
-                          />
+                          {todoValue.todoLikes ? (
+                            <>
+                              <p>{todoValue.todoLikes}</p>
+
+                              <FontAwesomeIcon
+                                icon={faHeart}
+                                style={{ marginLeft: "10px", color: "red" }}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <p></p>
+                              <HeartIcon />
+                            </>
+                          )}
                         </div>
                       </div>
                       <div>
-                        {todoValue.todoTime}{" "}
+                        {todoValue.todoTime}
                         <div
                           onClick={() => {
                             setEditShowModalState(true);
@@ -282,9 +378,12 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                     <ShowModalTitle>
                       <div>
                         <input
-                          value={title}
+                          value={todoValue.todoTitle}
                           onChange={(e) => {
-                            setTitle(e.target.value);
+                            setTodoValue((prevValue: any) => ({
+                              ...prevValue,
+                              todoTitle: e.target.value,
+                            }));
                           }}
                           style={{
                             width: "60%",
@@ -295,18 +394,28 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                             fontSize: "20px",
                           }}
                           placeholder={
-                            todoValue.todoTitle.length > 0
+                            todoValue.todoTitle > 0
                               ? todoValue.todoTitle
                               : "제목을 입력해주세요"
                           }
                         />
-
                         <div>
                           <p>{todoValue.todoLikes}</p>
-                          <FontAwesomeIcon
-                            icon={faHeart}
-                            style={{ marginLeft: "10px", color: "red" }}
-                          />
+                          {todoValue.todoLikes ? (
+                            <>
+                              <p>{todoValue.todoLikes}</p>
+
+                              <FontAwesomeIcon
+                                icon={faHeart}
+                                style={{ marginLeft: "10px", color: "red" }}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <p></p>
+                              <HeartIcon />
+                            </>
+                          )}
                         </div>
                       </div>
                       <div>
@@ -314,20 +423,25 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                           type="time"
                           style={{
                             marginTop: "20px",
-                            width: "30%",
+                            width: "40%",
                             paddingLeft: "20px",
                             padding: "10px",
                             outline: "none",
                             border: "none",
                           }}
                           step={3600}
-                          value={time}
-                          onChange={(e) => setTime(e.target.value)}
+                          value={todoValue.todoTime}
+                          onChange={(e) => {
+                            setTodoValue((prevValue: any) => ({
+                              ...prevValue,
+                              todoTime: e.target.value,
+                            }));
+                          }}
                           required
                         />
                         <div
                           onClick={() => {
-                            sendEditTodo(todoValue.todoId);
+                            sendEditTodo(todoValue.id);
                           }}
                         >
                           수정완료
@@ -348,8 +462,13 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                           ? todoValue.todoCategory
                           : content
                       }
-                      value={categories}
-                      onChange={(e) => setCategories(e.target.value)}
+                      value={todoValue.todoCategory}
+                      onChange={(e) => {
+                        setTodoValue((prevValue: any) => ({
+                          ...prevValue,
+                          todoCategory: e.target.value,
+                        }));
+                      }}
                     />
                     <input
                       style={{
@@ -368,8 +487,13 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                           ? todoValue.todoContent
                           : content
                       }
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
+                      value={todoValue.content}
+                      onChange={(e) => {
+                        setTodoValue((prevValue: any) => ({
+                          ...prevValue,
+                          todoContent: e.target.value,
+                        }));
+                      }}
                     />
                   </ShowModalTopSection>
                   <ShowModalBottomSection>
@@ -392,18 +516,35 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
           <ShowModalContainer>
             <ShowModalTopSection>
               <ShowModalTitle>
-                <div>
+                <div style={{ paddingBottom: "10px" }}>
                   <h2>{searchData.todoTitle}</h2>
 
-                  <div>
-                    <p>{searchData.todoLikes}</p>
-                    <FontAwesomeIcon
-                      icon={faHeart}
-                      style={{ marginLeft: "10px", color: "red" }}
-                    />
+                  <div style={{ paddingBottom: "10px" }}>
+                    <p>{searchData.todoLike}</p>
+                    {searchData.todoLikeCheck === true ? (
+                      <FontAwesomeIcon
+                        icon={faHeart}
+                        style={{ marginLeft: "10px", color: "red" }}
+                        onClick={() => {
+                          onClickLike(searchData.id, "search");
+                        }}
+                      />
+                    ) : (
+                      <HeartIcon
+                        onClick={() => {
+                          onClickLike(searchData.id, "search");
+                        }}
+                        style={{ marginLeft: "10px" }}
+                      />
+                    )}
                   </div>
                 </div>
-                <div>{searchData.todoTime}</div>
+                <div style={{ color: "gray" }}>
+                  <h4>{searchData.todoDate}</h4>
+                </div>
+                <div style={{ fontWeight: "bold", paddingTop: "10px" }}>
+                  {searchData.todoEmail}
+                </div>
               </ShowModalTitle>
               <div>
                 {searchData.todoCategory
@@ -426,7 +567,7 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                     height: "100%",
                     backgroundColor: "rgba(255, 255, 255, 0.8)",
                     color: "#000",
-                    fontSize: "24px",
+                    fontSize: "18px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -444,10 +585,30 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
                 {(searchData.comment || []).map((comment: any, index: any) => (
                   <StyledComment key={index} comment={comment} index={index} />
                 ))}
-                {/** 내가 작성한 게시글이면 숨기기 ??*/}
-                <CommentStyledInput placeholder="댓글을 입력하세요" />
               </ShowModalBottomSection>
             )}
+            <CommentBottomSection>
+              <CommentStyledInput
+                placeholder="댓글을 입력하세요"
+                onChange={(e: any) => setComment(e.target.value)}
+              />
+              <ModalButton
+                style={{
+                  padding: "20px",
+                  justifyContent: "flex-end",
+                  display: "flex",
+                  alignSelf: "center",
+                }}
+              >
+                <button
+                  onClick={() => {
+                    sendCommentTodo(searchData.id, "search");
+                  }}
+                >
+                  추가
+                </button>
+              </ModalButton>
+            </CommentBottomSection>
           </ShowModalContainer>
         </ModalBackdrop>
       )}
@@ -461,16 +622,30 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
 
                   <div style={{ paddingBottom: "10px" }}>
                     <p>{todoValue.todoLike}</p>
-                    <FontAwesomeIcon
-                      icon={faHeart}
-                      style={{ marginLeft: "10px", color: "red" }}
-                    />
+                    {todoValue.todoLikeCheck === true ? (
+                      <FontAwesomeIcon
+                        icon={faHeart}
+                        style={{ marginLeft: "10px", color: "red" }}
+                        onClick={() => {
+                          onClickLike(todoValue.id, "show");
+                        }}
+                      />
+                    ) : (
+                      <HeartIcon
+                        onClick={() => {
+                          onClickLike(todoValue.id, "show");
+                        }}
+                        style={{ marginLeft: "10px" }}
+                      />
+                    )}
                   </div>
                 </div>
                 <div style={{ color: "gray" }}>
                   <h4>{todoValue.todoDate}</h4>
                 </div>
-                <div>{todoValue.todoEmail}</div>
+                <div style={{ fontWeight: "bold", paddingTop: "10px" }}>
+                  {todoValue.todoEmail}
+                </div>
               </ShowModalTitle>
               <div>
                 {todoValue.todoCategory
@@ -482,7 +657,59 @@ const Modal: React.FC<ModalProps> = ({ closeModal, modalType }) => {
               </div>
               <div>{todoValue.todoContent}</div>
             </ShowModalTopSection>
-            <ShowModalBottomSection></ShowModalBottomSection>
+            {showOnboarding ? (
+              <ShowModalBottomSection>
+                <div
+                  style={{
+                    top: "0",
+                    left: "0",
+                    bottom: "0",
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(255, 255, 255, 0.8)",
+                    color: "#000",
+                    fontSize: "18px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "absolute",
+                    zIndex: 10,
+                  }}
+                  onClick={() => setShowOnboarding(false)}
+                >
+                  아래로 스크롤을 내려 댓글을 확인하세요!
+                </div>
+              </ShowModalBottomSection>
+            ) : (
+              <ShowModalBottomSection>
+                {(todoValue.comment || []).map((comment: any, index: any) => (
+                  <StyledComment key={index} comment={comment} index={index} />
+                ))}
+              </ShowModalBottomSection>
+            )}
+            <CommentBottomSection>
+              <CommentStyledInput
+                placeholder="댓글을 입력하세요"
+                onChange={(e: any) => setComment(e.target.value)}
+              />
+              <ModalButton
+                style={{
+                  padding: "20px",
+                  justifyContent: "flex-end",
+                  display: "flex",
+                  alignSelf: "center",
+                }}
+              >
+                <button
+                  onClick={() => {
+                    sendCommentTodo(todoValue.id, "show");
+                  }}
+                >
+                  추가
+                </button>
+              </ModalButton>
+            </CommentBottomSection>
           </ShowModalContainer>
         </ModalBackdrop>
       )}

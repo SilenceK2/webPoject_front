@@ -74,6 +74,7 @@ const Layout: FC<Props> = () => {
 
       if (response.success) {
         const searchResult = { data };
+
         toast.success("검색 성공");
 
         setSuccessResponseData(true);
@@ -166,6 +167,8 @@ const Layout: FC<Props> = () => {
     );
   };
 
+  console.log(searchSuccessList);
+
   return (
     <>
       {showHeaderAndNav && (
@@ -249,6 +252,7 @@ const Layout: FC<Props> = () => {
               className={activePage === "home" ? "activePage" : ""}
               onClick={() => {
                 navigate("/home");
+                window.scrollTo({ top: 0, behavior: "smooth" }); // 페이지 전환 후 상단으로 스크롤
               }}
             >
               <FontAwesomeIcon icon={faHome} />
@@ -258,6 +262,7 @@ const Layout: FC<Props> = () => {
               className={activePage === "todopage" ? "activePage" : ""}
               onClick={() => {
                 navigate("todopage");
+                window.scrollTo({ top: 0, behavior: "smooth" }); // 페이지 전환 후 상단으로 스크롤
               }}
             >
               <FontAwesomeIcon icon={faStar} />

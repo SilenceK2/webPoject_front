@@ -1,31 +1,5 @@
 import styled from "styled-components";
 
-export const TodoContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  margin: 0 24px;
-  margin-top: 10vw;
-  height: 100%;
-  letter-spacing: -1px;
-  @media (max-width: 575px) {
-    margin-top: 20vw;
-  }
-`;
-
-export const TopSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-`;
-
-export const BottomSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  margin-top: -40px;
-`;
 export const RatingContainer = styled.div`
   width: 100%;
   flex: 1;

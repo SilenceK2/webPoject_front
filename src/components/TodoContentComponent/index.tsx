@@ -41,7 +41,6 @@ const TodoContentComponent = () => {
   const modalData = useSetRecoilState(showModalDataSelector);
 
   const sortByTime = (todos: any) => {
-    // 배열을 복제하여 정렬
     const sortedTodos = [...todos].sort((a: any, b: any) => {
       const timeA = parseInt(a.todoTime.replace(":", ""));
       const timeB = parseInt(b.todoTime.replace(":", ""));
@@ -53,7 +52,7 @@ const TodoContentComponent = () => {
   const todoData = async () => {
     try {
       const response: any = await readTodoListApi();
-      console.log(response.data.today);
+
       if (response.success) {
         const todayList = Array.isArray(response.data.today)
           ? response.data.today
@@ -63,12 +62,9 @@ const TodoContentComponent = () => {
           : [];
 
         todoListSet({
-          // todayTodo: sortByTime(todayList),
-          // tomorrowTodo: sortByTime(tomorrowList),
-          todayTodo: todayList,
-          tomorrowTodo: tomorrowList,
+          todayTodo: sortByTime(todayList),
+          tomorrowTodo: sortByTime(tomorrowList),
         });
-        console.log(todayList);
       } else {
         console.log("투두리스트 불러오기 실패");
       }
@@ -111,7 +107,7 @@ const TodoContentComponent = () => {
   const deleteTomorrowTodo = async (todoId: any) => {
     try {
       if (window.confirm("삭제하시겠습니까?")) {
-        const response: any = await deleteTodoListApi;
+        const response: any = await deleteTodoListApi(todoId);
         if (response.success) {
           toast.success("투두가 삭제되었습니다.");
           todoListSet((prev: any) => ({
@@ -198,7 +194,7 @@ const TodoContentComponent = () => {
             <React.Fragment key={todo.id}>
               {index === 0 ||
               tomorrowTodo[index - 1].todoTime !== todo.todoTime ? (
-                <TimeSeparator>{todo.todoTime}</TimeSeparator> // 변경: 구분선으로 사용할 컴포넌트 사용
+                <TimeSeparator>{todo.todoTime}</TimeSeparator>
               ) : null}
               <TodoBody>
                 <TodoNumber>

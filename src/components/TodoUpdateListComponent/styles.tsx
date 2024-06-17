@@ -1,35 +1,11 @@
 import styled from "styled-components";
 
-export const TodoContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  margin: 0 24px;
-  margin-top: 10vw;
-  height: 100%;
-  letter-spacing: -1px;
-  @media (max-width: 575px) {
-    margin-top: 20vw;
-  }
-`;
-
-export const TopSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-`;
-
-export const BottomSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  margin-top: -40px;
-`;
 export const RatingContainer = styled.div`
   width: 100%;
   flex: 1;
   display: flex;
+  margin-top: -50px;
+
   flex-direction: column;
   flex-basis: 400px;
 `;
@@ -37,7 +13,6 @@ export const RatingContainer = styled.div`
 export const RatingTitle = styled.div`
   width: 100%;
   display: flex;
-  margin-bottom: 40px;
   flex-basis: 20px;
   flex-direction: column;
 
@@ -65,19 +40,21 @@ export const RatingTitle = styled.div`
 `;
 export const RatingContent = styled.div`
   width: 100%;
-  flex: 1;
   align-items: center;
+  overflow-x: scroll;
+  display: flex;
+  algin-items: center;
+  flex-direction: row;
+`;
+export const RatingBody = styled.div`
+  margin-left: 10px;
+  margin-right: 10px;
+  flex: 1;
+  padding: 15px;
+  border-radius: 10px;
   display: flex;
   margin-top: 20px;
   flex-direction: column;
-`;
-export const RatingBody = styled.div`
-  width: 100%;
-  max-height: 18%;
-  flex: 1;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: row;
   align-items: center;
   margin-bottom: 15px;
   box-shadow: 0 0.5px 5px rgba(0, 0, 0, 0.1), 0 0.5px 5px rgba(0, 0, 0, 0.1); /* 연한 그림자 추가 */
@@ -93,10 +70,12 @@ export const RatingBodyTitle = styled.section`
   & > div:nth-child(1) {
     font-size: 15px;
     font-weight: bold;
+
     flex: 1;
   }
   & > div:nth-child(2) {
     font-size: 12px;
+    padding-top: 10px;
     font-weight: light;
     color: gray;
     flex: 1;
@@ -122,44 +101,24 @@ export const RatingBodyTitle = styled.section`
   }
 `;
 
-export const RatingNumber = styled.div`
-  width: 20px;
-  display: flex;
-  padding-left: 10px;
-  flex: 0.2;
-  flex-direction: column;
-  & > div:nth-child(2) {
-    flex: 0.8;
-  }
-  & > div:nth-child(1) {
-    flex: 1;
-    height: 100%;
-    width: 100%;
-    bodrer-radius: 20px;
-    text-align: center;
-    // background-color: green;
-  }
-`;
-
 export const RatingBodyContent = styled.div`
   display: flex;
   flex: 1;
   flex-basis: 30px;
   flex-direction: column;
-  border-left: 0.2px solid lightgray;
+  width: 100%;
   overflow: hidden;
-
-  padding-left: 5px;
   & > div:nth-child(1) {
     flex: 1;
+
     font-size: 14px;
     padding-left: 10px;
     display: flex;
+    padding: 10px;
     flex-direction: row;
     padding-right: 10px;
-    justify-content: center;
+    justify-content: space-around;
   }
-
   & > div:nth-child(2) {
     flex: 1;
     text-align: center;
@@ -206,6 +165,7 @@ export const UpdateListContent = styled.div`
   display: flex;
   margin-bottom: 20px;
   width: 100%;
+  overflow-x: scroll;
   max-height: 300px;
   flex-direction: row;
   overflow-x: scroll;
