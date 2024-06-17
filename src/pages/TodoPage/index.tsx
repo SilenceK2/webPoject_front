@@ -1,38 +1,19 @@
-import {
-  TodoContainer,
-  TopSection,
-  BottomSection,
-  RatingContainer,
-  RatingContent,
-  TodoUpdateList,
-  UpdateListTitle,
-  UpdateListContent,
-  RatingBody,
-  RatingBodyTitle,
-  RatingBodyContent,
-  RatingNumber,
-  UpdateContent,
-  UpdateContentContent,
-  UpdateContentTitle,
-  UpdateListTitleContent,
-} from "./styles";
+import { TodoContainer, TopSection, BottomSection } from "./styles";
 import { useEffect, useState } from "react";
 import { getTodoListAllTableApi } from "../../utils/apimodule/todolist";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import Modal from "../../components/Modal";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  showModalDataAtom,
+  LastestUpdateSelector,
   showModalDataSelector,
+  topThreeTodosSelector,
 } from "../../utils/recoil/atom";
+import TodoUpdateListComponents from "../../components/TodoUpdateListComponent";
+import TodoThreeTopComponent from "../../components/TodoThreeTopComponent";
 const TodoPage = () => {
-  const [modalType, setModalType] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [topThreeTodos, setTopThreeTodos] = useState([]);
-  const [latestUpdates, setLatestUpdates] = useState([]);
-  const modalData = useSetRecoilState(showModalDataSelector);
-  const dataValue = useRecoilValue(showModalDataSelector);
+  const setLatestUpdates: any = useSetRecoilState(LastestUpdateSelector);
+  const setTopThreeTodos: any = useSetRecoilState(topThreeTodosSelector);
+
+  const isModal = useRecoilValue(showModalDataSelector);
 
   useEffect(() => {
     const fetchTopThreeTodos = async () => {
@@ -41,7 +22,7 @@ const TodoPage = () => {
         if (response && response.success) {
           const sortedData = response.data.data.sort(
             (a: any, b: any) => b.todoLikes - a.todoLikes
-          ); // todoLike 기준으로 내림차순 정렬
+          );
           const topThree = sortedData.slice(0, 3);
           setTopThreeTodos(topThree);
           return topThree;
@@ -72,69 +53,16 @@ const TodoPage = () => {
     fetchLatestUpdates();
   }, []);
 
-  const showTodoModal = () => {
-    setIsModalOpen(true);
-    setModalType("showSearch");
-  };
-
   return (
     <>
       <TodoContainer>
         <TopSection>
-          <RatingContainer>
-            <UpdateListTitle>
-              <div></div>
-              <UpdateListTitleContent>
-                실시간 인기 todoList
-                <div>인기 todolist를 확인하고 찜해보세요!</div>
-              </UpdateListTitleContent>
-            </UpdateListTitle>
-            <RatingContent>
-              {topThreeTodos.map((todo: any, index) => (
-                <RatingBody
-                  key={todo.id}
-                  onClick={() => {
-                    modalData(todo);
-                    showTodoModal();
-                  }}
-                >
-                  <RatingNumber>
-                    <div>{index + 1}</div>
-                    <div></div>
-                  </RatingNumber>
-                  <RatingBodyTitle>
-                    <div>{todo.todoTitle}</div>
-                    <div>
-                      {todo.todoCategory
-                        .split("#")
-                        .filter((category: any) => category !== "")
-                        .map((category: any, index: any) => (
-                          <p key={index}>#{category}</p>
-                        ))}
-                    </div>
-                  </RatingBodyTitle>
-                  <RatingBodyContent>
-                    <div>
-                      <FontAwesomeIcon icon={faHeart} color="red" />
-                      &nbsp;&nbsp;{todo.todoLike}
-                    </div>
-                    {/* <div>{todo.todoEmail}</div> */}
-                  </RatingBodyContent>
-                </RatingBody>
-              ))}
-            </RatingContent>
-          </RatingContainer>
+          <TodoThreeTopComponent />
         </TopSection>
         <BottomSection>
           <TodoUpdateListComponents />
         </BottomSection>
       </TodoContainer>
-      {isModalOpen && (
-        <Modal
-          closeModal={() => setIsModalOpen(false)}
-          modalType={"showAllList"}
-        />
-      )}
     </>
   );
 };

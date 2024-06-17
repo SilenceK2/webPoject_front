@@ -107,7 +107,7 @@ const TodoContentComponent = () => {
   const deleteTomorrowTodo = async (todoId: any) => {
     try {
       if (window.confirm("삭제하시겠습니까?")) {
-        const response: any = await deleteTodoListApi;
+        const response: any = await deleteTodoListApi(todoId);
         if (response.success) {
           toast.success("투두가 삭제되었습니다.");
           todoListSet((prev: any) => ({

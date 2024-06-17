@@ -243,7 +243,7 @@ export const LastestUpdateAtom = atom({
   default: [],
 });
 
-export const LastestUpdateSelectorSelector = selector({
+export const LastestUpdateSelector = selector({
   key: "LastestUpdateSelector",
   get: ({ get }) => {
     const LastestUpdateValue = get(LastestUpdateAtom);
@@ -251,5 +251,25 @@ export const LastestUpdateSelectorSelector = selector({
   },
   set: ({ set }, newValue) => {
     set(LastestUpdateAtom, newValue);
+  },
+});
+
+/**
+ * 투두페이지 찜 개수 상위 3개까지 보여주기
+ */
+
+export const topThreeTodosAtom = atom({
+  key: "topThreeTodosAtom",
+  default: [],
+});
+
+export const topThreeTodosSelector = selector({
+  key: "topThreeTodosSelector",
+  get: ({ get }) => {
+    const topThreeTodosValue = get(topThreeTodosAtom);
+    return topThreeTodosValue;
+  },
+  set: ({ set }, newValue) => {
+    set(topThreeTodosAtom, newValue);
   },
 });

@@ -135,20 +135,14 @@ const deleteTodoListApi = async (todoId: any) => {
  * @param categories
  * @param time
  */
-const updateTodoListApi = async (
-  title: any,
-  content: any,
-  time: any,
-  categories: any,
-  todoId: any
-) => {
+const updateTodoListApi = async (todoId: any, todoValue: any) => {
   try {
     const response: any = await api.post(`/todo/update`, {
       todoId: todoId,
-      todoTitle: title,
-      todoCategory: categories,
-      todoContent: content,
-      todoTime: time,
+      todoTitle: todoValue.todoTitle,
+      todoCategory: todoValue.todoCategory,
+      todoContent: todoValue.todoContent,
+      todoTime: todoValue.todoTime,
       todoCheck: "true",
     });
     if (response.status === 200) {
@@ -223,9 +217,11 @@ const createCommentApi = async (comment: any, id: any) => {
       commentTodoId: id,
       comment: comment,
     });
+    const data = response.data;
+    console.log(data);
 
     if (response.status === 200) {
-      return { success: true };
+      return { success: true, data };
     } else {
       return { success: false };
     }
