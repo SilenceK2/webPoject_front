@@ -1,5 +1,7 @@
 import api from "../api/Instance";
-import axios from "axios";
+
+import location from "../api/locationInstance";
+
 /**
  * 길찾기 결과값을 보여주기 위한 get요청
  * @param locationTransport
@@ -18,24 +20,26 @@ const locationResultResponse = async () => {
   }
 };
 
+/**
+ * 출발지 입력
+ * @param text
+ * @returns
+ */
 const searchNaverPlaces = async (text: any) => {
   try {
-    const response = await axios.get(
-      "https://openapi.naver.com/v1/search/local.json",
-      {
-        params: {
-          query: text,
-          display: 5,
-          start: 1,
-          sort: "random",
-        },
-        headers: {
-          "X-Naver-Client-Id": "nfiMlVtIR8DmtDMqhvpO",
-          "X-Naver-Client-Secret": "Tkg91YuVMY",
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await location.get("/v1/search/local.json", {
+      params: {
+        query: text,
+        display: 5,
+        start: 1,
+        sort: "random",
+      },
+      headers: {
+        "X-Naver-Client-Id": "nfiMlVtIR8DmtDMqhvpO",
+        "X-Naver-Client-Secret": "Tkg91YuVMY",
+        "Content-Type": "application/json",
+      },
+    });
     const data = response.data;
     if (response.status === 200) {
       return { suceess: true, data };
@@ -48,10 +52,10 @@ const searchNaverPlaces = async (text: any) => {
   }
 };
 
-// 네이버 지도 경로 API 호출 함수
+// 네이버 지도 경로 API 호출 함수 (tr)
 const getNaverMapDirection = async (start: any, goal: any, option: any) => {
   try {
-    const response = await axios.get(
+    const response = await location.get(
       `https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=${start}&goal=${goal}&option=${option}`,
       {
         headers: {
@@ -75,7 +79,7 @@ const getNaverDirectionMap = async (
   level: any
 ) => {
   try {
-    const response = await axios.get(
+    const response = await location.get(
       "https://naveropenapi.apigw.ntruss.com/map-static/v3/raster",
       {
         params: {
@@ -98,11 +102,25 @@ const getNaverDirectionMap = async (
   }
 };
 
+/**
+ * 대중교통 경로
+ * @param SX
+ * @param SY
+ * @param EX
+ * @param EY
+ * @returns
+ */
 const getOdsayRoute = async (SX: any, SY: any, EX: any, EY: any) => {
   try {
     const url = `https://api.odsay.com/v1/api/searchPubTransPathT?SX=${SX}&SY=${SY}&EX=${EX}&EY=${EY}&OPT=1&apiKey=ROqhJXXjx3uvKLQ5iNtT7rdI1ilUdJD%2BmWOtlnPs%2Fag`;
-    const response = await axios.get(url);
-    return response.data;
+    const response = await location.get(url);
+    const data = response.data;
+
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false, data };
+    }
   } catch (error) {
     console.error("Error fetching data from ODSAY API:", error);
     throw new Error("Internal server error");

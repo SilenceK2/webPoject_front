@@ -130,6 +130,29 @@ const TodoContentComponent = () => {
     setModalType("showtodo");
   };
 
+  // const handleKakaoShare = (todo: any) => {
+  //   console.log("Sharing todo:", todo);
+
+  //   window.Kakao.Link.sendCustom({
+  //     templateId: 109081,
+  //     templateArgs: {
+  //       title: todo.todoTitle || "기본 제목",
+  //       description: todo.todoContent || "기본 설명",
+  //       // imageUrl: todo.imageUrl || "https://example.com/default_image.jpg",
+  //       link: {
+  //         mobileWebUrl: window.location.href,
+  //         webUrl: window.location.href,
+  //       },
+  //     },
+  //   })
+  //     .then((response: any) => {
+  //       console.log("Kakao share success:", response);
+  //     })
+  //     .catch((error: any) => {
+  //       console.error("Kakao share error:", error);
+  //     });
+  // };
+
   useEffect(() => {
     todoData();
   }, []);
@@ -170,7 +193,10 @@ const TodoContentComponent = () => {
                 </TodoBodyTitle>
                 <TodoBodyContent>
                   <div>
-                    <FontAwesomeIcon icon={faShareFromSquare} />
+                    <FontAwesomeIcon
+                      icon={faShareFromSquare}
+                      // onClick={() => handleKakaoShare(todo)}
+                    />
                   </div>
                   <div>
                     <FontAwesomeIcon
@@ -218,7 +244,10 @@ const TodoContentComponent = () => {
                 </TodoBodyTitle>
                 <TodoBodyContent>
                   <div>
-                    <FontAwesomeIcon icon={faShareFromSquare} />
+                    <FontAwesomeIcon
+                      icon={faShareFromSquare}
+                      // onClick={() => handleKakaoShare(todo)}
+                    />
                   </div>
                   <div>
                     <FontAwesomeIcon

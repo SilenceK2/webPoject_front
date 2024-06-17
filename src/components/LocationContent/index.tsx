@@ -25,10 +25,9 @@ import {
   SearchBoxHeader,
   SelectPublicTransportation,
   SelectCar,
-  LocationBoxContainer,
 } from "./styles";
 import PlacePickerComponent from "./locationComponent/PlacePickerComponent";
-import DirectionComponent from "./locationComponent/DirectionComponentPublic";
+import DirectionComponent from "./locationComponent/DirectionComponent";
 import DirectionComponentPublic from "./locationComponent/DirectionComponentPublic";
 
 interface Place {
@@ -77,80 +76,74 @@ const LocationContentBox: React.FC = () => {
 
   return (
     <>
-      <LocationBoxContainer>
-        <Topsection>
-          <LocationTitle>
-            <div></div>
-            <LocationTitleContent>
-              <div>나의 가장 빠른 교통수단은?</div>
-              <div>길찾기 서비스를 이용해보세요</div>
-            </LocationTitleContent>
-          </LocationTitle>
-        </Topsection>
-        <BottomSection>
-          <LocationBoard>
-            <StartPointInput onClick={toggleStartPointInput}>
+      <Topsection>
+        <LocationTitle>
+          <div></div>
+          <LocationTitleContent>
+            <div>나의 가장 빠른 교통수단은?</div>
+            <div>길찾기 서비스를 이용해보세요</div>
+          </LocationTitleContent>
+        </LocationTitle>
+      </Topsection>
+      <BottomSection>
+        <LocationBoard>
+          <StartPointInput onClick={toggleStartPointInput}>
+            <FontAwesomeIcon
+              icon={faRoad}
+              style={{ color: "#4287ff", fontSize: "20px", width: "9%" }}
+            />
+            <Input
+              value={startPoint?.title || ""}
+              placeholder="출발지"
+              readOnly
+            />
+            <FontAwesomeIcon
+              icon={faMagnifyingGlass}
+              style={{ color: "gray", fontSize: "20px" }}
+            />
+          </StartPointInput>
+          <Change onClick={swapPoints}>
+            <FontAwesomeIcon icon={faArrowRightArrowLeft} />
+          </Change>
+          <EndPointInput onClick={toggleEndPointInput}>
+            <FontAwesomeIcon
+              icon={faLocationDot}
+              style={{ color: "#4287ff", fontSize: "20px", width: "9%" }}
+            />
+            <Input
+              value={endPoint?.title || ""}
+              readOnly
+              placeholder="도착지"
+            />
+            <FontAwesomeIcon
+              icon={faMagnifyingGlass}
+              style={{ color: "gray", fontSize: "20px" }}
+            />
+          </EndPointInput>
+          <Select>
+            <SelectPublicTransportation
+              onClick={() => handleTransportationSelect("publicTransportation")}
+              className={selected === "publicTransportation" ? "selected" : ""}
+            >
               <FontAwesomeIcon
-                icon={faRoad}
-                style={{ color: "#4287ff", fontSize: "20px", width: "9%" }}
+                icon={faBus}
+                style={{ fontSize: "20px", padding: "0 0 5px 0" }}
               />
-              <Input
-                value={startPoint?.title || ""}
-                placeholder="출발지"
-                readOnly
-              />
+              대중교통
+            </SelectPublicTransportation>
+            <SelectCar
+              onClick={() => handleTransportationSelect("car")}
+              className={selected === "car" ? "selected" : ""}
+            >
               <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                style={{ color: "gray", fontSize: "20px" }}
+                icon={faCar}
+                style={{ fontSize: "20px", padding: "0 0 5px 0" }}
               />
-            </StartPointInput>
-            <Change onClick={swapPoints}>
-              <FontAwesomeIcon icon={faArrowRightArrowLeft} />
-            </Change>
-            <EndPointInput onClick={toggleEndPointInput}>
-              <FontAwesomeIcon
-                icon={faLocationDot}
-                style={{ color: "#4287ff", fontSize: "20px", width: "9%" }}
-              />
-              <Input
-                value={endPoint?.title || ""}
-                readOnly
-                placeholder="도착지"
-              />
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                style={{ color: "gray", fontSize: "20px" }}
-              />
-            </EndPointInput>
-            <Select>
-              <SelectPublicTransportation
-                onClick={() =>
-                  handleTransportationSelect("publicTransportation")
-                }
-                className={
-                  selected === "publicTransportation" ? "selected" : ""
-                }
-              >
-                <FontAwesomeIcon
-                  icon={faBus}
-                  style={{ fontSize: "20px", padding: "0 0 5px 0" }}
-                />
-                대중교통
-              </SelectPublicTransportation>
-              <SelectCar
-                onClick={() => handleTransportationSelect("car")}
-                className={selected === "car" ? "selected" : ""}
-              >
-                <FontAwesomeIcon
-                  icon={faCar}
-                  style={{ fontSize: "20px", padding: "0 0 5px 0" }}
-                />
-                자동차
-              </SelectCar>
-            </Select>
-          </LocationBoard>
-        </BottomSection>
-      </LocationBoxContainer>
+              자동차
+            </SelectCar>
+          </Select>
+        </LocationBoard>
+      </BottomSection>
 
       {showStartPoint && (
         <Overlay onClick={toggleStartPointInput}>
